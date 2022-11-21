@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.screen_resources'
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+ext {
+    corektx = '1.7.0'
+    appcompat = '1.5.1'
+    material = '1.7.0'
+    coroutines = '1.3.9'
+    constraintlayout = '2.1.4'
+    junit = '4.13.2'
+    junit_test = '1.1.3'
+    junit_test_espresso = '3.4.0'
+    lifecycleVersion = '2.1.0'
+    viewModel = '2.2.3'
+    nav_version = "2.5.3"
+    picasso = '2.8'
+}
+
+dependencies {
+    //noinspection GradleDependency
+    api "androidx.core:core-ktx:$corektx"
+    api "androidx.appcompat:appcompat:$appcompat"
+    api "com.google.android.material:material:$material"
+    api "androidx.constraintlayout:constraintlayout:$constraintlayout"
+    api "junit:junit:$junit"
+    //noinspection GradleDependency
+    api "androidx.test.ext:junit:$junit_test"
+    //noinspection GradleDependency
+    api "androidx.test.espresso:espresso-core:$junit_test_espresso"
+
+    // Lifecycle components
+    //noinspection GradleDependency
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    //noinspection GradleDependency
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+
+    // Kotlin
+    api "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    api "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    api "com.squareup.picasso:picasso:$picasso"
+}

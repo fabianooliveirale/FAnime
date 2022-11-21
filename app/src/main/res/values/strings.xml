@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Fanime</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_last_watched">last whatched</string>
+    <string name="home_news">news</string>
+    <string name="home_categories">categories</string>
+</resources>

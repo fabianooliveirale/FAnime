@@ -1,0 +1,55 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    namespace 'com.example.fanime'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.example.fanime"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", '"https://appanimeplus.tk/"'
+            buildConfigField "String", "BASE_URI", '"fanime://app"'
+            buildConfigField "String", "BASE_URL_IMAGE", '"https://cdn.appanimeplus.tk/img/"'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", '"https://appanimeplus.tk/"'
+            buildConfigField "String", "BASE_URI", '"fanime://app"'
+            buildConfigField "String", "BASE_URL_IMAGE", '"https://cdn.appanimeplus.tk/img/"'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+}
+
+
+
+dependencies {
+    implementation project(path: ':network')
+    implementation project(path: ':home')
+    implementation project(path: ':video')
+    implementation project(path: ':router')
+    implementation project(path: ':screen_resources')
+}

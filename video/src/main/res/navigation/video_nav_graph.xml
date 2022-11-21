@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/video_nav_graph"
+    app:startDestination="@id/videoFragment">
+
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.video.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video">
+        <deepLink app:uri="fanime://app/video?videoId={videoId}" />
+        <argument
+            android:name="videoId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue=""/>
+    </fragment>
+</navigation>
