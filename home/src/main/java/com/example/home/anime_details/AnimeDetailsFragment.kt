@@ -2,19 +2,15 @@ package com.example.home.anime_details
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.home.R
-import com.example.home.animes_category.AnimesCategoryAdapter
-import com.example.home.animes_category.AnimesCategoryFragmentArgs
 import com.example.home.databinding.FragmentAnimeDetailsBinding
-import com.example.home.databinding.FragmentNewVideosBinding
-import com.example.home.new_videos.NewVideosViewModel
 import com.example.network.NetworkResources
+import com.example.screen_resources.isInt
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AnimeDetailsFragment : Fragment() {
@@ -94,15 +90,26 @@ class AnimeDetailsFragment : Fragment() {
     }
 
     private fun initLiveDataAnimeEp() {
-        viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) {
+        viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is NetworkResources.Loading -> {
                     val teste = "loading"
                 }
                 is NetworkResources.Succeeded -> {
                     viewModel.animeEp = it.data
+                    it.data.forEach { anime ->
+                        val splitTitle = anime.title?.split(" ")
+                        val special = if (splitTitle?.contains("Especial") == true) "Especial - " else ""
+
+                        val epNumber = anime.title?.split(" ")?.last()?.replaceFirst("^0*".toRegex(), "")
+                        anime.epNumber = if(epNumber?.isInt() == true) epNumber.toInt() else 0
+
+                        val text = "${special}Episódio: $epNumber"
+                        anime.title = text
+                    }
+
                     binding.recyclerView.adapter =
-                        AnimeDetailsAdapter(it.data.reversed()) { videoId ->
+                        AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }.reversed()) { videoId ->
                             viewModel.getRouter().goToVideo(binding.root, videoId)
                         }
                 }

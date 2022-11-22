@@ -24,11 +24,6 @@ class AnimeDetailsAdapter(
         ) {
             binding.apply {
                 val splitTitle = dataSet.title?.split(" ")
-                val count = splitTitle?.count()?.minus(1)
-                val name = splitTitle?.mapIndexed { index, s ->
-                    if (index != count && index != ((count ?: 0) - 1)) s else ""
-                }?.joinToString(" ") ?: ""
-
                 val special = if (splitTitle?.contains("Especial") == true) "Especial - " else ""
 
                 val epNumber = dataSet.title?.split(" ")?.last()

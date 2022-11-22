@@ -54,6 +54,7 @@ class SearchAnimeFragment : Fragment() {
                     val teste = "loading"
                 }
                 is NetworkResources.Succeeded -> {
+                    if (binding.editText.text.isEmpty()) return@observe
                     viewModel.animesCategoryData = it.data
                     adapter?.replace(ArrayList(it.data))
                 }
@@ -68,7 +69,7 @@ class SearchAnimeFragment : Fragment() {
         binding.editText.onTextChanged(viewModel.textSearchChange)
         binding.editText.onTextChanged {
             binding.clearButton.isGone = it.isEmpty()
-            if(it == "") {
+            if (it == "") {
                 adapter?.clear()
             }
         }

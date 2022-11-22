@@ -13,7 +13,8 @@ class MainActivity : AppCompatActivity() {
 
     enum class FragmentId(val value: Int) {
         VIDEO_FRAGMENT_ID(com.example.video.R.id.videoFragment),
-        ANIME_DETAILS_ID(com.example.home.R.id.animeDetailsFragment);
+        ANIME_DETAILS_ID(com.example.home.R.id.animeDetailsFragment),
+        ANIME_CATEGORIES_ID(com.example.home.R.id.animesCategoryFragment);
 
         companion object {
             fun fromInt(value: Int) = values().firstOrNull { it.value == value }

@@ -12,3 +12,10 @@ fun String.capitalized(): String {
         else it.toString()
     }
 }
+
+fun String.isInt():Boolean = try {
+    toInt()
+    true
+} catch(e: NumberFormatException) {
+    false
+}
