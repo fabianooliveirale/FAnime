@@ -1,33 +1,40 @@
 package com.example.home.new_videos
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.home.databinding.AdapterNewVideosItemBinding
+import com.bumptech.glide.Glide
+import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.home.model.NewVideosResponse
-import com.squareup.picasso.Picasso
 
 class NewVideosAdapter(
     private val dataSet: List<NewVideosResponse>,
     private val imageBaseUrl: String,
-    private val itemClick: (String) -> Unit  = {}
+    private val itemClick: (String) -> Unit = {}
 ) :
     RecyclerView.Adapter<NewVideosAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: AdapterNewVideosItemBinding) :
+    class ViewHolder(private val binding: AdapterAnimeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(dataSet: NewVideosResponse, imageBaseUrl: String, itemClick: (String) -> Unit) {
             binding.apply {
-                titleTextView.text = dataSet.title
+                val splitTitle = dataSet.title?.split(" ")
+                val count = splitTitle?.count()?.minus(1)
+                val name = splitTitle?.mapIndexed { index, s -> if(index != count && index != ((count ?: 0) - 1)) s else ""}?.joinToString(" ") ?: ""
+
+                titleTextView.text = name
+
+                val epNumber = dataSet.title?.split(" ")?.last()
+                epTextView.text = "Episódio: $epNumber"
 
                 val imageUrl = "${imageBaseUrl}${dataSet.categoryImage}"
-                Log.d("imageUrl_teste", imageUrl)
 
-                Picasso.get()
+                Glide
+                    .with(this.root.context)
                     .load(imageUrl)
+                    .centerCrop()
                     .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView)
+                    .into(binding.frontImageView);
 
                 binding.mainView.setOnClickListener {
                     itemClick(dataSet.videoId ?: "")
@@ -37,7 +44,7 @@ class NewVideosAdapter(
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding = AdapterNewVideosItemBinding.inflate(
+        val itemBinding = AdapterAnimeItemBinding.inflate(
             LayoutInflater.from(viewGroup.context),
             viewGroup,
             false

@@ -21,6 +21,8 @@ class NewVideosViewModel(
     private val _newVideosMutableLiveData: MutableLiveData<NetworkResources<List<NewVideosResponse>>> = MutableLiveData()
     val newVideosLiveData: LiveData<NetworkResources<List<NewVideosResponse>>> = _newVideosMutableLiveData
 
+    var newVideosData: List<NewVideosResponse>? = null
+
     fun getNewVideos() {
         viewModelScope.launch {
             networkScope.launch(_newVideosMutableLiveData) {

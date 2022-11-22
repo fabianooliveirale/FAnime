@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="primary_color">#F15E5E</color>-->
-<!--    <color name="primary_color_variant">#F45555</color>-->
+    <color name="primary_color">#F15E5E</color>
+    <color name="primary_color_variant">#F45555</color>
+    <color name="secondary_color">#F79A87</color>
+    <color name="secondary_color_variant">#FB8B74</color>
+    <color name="light_color">#F2CEAB</color>
+    <color name="dark_color">#595757</color>
+    <color name="heavy_dark_color">#302F2F</color>
+    <color name="positive_color">#72B5A4</color>
+    <color name="negative_color">#951111</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+<!--    <color name="primary_color">#0979b0</color>-->
+<!--    <color name="primary_color_variant">#086A9A</color>-->
 <!--    <color name="secondary_color">#F79A87</color>-->
 <!--    <color name="secondary_color_variant">#FB8B74</color>-->
 <!--    <color name="light_color">#F2CEAB</color>-->
@@ -10,14 +21,4 @@
 <!--    <color name="negative_color">#951111</color>-->
 <!--    <color name="black">#FF000000</color>-->
 <!--    <color name="white">#FFFFFFFF</color>-->
-    <color name="primary_color">#0979b0</color>
-    <color name="primary_color_variant">#086A9A</color>
-    <color name="secondary_color">#F79A87</color>
-    <color name="secondary_color_variant">#FB8B74</color>
-    <color name="light_color">#F2CEAB</color>
-    <color name="dark_color">#595757</color>
-    <color name="positive_color">#72B5A4</color>
-    <color name="negative_color">#951111</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 </resources>

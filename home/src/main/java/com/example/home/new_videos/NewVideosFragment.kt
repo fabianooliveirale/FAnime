@@ -26,19 +26,22 @@ class NewVideosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initLiveData()
-        viewModel.getNewVideos()
+        if (viewModel.newVideosData == null)
+            viewModel.getNewVideos()
     }
 
     private fun initLiveData() {
         viewModel.newVideosLiveData.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is NetworkResources.Loading -> {
                     val teste = "loading"
                 }
                 is NetworkResources.Succeeded -> {
-                    binding.recyclerView.adapter = NewVideosAdapter(it.data, viewModel.getBaseImageUrl()) { videoId ->
-                        viewModel.getRouter().goToVideo(binding.root, videoId)
-                    }
+                    viewModel.newVideosData = it.data
+                    binding.recyclerView.adapter =
+                        NewVideosAdapter(it.data, viewModel.getBaseImageUrl()) { videoId ->
+                            viewModel.getRouter().goToVideo(binding.root, videoId)
+                        }
                 }
                 is NetworkResources.Failure -> {
                     val teste = "error"

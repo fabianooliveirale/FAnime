@@ -9,6 +9,8 @@ import com.example.home.HomeViewModel
 import com.example.home.R
 import com.example.home.databinding.FragmentCategoriesBinding
 import com.example.home.databinding.FragmentWatchedVideosBinding
+import com.example.home.new_videos.NewVideosAdapter
+import com.example.home.new_videos.NewVideosViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -16,14 +18,22 @@ class CategoriesFragment : Fragment() {
 
     private var _binding: FragmentCategoriesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by sharedViewModel<HomeViewModel>()
+
+    private val viewModel by sharedViewModel<CategoriesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.adapter = CategoriesAdapter(viewModel.categoriesList) { categoryName ->
+            viewModel.getRouter().goToAnimesCategory(binding.root, categoryName)
+        }
     }
 
     override fun onDestroy() {

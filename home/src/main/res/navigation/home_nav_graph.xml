@@ -12,4 +12,16 @@
         tools:layout="@layout/fragment_home">
         <deepLink app:uri="fanime://app/home" />
     </fragment>
+    <fragment
+        android:id="@+id/animesCategoryFragment"
+        android:name="com.example.home.animes_category.AnimesCategoryFragment"
+        android:label="fragment_animes_category"
+        tools:layout="@layout/fragment_animes_category" >
+        <argument
+            android:name="categoryName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='""' />
+        <deepLink app:uri="fanime://app/animesCategory?categoryName={categoryName}" />
+    </fragment>
 </navigation>

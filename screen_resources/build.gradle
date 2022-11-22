@@ -28,6 +28,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 ext {
@@ -43,6 +47,7 @@ ext {
     viewModel = '2.2.3'
     nav_version = "2.5.3"
     picasso = '2.8'
+    glide = "4.14.2"
 }
 
 dependencies {
@@ -69,4 +74,7 @@ dependencies {
     api "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     api "com.squareup.picasso:picasso:$picasso"
+
+    api "com.github.bumptech.glide:glide:$glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
 }
