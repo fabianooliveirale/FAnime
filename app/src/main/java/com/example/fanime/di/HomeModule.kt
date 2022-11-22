@@ -7,6 +7,7 @@ import com.example.home.api.HomeRepositoryImpl
 import com.example.home.api.HomeService
 import com.example.home.categories.CategoriesViewModel
 import com.example.home.new_videos.NewVideosViewModel
+import com.example.home.search.SearchAnimeViewModel
 import com.example.network.ApiFactory
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -35,6 +36,10 @@ object HomeModule {
 
         viewModel {
             AnimeDetailsViewModel(get(), get(), get(), imageBaseUrl)
+        }
+
+        viewModel {
+            SearchAnimeViewModel(get(), get(), get(), imageBaseUrl)
         }
     }
 }

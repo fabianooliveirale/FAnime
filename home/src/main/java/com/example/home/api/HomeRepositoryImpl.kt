@@ -1,9 +1,6 @@
 package com.example.home.api
 
-import com.example.home.model.AnimeDetailsResponse
-import com.example.home.model.AnimeEpResponse
-import com.example.home.model.AnimesCategoryResponse
-import com.example.home.model.NewVideosResponse
+import com.example.home.model.*
 import com.example.network.NetworkBuilder
 
 class HomeRepositoryImpl(
@@ -32,6 +29,12 @@ class HomeRepositoryImpl(
     override suspend fun getAnimeDetails(animeId: String): List<AnimeDetailsResponse> {
         return networkBuilder.doRequest {
             service.getAnimeDetails(animeId)
+        }
+    }
+
+    override suspend fun getSearchAnime(searchValue: String): List<SearchResponse> {
+        return networkBuilder.doRequest {
+            service.getSearchAnime(searchValue)
         }
     }
 }

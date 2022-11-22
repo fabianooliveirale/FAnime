@@ -43,5 +43,10 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/searchAnimeFragment"
+        android:name="com.example.home.search.SearchAnimeFragment"
+        android:label="fragment_search_anime"
+        tools:layout="@layout/fragment_search_anime" />
 
 </navigation>

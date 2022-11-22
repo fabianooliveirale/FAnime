@@ -9,4 +9,7 @@
     <item android:id="@+id/categoriesFragment"
         android:title="@string/home_categories"
         android:icon="@drawable/ic_baseline_menu_book" />
+    <item android:id="@+id/searchAnimeFragment"
+        android:title="@string/home_search"
+        android:icon="@drawable/ic_baseline_search" />
 </menu>
