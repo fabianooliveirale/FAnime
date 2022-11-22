@@ -36,7 +36,7 @@ class AnimesCategoryAdapter(
                     .load(imageUrl)
                     .centerCrop()
                     .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView);
+                    .into(binding.frontImageView)
 
                 mainView.setOnClickListener {
                     itemClick(dataSet.id ?: "")

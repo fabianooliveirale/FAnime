@@ -6,21 +6,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.home.model.NewVideosResponse
+import com.example.screen_resources.ViewAnimation
 
 class NewVideosAdapter(
     private val dataSet: List<NewVideosResponse>,
     private val imageBaseUrl: String,
+    private val viewAnimation: ViewAnimation,
     private val itemClick: (String) -> Unit = {}
 ) :
     RecyclerView.Adapter<NewVideosAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: AdapterAnimeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(dataSet: NewVideosResponse, imageBaseUrl: String, itemClick: (String) -> Unit) {
+        fun bind(
+            position: Int,
+            dataSet: NewVideosResponse,
+            viewAnimation: ViewAnimation,
+            imageBaseUrl: String,
+            itemClick: (String) -> Unit
+        ) {
             binding.apply {
                 val splitTitle = dataSet.title?.split(" ")
                 val count = splitTitle?.count()?.minus(1)
-                val name = splitTitle?.mapIndexed { index, s -> if(index != count && index != ((count ?: 0) - 1)) s else ""}?.joinToString(" ") ?: ""
+                val name = splitTitle?.mapIndexed { index, s ->
+                    if (index != count && index != ((count ?: 0) - 1)) s else ""
+                }?.joinToString(" ") ?: ""
+                val isPair = position % 2 == 0
+
 
                 titleTextView.text = name
 
@@ -34,7 +46,11 @@ class NewVideosAdapter(
                     .load(imageUrl)
                     .centerCrop()
                     .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView);
+                    .into(binding.frontImageView)
+
+
+                viewAnimation.fadeIn(binding.mainView, duration = 1300)
+
 
                 binding.mainView.setOnClickListener {
                     itemClick(dataSet.videoId ?: "")
@@ -54,7 +70,7 @@ class NewVideosAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val dataSet = dataSet[position]
-        viewHolder.bind(dataSet, imageBaseUrl, itemClick)
+        viewHolder.bind(position, dataSet, viewAnimation, imageBaseUrl, itemClick)
     }
 
     override fun getItemCount() = dataSet.size

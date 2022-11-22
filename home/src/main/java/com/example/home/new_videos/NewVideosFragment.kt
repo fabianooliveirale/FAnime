@@ -39,7 +39,7 @@ class NewVideosFragment : Fragment() {
                 is NetworkResources.Succeeded -> {
                     viewModel.newVideosData = it.data
                     binding.recyclerView.adapter =
-                        NewVideosAdapter(it.data, viewModel.getBaseImageUrl()) { videoId ->
+                        NewVideosAdapter(it.data, viewModel.getBaseImageUrl(), viewModel.getViewAnimation()) { videoId ->
                             viewModel.getRouter().goToVideo(binding.root, videoId)
                         }
                 }

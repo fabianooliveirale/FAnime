@@ -9,12 +9,14 @@ import com.example.home.model.NewVideosResponse
 import com.example.network.NetworkScope
 import com.example.network.NetworkResources
 import com.example.router.Router
+import com.example.screen_resources.ViewAnimation
 import kotlinx.coroutines.launch
 
 class NewVideosViewModel(
     private val repository: HomeRepository,
     private val networkScope: NetworkScope,
     private val router: Router,
+    private val viewAnimation: ViewAnimation,
     private val baseImageUrl: String
 ): ViewModel() {
 
@@ -33,4 +35,5 @@ class NewVideosViewModel(
 
     fun getRouter() = router
     fun getBaseImageUrl() = baseImageUrl
+    fun getViewAnimation() = viewAnimation
 }

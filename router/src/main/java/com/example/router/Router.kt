@@ -20,9 +20,9 @@ class Router(private val baseUri: String) {
         view.findNavController().navigate(request)
     }
 
-    fun goToHome(view: View) {
+    fun goToAnimeDetails(view: View, animeId: String? = null) {
         val request = NavDeepLinkRequest.Builder
-            .fromUri("${baseUri}/home".toUri())
+            .fromUri("${baseUri}/animeDetails?animeId=${animeId}".toUri())
             .build()
         view.findNavController().navigate(request)
     }

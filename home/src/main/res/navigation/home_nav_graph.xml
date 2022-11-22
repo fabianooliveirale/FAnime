@@ -3,25 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/watchedVideosFragment">
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home">
-        <deepLink app:uri="fanime://app/home" />
-    </fragment>
     <fragment
         android:id="@+id/animesCategoryFragment"
         android:name="com.example.home.animes_category.AnimesCategoryFragment"
         android:label="fragment_animes_category"
-        tools:layout="@layout/fragment_animes_category" >
+        tools:layout="@layout/fragment_animes_category">
         <argument
             android:name="categoryName"
+            android:defaultValue='""'
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue='""' />
+            app:nullable="true" />
         <deepLink app:uri="fanime://app/animesCategory?categoryName={categoryName}" />
     </fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.home.categories.CategoriesFragment"
+        android:label="@string/home_categories" />
+    <fragment
+        android:id="@+id/watchedVideosFragment"
+        android:name="com.example.home.watched_videos.WatchedVideosFragment"
+        android:label="@string/home_last_watched"
+        tools:layout="@layout/fragment_watched_videos" />
+    <fragment
+        android:id="@+id/newVideosFragment"
+        android:name="com.example.home.new_videos.NewVideosFragment"
+        android:label="@string/home_news"
+        tools:layout="@layout/fragment_new_videos" />
+    <fragment
+        android:id="@+id/animeDetailsFragment"
+        android:name="com.example.home.anime_details.AnimeDetailsFragment"
+        android:label="fragment_anime_details"
+        tools:layout="@layout/fragment_anime_details">
+        <deepLink app:uri="fanime://app/animeDetails?animeId={animeId}" />
+        <argument
+            android:name="animeId"
+            android:defaultValue='""'
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
 </navigation>

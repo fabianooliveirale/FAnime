@@ -16,7 +16,7 @@ class AnimesCategoryFragment : Fragment() {
 
     private var _binding: FragmentAnimesCategoryBinding? = null
     private val binding get() = _binding!!
-    val args: AnimesCategoryFragmentArgs by navArgs()
+    private val args: AnimesCategoryFragmentArgs by navArgs()
     private val viewModel by sharedViewModel<AnimesCategoryViewModel>()
 
     override fun onCreateView(
@@ -64,8 +64,8 @@ class AnimesCategoryFragment : Fragment() {
                 is NetworkResources.Succeeded -> {
                     viewModel.animesCategoryData = it.data
                     binding.recyclerView.adapter =
-                        AnimesCategoryAdapter(it.data, viewModel.getBaseImageUrl()) { categoryId ->
-                            //viewModel.getRouter().goToVideo(binding.root, videoId)
+                        AnimesCategoryAdapter(it.data, viewModel.getBaseImageUrl()) { animeId ->
+                            viewModel.getRouter().goToAnimeDetails(binding.root, animeId)
                         }
                 }
                 is NetworkResources.Failure -> {
