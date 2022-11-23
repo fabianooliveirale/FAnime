@@ -110,7 +110,7 @@ class AnimeDetailsFragment : Fragment() {
 
                     binding.recyclerView.adapter =
                         AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }.reversed()) { videoId ->
-                            viewModel.getRouter().goToVideo(binding.root, videoId)
+                            viewModel.getRouter().goToVideo(this, binding.root, videoId)
                         }
                 }
                 is NetworkResources.Failure -> {

@@ -19,3 +19,17 @@ fun <T> debounce(
         }
     }
 }
+
+fun startLoop(
+    waitMs: Long = 300L,
+    coroutineScope: CoroutineScope,
+    destinationFunction: () -> Unit
+) {
+    coroutineScope.launch {
+        while (true) {
+            destinationFunction()
+            delay(waitMs)
+        }
+    }
+}
+

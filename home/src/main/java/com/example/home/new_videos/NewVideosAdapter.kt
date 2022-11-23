@@ -11,7 +11,6 @@ import com.example.screen_resources.ViewAnimation
 class NewVideosAdapter(
     private val dataSet: List<NewVideosResponse>,
     private val imageBaseUrl: String,
-    private val viewAnimation: ViewAnimation,
     private val itemClick: (String) -> Unit = {}
 ) :
     RecyclerView.Adapter<NewVideosAdapter.ViewHolder>() {
@@ -21,7 +20,6 @@ class NewVideosAdapter(
         fun bind(
             position: Int,
             dataSet: NewVideosResponse,
-            viewAnimation: ViewAnimation,
             imageBaseUrl: String,
             itemClick: (String) -> Unit
         ) {
@@ -48,10 +46,6 @@ class NewVideosAdapter(
                     .placeholder(com.example.screen_resources.R.drawable.progress_loading)
                     .into(binding.frontImageView)
 
-
-                viewAnimation.fadeIn(binding.mainView, duration = 1300)
-
-
                 binding.mainView.setOnClickListener {
                     itemClick(dataSet.videoId ?: "")
                 }
@@ -70,7 +64,7 @@ class NewVideosAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val dataSet = dataSet[position]
-        viewHolder.bind(position, dataSet, viewAnimation, imageBaseUrl, itemClick)
+        viewHolder.bind(position, dataSet, imageBaseUrl, itemClick)
     }
 
     override fun getItemCount() = dataSet.size

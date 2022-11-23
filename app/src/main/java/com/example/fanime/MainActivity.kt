@@ -10,9 +10,9 @@ import com.example.fanime.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var currentItem = 0
 
     enum class FragmentId(val value: Int) {
-        VIDEO_FRAGMENT_ID(com.example.video.R.id.videoFragment),
         ANIME_DETAILS_ID(com.example.home.R.id.animeDetailsFragment),
         ANIME_CATEGORIES_ID(com.example.home.R.id.animesCategoryFragment);
 
@@ -27,6 +27,16 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         initBottomNavigation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.bottomNavigationView.selectedItemId = currentItem
+    }
+
+    override fun onStop() {
+        super.onStop()
+        currentItem = binding.bottomNavigationView.selectedItemId
     }
 
     private fun initBottomNavigation() {

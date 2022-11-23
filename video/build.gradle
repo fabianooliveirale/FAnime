@@ -33,18 +33,30 @@ android {
     viewBinding {
         enabled = true
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 ext {
     exoplayer = '2.18.1'
+    okhttp3 = '4.10.0'
+
 }
 
 dependencies {
     implementation project(path: ':network')
     implementation project(path: ':router')
     implementation project(path: ':screen_resources')
-    implementation "com.google.android.exoplayer:exoplayer:$exoplayer"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
-    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
+//    implementation "com.google.android.exoplayer:exoplayer:$exoplayer"
+//    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+//    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer"
+//    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
+//    implementation "com.google.android.exoplayer:extension-okhttp:$exoplayer"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.10.0"
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 }

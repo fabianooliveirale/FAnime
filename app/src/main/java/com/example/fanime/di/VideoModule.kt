@@ -19,7 +19,7 @@ object VideoModule {
         }
 
         viewModel {
-            VideoViewModel(get(), get())
+            VideoViewModel(get(), get(), get())
         }
     }
 }

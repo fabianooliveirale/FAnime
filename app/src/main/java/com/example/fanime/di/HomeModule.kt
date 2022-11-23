@@ -31,7 +31,7 @@ object HomeModule {
         }
 
         viewModel {
-            NewVideosViewModel(get(), get(), get(), get(), imageBaseUrl)
+            NewVideosViewModel(get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {
