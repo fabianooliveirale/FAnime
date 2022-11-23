@@ -11,7 +11,7 @@ import com.example.screen_resources.ViewAnimation
 class NewVideosAdapter(
     private val dataSet: List<NewVideosResponse>,
     private val imageBaseUrl: String,
-    private val itemClick: (String) -> Unit = {}
+    private val itemClick: (String, String) -> Unit = {_, _ -> }
 ) :
     RecyclerView.Adapter<NewVideosAdapter.ViewHolder>() {
 
@@ -21,7 +21,7 @@ class NewVideosAdapter(
             position: Int,
             dataSet: NewVideosResponse,
             imageBaseUrl: String,
-            itemClick: (String) -> Unit
+            itemClick: (String, String) -> Unit
         ) {
             binding.apply {
                 val splitTitle = dataSet.title?.split(" ")
@@ -47,7 +47,7 @@ class NewVideosAdapter(
                     .into(binding.frontImageView)
 
                 binding.mainView.setOnClickListener {
-                    itemClick(dataSet.videoId ?: "")
+                    itemClick(dataSet.videoId ?: "", dataSet.categoryId ?: "")
                 }
             }
         }

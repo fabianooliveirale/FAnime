@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.home.databinding.FragmentAnimeDetailsBinding
+import com.example.home.model.AnimeDetailsResponse
+import com.example.home.model.AnimeEpResponse
 import com.example.network.NetworkResources
 import com.example.screen_resources.isInt
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -19,6 +21,7 @@ class AnimeDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by sharedViewModel<AnimeDetailsViewModel>()
     private val args: AnimeDetailsFragmentArgs by navArgs()
+    private var anime: AnimeDetailsResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,16 +67,15 @@ class AnimeDetailsFragment : Fragment() {
                     val teste = "loading"
                 }
                 is NetworkResources.Succeeded -> {
-                    val data = it.data
-                    val animeDetail = data.first()
+                    anime = it.data.first()
                     binding.apply {
-                        yearTextView.text = animeDetail.year
-                        genreTextView.text = animeDetail.categoryGenres
-                        descriptionTextView.text = animeDetail.categoryDescription
-                        titleTextView.text = animeDetail.name
-                        toolbar.title = animeDetail.name
+                        yearTextView.text = anime?.year
+                        genreTextView.text = anime?.categoryGenres
+                        descriptionTextView.text = anime?.categoryDescription
+                        titleTextView.text = anime?.name
+                        toolbar.title = anime?.name
 
-                        val imageUrl = "${viewModel.getBaseImageUrl()}${animeDetail.categoryImage}"
+                        val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.categoryImage}"
                         Glide
                             .with(this.root.context)
                             .load(imageUrl)
@@ -110,7 +112,7 @@ class AnimeDetailsFragment : Fragment() {
 
                     binding.recyclerView.adapter =
                         AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }.reversed()) { videoId ->
-                            viewModel.getRouter().goToVideo(this, binding.root, videoId)
+                            viewModel.getRouter().goToVideo(this, videoId, anime?.id ?: "")
                         }
                 }
                 is NetworkResources.Failure -> {

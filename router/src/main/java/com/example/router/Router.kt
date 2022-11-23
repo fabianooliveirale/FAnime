@@ -9,10 +9,10 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.findNavController
 
 class Router(private val baseUri: String) {
-    fun goToVideo(intent: Fragment, view: View, videoId: String? = null) {
-        val i = Intent(ACTION_VIEW,"${baseUri}/video?videoId=${videoId}".toUri())
+    fun goToVideo(intent: Fragment, videoId: String? = null, animeId: String) {
+        val uriString = "${baseUri}/video?videoId=${videoId}&animeId=${animeId}"
+        val i = Intent(ACTION_VIEW,uriString.toUri())
         intent.startActivity(i)
-       // view.findNavController().navigate(request)
     }
 
     fun goToAnimesCategory(view: View, categoryName: String? = null) {

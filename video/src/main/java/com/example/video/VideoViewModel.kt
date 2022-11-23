@@ -2,6 +2,7 @@ package com.example.video
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.network.NetworkResources
@@ -21,15 +22,24 @@ class VideoViewModel(
     private val loop: Loop
 ) : ViewModel(), CoroutineScope {
 
-    var uri: Uri? = null
     var currentPosition = 0
 
     override val coroutineContext = Dispatchers.IO + Job()
 
-    private val _videoModelMutableLiveData: SingleLiveEvent<NetworkResources<List<VideoModelResponse>>> =
-        SingleLiveEvent()
+    private val _videoModelMutableLiveData: MutableLiveData<NetworkResources<List<VideoModelResponse>>> =
+        MutableLiveData()
     val videoModelLiveData: LiveData<NetworkResources<List<VideoModelResponse>>> =
         _videoModelMutableLiveData
+
+    private val _nextMutableLiveData: MutableLiveData<NetworkResources<List<VideoModelResponse>>> =
+        MutableLiveData()
+    val nextLiveData: LiveData<NetworkResources<List<VideoModelResponse>>> =
+        _nextMutableLiveData
+
+    private val _previousMutableLiveData: MutableLiveData<NetworkResources<List<VideoModelResponse>>> =
+        MutableLiveData()
+    val previousLiveData: LiveData<NetworkResources<List<VideoModelResponse>>> =
+        _previousMutableLiveData
 
     fun getVideo(videoId: String) {
         viewModelScope.launch {
@@ -39,5 +49,20 @@ class VideoViewModel(
         }
     }
 
+    fun nextEp(episodeId: String, catId: String) {
+        viewModelScope.launch {
+            networkScope.launch(_nextMutableLiveData) {
+                repository.nextEp(episodeId, catId)
+            }
+        }
+    }
+
+    fun previousEp(episodeId: String, catId: String) {
+        viewModelScope.launch {
+            networkScope.launch(_previousMutableLiveData) {
+                repository.previouEp(episodeId, catId)
+            }
+        }
+    }
     fun getLoop() = loop
 }

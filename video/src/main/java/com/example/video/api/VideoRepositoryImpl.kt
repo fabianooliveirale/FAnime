@@ -13,4 +13,16 @@ class VideoRepositoryImpl(
             service.getLastReleases(episodesId)
         }
     }
+
+    override suspend fun nextEp(episodesId: String, catId: String): List<VideoModelResponse> {
+        return networkBuilder.doRequest {
+            service.nextEp(episodesId, catId)
+        }
+    }
+
+    override suspend fun previouEp(episodesId: String, catId: String): List<VideoModelResponse> {
+        return networkBuilder.doRequest {
+            service.previousEp(episodesId, catId)
+        }
+    }
 }
