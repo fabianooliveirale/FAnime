@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.home.databinding.AdapterAnimeItemBinding
-import com.example.home.model.NewVideosResponse
-import com.example.screen_resources.ViewAnimation
+import com.example.model.NewVideosResponse
 
 class NewVideosAdapter(
     private val dataSet: List<NewVideosResponse>,
     private val imageBaseUrl: String,
-    private val itemClick: (String, String) -> Unit = {_, _ -> }
+    private val itemClick: (NewVideosResponse) -> Unit = { }
 ) :
     RecyclerView.Adapter<NewVideosAdapter.ViewHolder>() {
 
@@ -21,7 +20,7 @@ class NewVideosAdapter(
             position: Int,
             dataSet: NewVideosResponse,
             imageBaseUrl: String,
-            itemClick: (String, String) -> Unit
+            itemClick: (NewVideosResponse) -> Unit
         ) {
             binding.apply {
                 val splitTitle = dataSet.title?.split(" ")
@@ -47,7 +46,7 @@ class NewVideosAdapter(
                     .into(binding.frontImageView)
 
                 binding.mainView.setOnClickListener {
-                    itemClick(dataSet.videoId ?: "", dataSet.categoryId ?: "")
+                    itemClick(dataSet)
                 }
             }
         }

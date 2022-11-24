@@ -7,9 +7,7 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.home.databinding.AdapterAnimeItemBinding
-import com.example.home.model.NewVideosResponse
-import com.example.home.model.SearchResponse
-import com.example.screen_resources.ViewAnimation
+import com.example.model.SearchResponse
 
 class SearchAnimeAdapter(
     private val imageBaseUrl: String,

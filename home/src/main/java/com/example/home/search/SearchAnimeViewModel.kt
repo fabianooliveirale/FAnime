@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.home.api.HomeRepository
-import com.example.home.model.AnimesCategoryResponse
-import com.example.home.model.SearchResponse
+import com.example.model.SearchResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.router.Router
-import com.example.screen_resources.ViewAnimation
 import com.example.screen_resources.debounce
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,12 +32,12 @@ class SearchAnimeViewModel(
         getAnimesCategory(searchString ?: "")
     }
 
-    private val _animesSearchMutableLiveData: MutableLiveData<NetworkResources<List<SearchResponse>>> =
+    private val _animesSearchMutableLiveData: MutableLiveData<NetworkResources<List<com.example.model.SearchResponse>>> =
         MutableLiveData()
-    val animesCategoryLiveData: LiveData<NetworkResources<List<SearchResponse>>> =
+    val animesCategoryLiveData: LiveData<NetworkResources<List<com.example.model.SearchResponse>>> =
         _animesSearchMutableLiveData
 
-    var animesCategoryData: List<SearchResponse>? = null
+    var animesCategoryData: List<com.example.model.SearchResponse>? = null
 
     private fun getAnimesCategory(searchValue: String) {
         viewModelScope.launch {

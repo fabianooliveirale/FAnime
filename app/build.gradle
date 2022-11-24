@@ -52,4 +52,5 @@ dependencies {
     implementation project(path: ':video')
     implementation project(path: ':router')
     implementation project(path: ':screen_resources')
+    implementation project(path: ':dao')
 }

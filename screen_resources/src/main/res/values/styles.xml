@@ -4,4 +4,9 @@
         <item name="colorPrimary">@color/primary_color</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
+
+    <style name="roundedImageView" parent="">
+        <item name="cornerSizeTopLeft">5dp</item>
+        <item name="cornerSizeTopRight">5dp</item>
+    </style>
 </resources>

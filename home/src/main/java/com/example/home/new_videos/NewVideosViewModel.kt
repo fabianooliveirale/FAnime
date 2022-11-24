@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.home.api.HomeRepository
-import com.example.home.model.NewVideosResponse
-import com.example.network.NetworkScope
+import com.example.model.NewVideosResponse
 import com.example.network.NetworkResources
+import com.example.network.NetworkScope
 import com.example.router.Router
-import com.example.screen_resources.ViewAnimation
 import kotlinx.coroutines.launch
 
 class NewVideosViewModel(

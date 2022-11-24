@@ -1,6 +1,6 @@
 package com.example.home.api
 
-import com.example.home.model.*
+import com.example.model.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers

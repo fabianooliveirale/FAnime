@@ -10,9 +10,6 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
     fun get() = module {
-        single {
-            Gson()
-        }
 
         single {
             HttpLoggingInterceptor()

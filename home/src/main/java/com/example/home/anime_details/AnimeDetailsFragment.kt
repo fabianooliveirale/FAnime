@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.home.databinding.FragmentAnimeDetailsBinding
-import com.example.home.model.AnimeDetailsResponse
-import com.example.home.model.AnimeEpResponse
+import com.example.model.AnimeDetailsResponse
 import com.example.network.NetworkResources
 import com.example.screen_resources.isInt
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -63,9 +62,7 @@ class AnimeDetailsFragment : Fragment() {
     private fun initLiveDataAnimeDetails() {
         viewModel.animeDetailsLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is NetworkResources.Loading -> {
-                    val teste = "loading"
-                }
+                is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
                     anime = it.data.first()
                     binding.apply {
@@ -84,9 +81,7 @@ class AnimeDetailsFragment : Fragment() {
                             .into(imageView)
                     }
                 }
-                is NetworkResources.Failure -> {
-                    val teste = "error"
-                }
+                is NetworkResources.Failure -> {}
             }
         }
     }
@@ -94,30 +89,35 @@ class AnimeDetailsFragment : Fragment() {
     private fun initLiveDataAnimeEp() {
         viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
-                is NetworkResources.Loading -> {
-                    val teste = "loading"
-                }
+                is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
                     viewModel.animeEp = it.data
                     it.data.forEach { anime ->
                         val splitTitle = anime.title?.split(" ")
-                        val special = if (splitTitle?.contains("Especial") == true) "Especial - " else ""
+                        val special =
+                            if (splitTitle?.contains("Especial") == true) "Especial - " else ""
 
-                        val epNumber = anime.title?.split(" ")?.last()?.replaceFirst("^0*".toRegex(), "")
-                        anime.epNumber = if(epNumber?.isInt() == true) epNumber.toInt() else 0
+                        val epNumber =
+                            anime.title?.split(" ")?.last()?.replaceFirst("^0*".toRegex(), "")
+                        anime.epNumber = if (epNumber?.isInt() == true) epNumber.toInt() else 0
 
-                        val text = "${special}Episódio: $epNumber"
-                        anime.title = text
+                        anime.epNumberName = "${special}Episódio: $epNumber"
                     }
 
                     binding.recyclerView.adapter =
-                        AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }.reversed()) { videoId ->
-                            viewModel.getRouter().goToVideo(this, videoId, anime?.id ?: "")
+                        AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }
+                            .reversed()) { item ->
+
+                            viewModel.getRouter().goToVideo(
+                                this,
+                                item.videoId ?: "",
+                                item.categoryId ?: "",
+                                item.title ?: "",
+                                anime?.categoryImage ?: ""
+                            )
                         }
                 }
-                is NetworkResources.Failure -> {
-                    val teste = "error"
-                }
+                is NetworkResources.Failure -> {}
             }
         }
     }

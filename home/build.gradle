@@ -55,4 +55,6 @@ dependencies {
     implementation project(path: ':network')
     implementation project(path: ':router')
     implementation project(path: ':screen_resources')
+    implementation project(path: ':model')
+    implementation project(path: ':dao')
 }

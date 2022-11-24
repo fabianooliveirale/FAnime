@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.home.api.HomeRepository
-import com.example.home.model.AnimeDetailsResponse
-import com.example.home.model.AnimeEpResponse
-import com.example.home.model.AnimesCategoryResponse
+import com.example.model.AnimeDetailsResponse
+import com.example.model.AnimeEpResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.router.Router
@@ -20,17 +19,17 @@ class AnimeDetailsViewModel(
     private val baseImageUrl: String
 ) : ViewModel() {
 
-    private val _animeDetailsMutableLiveData: MutableLiveData<NetworkResources<List<AnimeDetailsResponse>>> =
+    private val _animeDetailsMutableLiveData: MutableLiveData<NetworkResources<List<com.example.model.AnimeDetailsResponse>>> =
         MutableLiveData()
-    val animeDetailsLiveData: LiveData<NetworkResources<List<AnimeDetailsResponse>>> =
+    val animeDetailsLiveData: LiveData<NetworkResources<List<com.example.model.AnimeDetailsResponse>>> =
         _animeDetailsMutableLiveData
 
-    private val _animeEpResponsesMutableLiveData: MutableLiveData<NetworkResources<List<AnimeEpResponse>>> =
+    private val _animeEpResponsesMutableLiveData: MutableLiveData<NetworkResources<List<com.example.model.AnimeEpResponse>>> =
         MutableLiveData()
-    val animeEpResponseLiveData: LiveData<NetworkResources<List<AnimeEpResponse>>> =
+    val animeEpResponseLiveData: LiveData<NetworkResources<List<com.example.model.AnimeEpResponse>>> =
         _animeEpResponsesMutableLiveData
 
-    var animeEp: List<AnimeEpResponse>? = null
+    var animeEp: List<com.example.model.AnimeEpResponse>? = null
 
     fun getAnimeDetails(animeId: String) {
         viewModelScope.launch {

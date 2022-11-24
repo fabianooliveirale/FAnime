@@ -10,16 +10,30 @@
         android:name="com.example.video.PlayerActivity"
         android:label="activity_player"
         tools:layout="@layout/activity_player">
-        <deepLink app:uri="fanime://app/video?videoId={videoId}&amp;animeId={animeId}" />
+        <deepLink app:uri="fanime://app/video?videoId={videoId}&amp;animeId={animeId}&amp;imageUrl={imageUrl}&amp;title={title}&amp;position={position}" />
         <argument
             android:name="videoId"
+            android:defaultValue='""'
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue='""' />
+            app:nullable="true" />
         <argument
             android:name="animeId"
+            android:defaultValue='""'
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue='""' />
+            app:nullable="true" />
+        <argument
+            android:name="imageUrl"
+            android:defaultValue='""'
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            android:defaultValue='""'
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="position"
+            android:defaultValue="0"
+            app:argType="integer" />
     </activity>
 </navigation>

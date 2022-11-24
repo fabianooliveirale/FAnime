@@ -33,14 +33,21 @@ class NewVideosFragment : Fragment() {
     private fun initLiveData() {
         viewModel.newVideosLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is NetworkResources.Loading -> {
-                    val teste = "loading"
-                }
+                is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
                     viewModel.newVideosData = it.data
                     binding.recyclerView.adapter =
-                        NewVideosAdapter(it.data, viewModel.getBaseImageUrl()) { videoId, categoryId ->
-                            viewModel.getRouter().goToVideo(this, videoId, categoryId)
+                        NewVideosAdapter(
+                            it.data,
+                            viewModel.getBaseImageUrl()
+                        ) { item ->
+                            viewModel.getRouter().goToVideo(
+                                this,
+                                item.videoId ?: "",
+                                item.categoryId ?: "",
+                                item.title ?: "",
+                                item.categoryImage ?: ""
+                            )
                         }
                 }
                 is NetworkResources.Failure -> {

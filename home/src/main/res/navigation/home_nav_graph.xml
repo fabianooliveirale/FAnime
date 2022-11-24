@@ -23,9 +23,9 @@
         android:label="@string/home_categories" />
     <fragment
         android:id="@+id/watchedVideosFragment"
-        android:name="com.example.home.watched_videos.WatchedVideosFragment"
+        android:name="com.example.home.watching_videos.WatchingVideosFragment"
         android:label="@string/home_last_watched"
-        tools:layout="@layout/fragment_watched_videos" />
+        tools:layout="@layout/fragment_watching_videos" />
     <fragment
         android:id="@+id/newVideosFragment"
         android:name="com.example.home.new_videos.NewVideosFragment"

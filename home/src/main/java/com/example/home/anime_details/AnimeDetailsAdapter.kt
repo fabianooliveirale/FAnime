@@ -2,17 +2,13 @@ package com.example.home.anime_details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.home.databinding.AdapterAnimeEpItemBinding
-import com.example.home.databinding.AdapterAnimeItemBinding
-import com.example.home.model.AnimeEpResponse
-import com.example.home.model.AnimesCategoryResponse
+import com.example.model.*
 
 class AnimeDetailsAdapter(
     private val dataSet: List<AnimeEpResponse>,
-    private val itemClick: (String) -> Unit = {}
+    private val itemClick: (AnimeEpResponse) -> Unit = {}
 ) :
     RecyclerView.Adapter<AnimeDetailsAdapter.ViewHolder>() {
 
@@ -20,7 +16,7 @@ class AnimeDetailsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             dataSet: AnimeEpResponse,
-            itemClick: (String) -> Unit
+            itemClick: (AnimeEpResponse) -> Unit
         ) {
             binding.apply {
                 val splitTitle = dataSet.title?.split(" ")
@@ -30,7 +26,7 @@ class AnimeDetailsAdapter(
                 titleTextView.text = "${special}Episódio: $epNumber"
 
                 mainView.setOnClickListener {
-                    itemClick(dataSet.videoId ?: "")
+                    itemClick(dataSet)
                 }
             }
         }

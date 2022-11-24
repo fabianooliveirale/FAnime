@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dao.SharedPref
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.screen_resources.Loop
@@ -19,10 +20,9 @@ import kotlinx.coroutines.launch
 class VideoViewModel(
     private val repository: VideoRepository,
     private val networkScope: NetworkScope,
-    private val loop: Loop
+    private val loop: Loop,
+    private val sharedPref: SharedPref,
 ) : ViewModel(), CoroutineScope {
-
-    var currentPosition = 0
 
     override val coroutineContext = Dispatchers.IO + Job()
 
@@ -65,4 +65,5 @@ class VideoViewModel(
         }
     }
     fun getLoop() = loop
+    fun getSharedPref() = sharedPref
 }

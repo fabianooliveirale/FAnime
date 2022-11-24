@@ -20,7 +20,7 @@ class FAnimesApplication : Application() {
             androidContext(this@FAnimesApplication)
 
             modules(
-                GeneralModule.get(BuildConfig.BASE_URI),
+                GeneralModule.get(BuildConfig.BASE_URI, this@FAnimesApplication),
                 NetworkModule.get(),
                 VideoModule.get(BuildConfig.BASE_URL),
                 HomeModule.get(BuildConfig.BASE_URL, BuildConfig.BASE_URL_IMAGE)
