@@ -10,10 +10,9 @@ import androidx.navigation.navArgs
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
 import com.example.video.databinding.ActivityPlayerBinding
-import com.example.video.model.VideoModelResponse
+import com.example.model.VideoModelResponse
 import org.koin.android.ext.android.inject
 import java.util.*
-
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -58,25 +57,26 @@ class PlayerActivity : AppCompatActivity() {
     private fun initNextPrevious() {
         binding.previousImageView.setOnClickListener {
             if (requesting) return@setOnClickListener
-            stopVideo()
+            stopDontSave()
             currentPosition = 0
             setVideoTitle(previousData)
             videoId = previousData?.videoId
             title = previousData?.title
             startNewVideo(previousData?.locationSd ?: previousData?.location ?: "")
-            refreshNextPreviou()
             saveWatchingVideo()
+            refreshNextPreviou()
+
         }
         binding.nextImageView.setOnClickListener {
             if (requesting) return@setOnClickListener
-            stopVideo()
+            stopDontSave()
             currentPosition = 0
             setVideoTitle(nextData)
             videoId = nextData?.videoId
-            title = previousData?.title
+            title = nextData?.title
             startNewVideo(nextData?.locationSd ?: nextData?.location ?: "")
-            refreshNextPreviou()
             saveWatchingVideo()
+            refreshNextPreviou()
         }
     }
 
@@ -128,6 +128,12 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun stopVideo() {
         saveWatchingVideo()
+        binding.videoView.pause()
+        binding.loading.isGone = false
+        viewModel.getLoop().stop()
+    }
+
+    private fun stopDontSave() {
         binding.videoView.pause()
         binding.loading.isGone = false
         viewModel.getLoop().stop()

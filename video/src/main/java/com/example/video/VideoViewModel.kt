@@ -1,6 +1,5 @@
 package com.example.video
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +8,8 @@ import com.example.dao.SharedPref
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.screen_resources.Loop
-import com.example.screen_resources.SingleLiveEvent
 import com.example.video.api.VideoRepository
-import com.example.video.model.VideoModelResponse
+import com.example.model.VideoModelResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
