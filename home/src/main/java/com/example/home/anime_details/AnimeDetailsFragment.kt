@@ -22,7 +22,9 @@ class AnimeDetailsFragment : Fragment() {
     private val args: AnimeDetailsFragmentArgs by navArgs()
     private var anime: AnimeModel? = null
     private var episodeId: String? = null
-
+    private var adapter = AnimeDetailsAdapter { item ->
+        navigateToVideo(item.animeId ?: "", item.id ?: "")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,21 +41,16 @@ class AnimeDetailsFragment : Fragment() {
         initToolbar()
         initLiveDataAnimeDetails()
         initLiveDataAnimeEp()
+        binding.recyclerView.adapter = adapter
     }
 
     private fun getAnimeFromRepository() {
         args.animeId.let { animeId ->
             anime = viewModel.getDao().getAnimeById(animeId)
-            if (episodeId != null && anime != null) {
-                navigateToVideo(animeId, episodeId ?: "")
-                return
+            if (anime?.episodes?.isNotEmpty() == true) {
+                adapter.replace(anime?.episodes ?: arrayListOf())
+                updateLayout()
             }
-
-            if (episodeId != null) {
-                viewModel.getAll(animeId)
-                return
-            }
-
             viewModel.getAnimeDetails(animeId)
             viewModel.getAnimeEp(animeId)
         }
@@ -72,41 +69,26 @@ class AnimeDetailsFragment : Fragment() {
                     Log.d("getAllRequest", "getAllRequest - FIRST - LOADING")
                 }
                 is NetworkResources.Succeeded -> {
-                    binding.apply {
-                        val response = it.data.first()
-                        anime = viewModel.getDao().getAnimeById(response.id ?: "")
-                        if (anime == null) {
-                            anime = AnimeModel().fromAnimeDetailsResponse(response)
-                        } else {
-                            anime?.fromAnimeDetailsResponse(response)
-                        }
+                    val response = it.data.first()
+                    anime = viewModel.getDao().getAnimeById(response.id ?: "")
+                    if (anime == null) {
+                        anime = AnimeModel().fromAnimeDetailsResponse(response)
+                    } else {
+                        anime?.fromAnimeDetailsResponse(response)
+                    }
 
-                        anime?.let { animeModel ->
-                            viewModel.getDao().saveAnime(animeModel)
-                        }
-
-                        Log.d("getAllRequest", "getAllRequest - FIRST - SUCCESS")
-                        yearTextView.text = anime?.year
-                        genreTextView.text = anime?.categoryGenres
-                        descriptionTextView.text = anime?.categoryDescription
-                        titleTextView.text = anime?.name
-                        toolbar.title = anime?.name
-
-                        val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.coverImage}"
-                        Glide
-                            .with(this.root.context)
-                            .load(imageUrl)
-                            .centerCrop()
-                            .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                            .into(imageView)
+                    anime?.let { animeModel ->
+                        viewModel.getDao().saveAnime(animeModel)
+                        updateLayout()
                     }
                 }
                 is NetworkResources.Failure -> {
-                    Log.d("getAllRequest", "getAllRequest - FIRST - FAILURE")
+
                 }
             }
         }
     }
+
 
     private fun initLiveDataAnimeEp() {
         viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) { it ->
@@ -134,14 +116,7 @@ class AnimeDetailsFragment : Fragment() {
 
                     episodes?.let {
                         viewModel.getDao().saveAllEpisode(it)
-                        binding.recyclerView.adapter =
-                            AnimeDetailsAdapter(it) { item ->
-                                navigateToVideo(item.animeId ?: "", item.id ?: "")
-                            }
-
-                        if (episodeId != null) {
-                            navigateToVideo(anime.id ?: "", episodeId ?: "")
-                        }
+                        adapter.replace(it)
                     }
                 }
                 is NetworkResources.Failure -> {
@@ -153,10 +128,28 @@ class AnimeDetailsFragment : Fragment() {
 
     private fun navigateToVideo(animeId: String, episodeId: String) {
         viewModel.getRouter().goToVideo(
-            this,
+            activity,
             animeId,
             episodeId
         )
+    }
+
+    private fun updateLayout() {
+        binding.apply {
+            yearTextView.text = anime?.year
+            genreTextView.text = anime?.categoryGenres
+            descriptionTextView.text = anime?.categoryDescription
+            titleTextView.text = anime?.name
+            toolbar.title = anime?.name
+
+            val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.coverImage}"
+            Glide
+                .with(this.root.context)
+                .load(imageUrl)
+                .centerCrop()
+                .placeholder(com.example.screen_resources.R.drawable.progress_loading)
+                .into(imageView)
+        }
     }
 
     override fun onDestroy() {

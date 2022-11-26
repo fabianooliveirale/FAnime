@@ -12,6 +12,7 @@ import com.example.video.databinding.ActivityPlayerBinding
 import org.koin.android.ext.android.inject
 import java.util.*
 
+
 class PlayerActivity : AppCompatActivity(), PlayerInterface {
 
     private lateinit var binding: ActivityPlayerBinding
@@ -145,13 +146,13 @@ class PlayerActivity : AppCompatActivity(), PlayerInterface {
     }
 
     override fun onStop() {
-        super.onStop()
         this.pause()
+        super.onStop()
     }
 
     override fun onBackPressed() {
         this.pause()
-        finish()
+        this.finish()
     }
 
     override fun pause() {

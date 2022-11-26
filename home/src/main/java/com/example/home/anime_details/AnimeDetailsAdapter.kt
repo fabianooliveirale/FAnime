@@ -8,10 +8,11 @@ import com.example.home.databinding.AdapterAnimeEpItemBinding
 import com.example.model.EpisodeModel
 
 class AnimeDetailsAdapter(
-    private val list: ArrayList<EpisodeModel>,
     private val itemClick: (EpisodeModel) -> Unit = {}
 ) :
     RecyclerView.Adapter<AnimeDetailsAdapter.ViewHolder>() {
+
+    private val list: ArrayList<EpisodeModel> = arrayListOf()
 
     class ViewHolder(private val binding: AdapterAnimeEpItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -49,4 +50,9 @@ class AnimeDetailsAdapter(
 
     override fun getItemCount() = list.size
 
+    fun replace(list: ArrayList<EpisodeModel>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
 }

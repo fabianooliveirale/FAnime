@@ -28,7 +28,7 @@ class WatchingVideosFragment : Fragment() {
         viewModel.getSharedPref()
         adapter = WatchingEpAdapter(viewModel.getSharedPref(), viewModel.getImageUrl()) {
             viewModel.getRouter().goToVideo(
-                this,
+                activity,
                 it.animeId ?: "",
                 it.id ?: ""
             )

@@ -1,23 +1,38 @@
 package com.example.router
 
+import android.app.Activity
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.findNavController
 
+
 class Router(private val baseUri: String) {
     fun goToVideo(
-        intent: Fragment,
+        intent: Activity?,
         animeId: String,
         episodeId: String
     ) {
         val uriString =
             "${baseUri}/video?animeId=${animeId}&episodeId=${episodeId}"
         val i = Intent(ACTION_VIEW, uriString.toUri())
-        intent.startActivity(i)
+
+        intent?.startActivity(i)
+    }
+
+    fun goToVideoResult(
+        resultLauncher: ActivityResultLauncher<Intent>,
+        animeId: String,
+        episodeId: String
+    ) {
+        val uriString =
+            "${baseUri}/video?animeId=${animeId}&episodeId=${episodeId}"
+        val i = Intent(ACTION_VIEW, uriString.toUri())
+
+        resultLauncher.launch(i)
     }
 
     fun goToAnimesCategory(view: View, categoryName: String? = null) {
