@@ -20,7 +20,7 @@ object HomeModule {
         }
 
         single<HomeRepository> {
-            HomeRepositoryImpl(get(), get())
+            HomeRepositoryImpl(get(), get(), get())
         }
 
         viewModel {
@@ -36,7 +36,7 @@ object HomeModule {
         }
 
         viewModel {
-            AnimeDetailsViewModel(get(), get(), get(), imageBaseUrl)
+            AnimeDetailsViewModel(get(), get(), get(), imageBaseUrl, get())
         }
 
         viewModel {

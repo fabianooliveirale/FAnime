@@ -13,7 +13,7 @@ fun Int.toDP(context: Context): Float {
 }
 
 fun Int.toMinutes(): String = String.format(
-    "%02d : %02d",
+    "00:%02d:%02d",
     TimeUnit.MILLISECONDS.toMinutes(this.toLong()),
     TimeUnit.MILLISECONDS.toSeconds(this.toLong()) -
             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(this.toLong()))

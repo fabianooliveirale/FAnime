@@ -1,97 +1,61 @@
 package com.example.video
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.navigation.navArgs
-import com.example.model.WatchingEp
+import com.example.model.EpisodeModel
+import com.example.model.VideoModelResponse
 import com.example.network.NetworkResources
 import com.example.video.databinding.ActivityPlayerBinding
-import com.example.model.VideoModelResponse
 import org.koin.android.ext.android.inject
 import java.util.*
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(), PlayerInterface {
 
     private lateinit var binding: ActivityPlayerBinding
     private val args: PlayerActivityArgs by navArgs()
     private val viewModel: VideoViewModel by inject()
     private var mediaController: MediaController? = null
-    private var videoId: String? = null
-    private var animeId: String? = null
-    private var title: String? = null
-    private var imageUrl: String? = null
     private var previousData: VideoModelResponse? = null
     private var nextData: VideoModelResponse? = null
     private var requesting = false
-    private var currentPosition = 0
-    private var url: String? = null
+    private var episode: EpisodeModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        videoId = args.videoId
-        animeId = args.animeId
-        title = args.title
-        imageUrl = args.imageUrl
-        currentPosition = args.position
+        refreshEpisode()
         initLiveData()
         initLiveDataNext()
         initLiveDataPrevious()
-        getVideoRequest()
         initMediaController()
         initMediaPlayerListener()
-        initNextPrevious()
-        refreshNextPreviou()
+        initNextPreviousButton()
+        requestNextAndPrevisouData()
+        viewModel.getVideo(episode?.id ?: "")
     }
 
-    private fun refreshNextPreviou() {
-        viewModel.previousEp(videoId ?: "", animeId ?: "")
-        viewModel.nextEp(videoId ?: "", animeId ?: "")
+    private fun requestNextAndPrevisouData() {
+        viewModel.previousEp(episode?.id ?: "", episode?.animeId ?: "")
+        viewModel.nextEp(episode?.id ?: "", episode?.animeId ?: "")
     }
 
-    private fun initNextPrevious() {
+    private fun initNextPreviousButton() {
         binding.previousImageView.setOnClickListener {
-            if (requesting) return@setOnClickListener
-            stopDontSave()
-            currentPosition = 0
-            setVideoTitle(previousData)
-            videoId = previousData?.videoId
-            title = previousData?.title
-            startNewVideo(previousData?.locationSd ?: previousData?.location ?: "")
-            saveWatchingVideo()
-            refreshNextPreviou()
-
+            this.previous()
         }
         binding.nextImageView.setOnClickListener {
-            if (requesting) return@setOnClickListener
-            stopDontSave()
-            currentPosition = 0
-            setVideoTitle(nextData)
-            videoId = nextData?.videoId
-            title = nextData?.title
-            startNewVideo(nextData?.locationSd ?: nextData?.location ?: "")
-            saveWatchingVideo()
-            refreshNextPreviou()
-        }
-    }
-
-    private fun startLoopPosition() {
-        viewModel.getLoop().start(coroutineScope = viewModel) {
-            if (binding.videoView.isPlaying) {
-                currentPosition = binding.videoView.currentPosition
-            }
+            this.next()
         }
     }
 
     private fun initMediaPlayerListener() {
         binding.videoView.setOnInfoListener { _, _, _ ->
             binding.loading.isGone = true
-            startLoopPosition()
+            updatePositon()
             true
         }
     }
@@ -122,35 +86,8 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        saveWatchingVideo()
+        save()
         binding.loading.isGone = false
-    }
-
-    private fun stopVideo() {
-        saveWatchingVideo()
-        binding.videoView.pause()
-        binding.loading.isGone = false
-        viewModel.getLoop().stop()
-    }
-
-    private fun stopDontSave() {
-        binding.videoView.pause()
-        binding.loading.isGone = false
-        viewModel.getLoop().stop()
-    }
-
-    private fun getVideoRequest() {
-        if (videoId == null) {
-            Log.d("error", "valueNull")
-            return
-        }
-
-        if (videoId == "") {
-            Log.d("error", "valueNull")
-            return
-        }
-
-        viewModel.getVideo(videoId ?: "")
     }
 
     private fun initLiveData() {
@@ -161,20 +98,14 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 is NetworkResources.Succeeded -> {
                     requesting = false
-                    setVideoTitle(it.data.first())
-                    url = it.data.first().locationSd ?: it.data.first().location ?: ""
-                    startNewVideo(it.data.first().locationSd ?: it.data.first().location ?: "")
+                    refreshEpisode()
+                    play()
                 }
                 is NetworkResources.Failure -> {
                     requesting = false
                 }
             }
         }
-    }
-
-    private fun setVideoTitle(dataSet: VideoModelResponse?) {
-        val epNumber = dataSet?.title?.split(" ")?.last()
-        binding.videoTitle.text = "Episódio: ${epNumber ?: ""}"
     }
 
     private fun initLiveDataNext() {
@@ -213,43 +144,97 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun startNewVideo(url: String) {
-        if(url == "") finish()
-        binding.videoView.stopPlayback()
-        binding.videoView.setVideoURI(url.toUri())
-
-        resumeVideoView()
-    }
-
     override fun onStop() {
         super.onStop()
-        stopVideo()
-    }
-
-    private fun resumeVideoView() {
-        binding.videoView.let { videoView ->
-            videoView.seekTo(currentPosition)
-            videoView.requestFocus()
-            videoView.start()
-        }
-    }
-
-    private fun saveWatchingVideo() {
-        if(url == null) return
-        if(url == "") return
-        val watched = WatchingEp(
-            epId = videoId,
-            animeId = animeId,
-            title = title,
-            position = currentPosition,
-            image = imageUrl,
-            time = Date()
-        )
-        viewModel.getSharedPref().saveWatchingEp(watched)
+        this.pause()
     }
 
     override fun onBackPressed() {
-        saveWatchingVideo()
+        this.pause()
         finish()
+    }
+
+    override fun pause() {
+        binding.videoView.pause()
+        binding.loading.isGone = false
+        viewModel.getLoop().stop()
+        updatePositon()
+        save()
+    }
+
+    override fun play() {
+        val uri = episode?.getVideoUri()
+        binding.videoView.stopPlayback()
+        binding.videoView.setVideoURI(uri)
+        updateLayoutTitle()
+        updateIsWatch()
+        updateTime()
+        updateEpisodeCoverImage()
+        save()
+        resume()
+    }
+
+
+    override fun resume() {
+        binding.videoView.let { videoView ->
+            episode?.let { episode ->
+                videoView.seekTo(episode.position ?: 0)
+                videoView.requestFocus()
+                videoView.start()
+            }
+        }
+    }
+
+    override fun save() {
+        if (episode?.getVideoUri() == null) return
+        episode?.let {
+            viewModel.getSharedPref().saveEpisode(it)
+        }
+    }
+
+    override fun updatePositon() {
+        viewModel.getLoop().start(coroutineScope = viewModel) {
+            if (binding.videoView.isPlaying) {
+                episode?.position = binding.videoView.currentPosition
+            }
+        }
+    }
+
+    override fun updateTime() {
+        episode?.watchingTime = Date()
+    }
+
+    override fun updateIsWatch() {
+        episode?.watched = true
+    }
+
+    override fun updateLayoutTitle() {
+        binding.videoTitle.text = "Episódio: ${episode?.number ?: 0}"
+    }
+
+    override fun updateEpisodeCoverImage() {
+        episode?.converImage = viewModel.getAnime(args.animeId ?: "")?.coverImage
+    }
+
+    override fun updateEpisode(animeId: String, episodeId: String) {
+        this.episode = viewModel.getEpisode(animeId, episodeId)
+        play()
+    }
+
+    override fun next() {
+        if (requesting) return
+        save()
+        updateEpisode(previousData?.animeId ?: "", previousData?.videoId ?: "")
+        requestNextAndPrevisouData()
+    }
+
+    override fun previous() {
+        if (requesting) return
+        updateEpisode(nextData?.animeId ?: "", nextData?.videoId ?: "")
+        requestNextAndPrevisouData()
+    }
+
+    override fun refreshEpisode() {
+        episode = viewModel.getEpisode(args.animeId ?: "", args.episodeId ?: "")
     }
 }

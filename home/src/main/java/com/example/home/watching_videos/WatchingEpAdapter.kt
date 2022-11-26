@@ -8,39 +8,32 @@ import com.example.dao.SharedPref
 import com.example.home.databinding.AdapterAnimeEpItemBinding
 import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.home.databinding.AdapterAnimeItemVerticalBinding
+import com.example.model.EpisodeModel
 import com.example.model.WatchingEp
 import com.example.screen_resources.toMinutes
 
 class WatchingEpAdapter(
     private val sharedPref: SharedPref,
     private val imageBaseUrl: String,
-    private val itemClick: (WatchingEp) -> Unit = { }
+    private val itemClick: (EpisodeModel) -> Unit = { }
 ) :
     RecyclerView.Adapter<WatchingEpAdapter.ViewHolder>() {
 
-    private val dataSet: ArrayList<WatchingEp> = ArrayList()
+    private val dataSet: ArrayList<EpisodeModel> = ArrayList()
 
     class ViewHolder(private val binding: AdapterAnimeItemVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             position: Int,
-            dataSet: WatchingEp,
+            dataSet: EpisodeModel,
             imageBaseUrl: String,
-            itemClick: (WatchingEp) -> Unit
+            itemClick: (EpisodeModel) -> Unit
         ) {
             binding.apply {
-                val splitTitle = dataSet.title?.split(" ")
-                val count = splitTitle?.count()?.minus(1)
-                val name = splitTitle?.mapIndexed { index, s ->
-                    if (index != count && index != ((count ?: 0) - 1)) s else ""
-                }?.joinToString(" ") ?: ""
+                titleTextView.text = dataSet.name
+                epTextView.text = "Episódio: ${dataSet.number}"
 
-                titleTextView.text = name
-
-                val epNumber = dataSet.title?.split(" ")?.last()
-                epTextView.text = "Episódio: $epNumber"
-
-                val imageUrl = "${imageBaseUrl}${dataSet.image}"
+                val imageUrl = "${imageBaseUrl}${dataSet.converImage}"
 
                 timeTextView.text = dataSet.position?.toMinutes()
 
@@ -74,7 +67,7 @@ class WatchingEpAdapter(
 
     fun refreshList() {
         dataSet.clear()
-        dataSet.addAll(sharedPref.getWatchingEp())
+        dataSet.addAll(sharedPref.getAllWatchedEpisode())
         notifyDataSetChanged()
     }
 

@@ -41,12 +41,10 @@ class NewVideosFragment : Fragment() {
                             it.data,
                             viewModel.getBaseImageUrl()
                         ) { item ->
-                            viewModel.getRouter().goToVideo(
-                                this,
-                                item.videoId ?: "",
+                            viewModel.getRouter().goToAnimeDetails(
+                                binding.root,
                                 item.categoryId ?: "",
-                                item.title ?: "",
-                                item.categoryImage ?: ""
+                                item.videoId ?: ""
                             )
                         }
                 }

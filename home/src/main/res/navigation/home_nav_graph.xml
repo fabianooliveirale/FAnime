@@ -36,10 +36,13 @@
         android:name="com.example.home.anime_details.AnimeDetailsFragment"
         android:label="fragment_anime_details"
         tools:layout="@layout/fragment_anime_details">
-        <deepLink app:uri="fanime://app/animeDetails?animeId={animeId}" />
+        <deepLink app:uri="fanime://app/animeDetails?animeId={animeId}&amp;episodeId={episodeId}" />
         <argument
             android:name="animeId"
             android:defaultValue='""'
+            app:argType="string" />
+        <argument
+            android:name="episodeId"
             app:argType="string"
             app:nullable="true" />
     </fragment>

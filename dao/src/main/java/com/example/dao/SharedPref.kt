@@ -19,8 +19,7 @@ class SharedPref(private val context: Context, private val gson: Gson) {
         val animes = getAnimes()
         val index = animes.indexOfFirst { it.id == anime.id }
         if (index >= 0) {
-            val oldAnime = animes[index]
-            oldAnime.year
+            animes[index].fromAnimeModel(anime)
         } else {
             animes.add(anime)
         }
@@ -32,34 +31,34 @@ class SharedPref(private val context: Context, private val gson: Gson) {
 
     fun saveEpisode(response: EpisodeModel) {
         val animeDao = getAnimeById(response.animeId ?: "")
-        val episode = animeDao?.episodes?.find { episode -> episode.id == response.id }
+        val episode = animeDao?.episodes?.first { episode -> episode.id == response.id }
         if (episode == null) {
-            animeDao?.episodes?.add(EpisodeModel().fromEpisodeModel(response))
+            animeDao?.episodes?.add(response)
         } else {
             val index = animeDao.episodes.indexOfFirst { response.id == it.id }
             animeDao.episodes[index].fromEpisodeModel(response)
             saveAnime(animeDao)
         }
-        with(getSharedPref().edit()) {
-            putString(SharedPrefEnum.ANIME.name, modelToJson(animeDao))
-            commit()
+
+        animeDao?.let {
+            saveAnime(it)
         }
     }
 
     fun saveAllEpisode(videos: ArrayList<EpisodeModel>) {
         val animeDao = getAnimeById(videos.first().animeId ?: "")
         videos.forEach { response ->
-            val episode = animeDao?.episodes?.find { episode -> episode.id == response.id }
-            if (episode == null) {
-                animeDao?.episodes?.add(EpisodeModel().fromEpisodeModel(response))
+            val index = animeDao?.episodes?.indexOfFirst { response.id == it.id } ?: -1
+            if (index > 0) {
+                animeDao?.let {
+                    it.episodes[index].fromEpisodeModel(response)
+                }
             } else {
-                val index = animeDao.episodes.indexOfFirst { response.id == it.id }
-                animeDao.episodes[index].fromEpisodeModel(response)
+                animeDao?.episodes?.add(response)
             }
         }
-        with(getSharedPref().edit()) {
-            putString(SharedPrefEnum.ANIME.name, modelToJson(animeDao))
-            commit()
+        animeDao?.let {
+            saveAnime(it)
         }
     }
 
@@ -72,9 +71,25 @@ class SharedPref(private val context: Context, private val gson: Gson) {
         }
     }
 
-    fun getAllWatchedEpisode(id: String): List<EpisodeModel> {
+    fun getEpisodeById(animeId: String, episodeId: String): EpisodeModel? {
         return try {
-            return getAnimes().flatMap { it.episodes }
+            return getAnimes().first { it.id == animeId }.episodes.first { it.id == episodeId }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun getAllWatchedEpisode(): List<EpisodeModel> {
+        return try {
+            return getAnimes().flatMap { it.episodes }.filter { it.watched }
+        } catch (e: Exception) {
+            arrayListOf()
+        }
+    }
+
+    fun getAnimeEpisodes(animeId: String): ArrayList<EpisodeModel>? {
+        return try {
+            return getAnimeById(animeId)?.episodes
         } catch (e: Exception) {
             arrayListOf()
         }
@@ -83,7 +98,7 @@ class SharedPref(private val context: Context, private val gson: Gson) {
     fun getAnimes(): ArrayList<AnimeModel> {
         return try {
             val valueResult =
-                getSharedPref().getString(SharedPrefEnum.ANIME.name, null) ?: return arrayListOf()
+                getSharedPref().getString(SharedPrefEnum.ANIME.name, "") ?: return arrayListOf()
             jsonToArrayList(valueResult)
         } catch (e: Exception) {
             arrayListOf()

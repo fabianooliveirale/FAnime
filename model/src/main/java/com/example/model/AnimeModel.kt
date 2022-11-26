@@ -35,12 +35,12 @@ data class AnimeModel(
         animeModel.year?.let {
             this.year = it
         }
-        animeModel.episodes.forEachIndexed { index, episodeModel ->
+        animeModel.episodes.forEach {  episodeModel ->
             val searchIndex = this.episodes.indexOfFirst { it.id == episodeModel.id }
             if (searchIndex >= 0) {
                 this.episodes[searchIndex].fromEpisodeModel(episodeModel)
             } else {
-                this.episodes.add(EpisodeModel().fromEpisodeModel(episodeModel))
+                this.episodes.add(episodeModel)
             }
         }
         return this

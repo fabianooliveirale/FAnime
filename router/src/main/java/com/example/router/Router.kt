@@ -11,14 +11,11 @@ import androidx.navigation.findNavController
 class Router(private val baseUri: String) {
     fun goToVideo(
         intent: Fragment,
-        videoId: String,
         animeId: String,
-        title: String,
-        imageUrl: String,
-        position: Int = 0
+        episodeId: String
     ) {
         val uriString =
-            "${baseUri}/video?videoId=${videoId}&animeId=${animeId}&imageUrl=${imageUrl}&title=${title}&position=${position}"
+            "${baseUri}/video?animeId=${animeId}&episodeId=${episodeId}"
         val i = Intent(ACTION_VIEW, uriString.toUri())
         intent.startActivity(i)
     }
@@ -30,9 +27,9 @@ class Router(private val baseUri: String) {
         view.findNavController().navigate(request)
     }
 
-    fun goToAnimeDetails(view: View, animeId: String? = null) {
+    fun goToAnimeDetails(view: View, animeId: String? = null, episodeId: String? = null) {
         val request = NavDeepLinkRequest.Builder
-            .fromUri("${baseUri}/animeDetails?animeId=${animeId}".toUri())
+            .fromUri("${baseUri}/animeDetails?animeId=${animeId}&episodeId=${episodeId}".toUri())
             .build()
         view.findNavController().navigate(request)
     }

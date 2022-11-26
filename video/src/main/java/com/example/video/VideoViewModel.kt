@@ -20,6 +20,7 @@ class VideoViewModel(
     private val networkScope: NetworkScope,
     private val loop: Loop,
     private val sharedPref: SharedPref,
+    private val dao: SharedPref
 ) : ViewModel(), CoroutineScope {
 
     override val coroutineContext = Dispatchers.IO + Job()
@@ -62,6 +63,9 @@ class VideoViewModel(
             }
         }
     }
+
+    fun getAnime(animeId: String) = dao.getAnimeById(animeId)
     fun getLoop() = loop
     fun getSharedPref() = sharedPref
+    fun getEpisode(animeId: String, episodeId: String) = dao.getEpisodeById(animeId, episodeId)
 }

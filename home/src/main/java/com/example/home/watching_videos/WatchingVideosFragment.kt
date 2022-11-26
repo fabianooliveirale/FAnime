@@ -29,11 +29,8 @@ class WatchingVideosFragment : Fragment() {
         adapter = WatchingEpAdapter(viewModel.getSharedPref(), viewModel.getImageUrl()) {
             viewModel.getRouter().goToVideo(
                 this,
-                it.epId ?: "",
                 it.animeId ?: "",
-                it.title ?: "",
-                it.image ?: "",
-                 it.position ?: 0
+                it.id ?: ""
             )
         }
         binding.recyclerViewEp.adapter = adapter
@@ -48,5 +45,4 @@ class WatchingVideosFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }

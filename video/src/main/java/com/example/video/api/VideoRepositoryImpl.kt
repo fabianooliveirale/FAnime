@@ -47,8 +47,14 @@ class VideoRepositoryImpl(
 
 
     private fun transformListToEpisodeList(videos: List<VideoModelResponse>): ArrayList<EpisodeModel> {
+        val episodes = dao.getAnimeEpisodes(videos.first().animeId ?: "") ?: arrayListOf()
         return ArrayList(videos.map { response ->
-            EpisodeModel().fromVideoModelResponse(response)
+            val index = episodes.indexOfFirst { response.videoId == it.id }
+            if (index > 0) {
+                episodes[index].fromVideoModelResponse(response)
+            } else {
+                EpisodeModel().fromVideoModelResponse(response)
+            }
         })
     }
 }

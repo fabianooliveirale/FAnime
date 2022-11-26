@@ -1,5 +1,6 @@
 package com.example.model
 
+import androidx.core.net.toUri
 import java.util.*
 
 class EpisodeModel(
@@ -11,15 +12,23 @@ class EpisodeModel(
     var videoUrlHD: String? = null,
     var watched: Boolean = false,
     var number: Int? = null,
-    var numberName: String? = null
+    var numberName: String? = null,
+    var fullName: String? = null,
+    var name: String? = null,
+    var converImage: String? = null
 ) {
     fun fromAnimeEpResponse(animeEpResponse: AnimeEpResponse): EpisodeModel {
+        val animeNameSplit = animeEpResponse.title?.split(" ") ?: arrayListOf()
         val epNumber =
-            animeEpResponse.title?.split(" ")?.last()?.replaceFirst("^0*".toRegex(), "")
+            animeNameSplit.last().replaceFirst("^0*".toRegex(), "")
+
         this.id = animeEpResponse.videoId
-        this.number = if (epNumber?.isInt() == true) epNumber.toInt() else 0
+        this.number = if (epNumber.isInt()) epNumber.toInt() else 0
         this.numberName = epNumber
         this.animeId = animeEpResponse.categoryId
+        this.fullName = animeEpResponse.title
+        this.name = if (animeNameSplit.count() > 2) animeNameSplit.take(animeNameSplit.count() - 2)
+            .joinToString(" ") else animeNameSplit.joinToString(" ")
         return this
     }
 
@@ -58,6 +67,8 @@ class EpisodeModel(
         this.id = videoModelResponse.videoId
         return this
     }
+
+    fun getVideoUri() = videoUrlHD?.toUri() ?: videoUrlSD?.toUri()
 }
 
 

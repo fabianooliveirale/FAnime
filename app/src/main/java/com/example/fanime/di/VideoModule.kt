@@ -15,11 +15,11 @@ object VideoModule {
         }
 
         single<VideoRepository> {
-            VideoRepositoryImpl(get(), get())
+            VideoRepositoryImpl(get(), get(), get())
         }
 
         viewModel {
-            VideoViewModel(get(), get(), get(), get())
+            VideoViewModel(get(), get(), get(), get(), get())
         }
     }
 }

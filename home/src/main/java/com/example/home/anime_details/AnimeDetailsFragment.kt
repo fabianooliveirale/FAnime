@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.home.databinding.FragmentAnimeDetailsBinding
-import com.example.model.AnimeDetailsResponse
+import com.example.model.AnimeModel
+import com.example.model.EpisodeModel
 import com.example.network.NetworkResources
-import com.example.screen_resources.isInt
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AnimeDetailsFragment : Fragment() {
@@ -20,7 +20,9 @@ class AnimeDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by sharedViewModel<AnimeDetailsViewModel>()
     private val args: AnimeDetailsFragmentArgs by navArgs()
-    private var anime: AnimeDetailsResponse? = null
+    private var anime: AnimeModel? = null
+    private var episodeId: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +34,29 @@ class AnimeDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        episodeId = args.episodeId
+        getAnimeFromRepository()
         initToolbar()
-        getAnimeDetails()
         initLiveDataAnimeDetails()
         initLiveDataAnimeEp()
+    }
+
+    private fun getAnimeFromRepository() {
+        args.animeId.let { animeId ->
+            anime = viewModel.getDao().getAnimeById(animeId)
+            if (episodeId != null && anime != null) {
+                navigateToVideo(animeId, episodeId ?: "")
+                return
+            }
+
+            if (episodeId != null) {
+                viewModel.getAll(animeId)
+                return
+            }
+
+            viewModel.getAnimeDetails(animeId)
+            viewModel.getAnimeEp(animeId)
+        }
     }
 
     private fun initToolbar() {
@@ -44,35 +65,34 @@ class AnimeDetailsFragment : Fragment() {
         }
     }
 
-    private fun getAnimeDetails() {
-        val animeId = args.animeId
-        if (animeId == null) {
-            Log.d("error", "valueNull")
-            return
-        }
-
-        if (animeId == "") {
-            Log.d("error", "valueNull")
-            return
-        }
-        viewModel.getAnimeDetails(animeId)
-        viewModel.getAnimeEp(animeId)
-    }
-
     private fun initLiveDataAnimeDetails() {
         viewModel.animeDetailsLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is NetworkResources.Loading -> {}
+                is NetworkResources.Loading -> {
+                    Log.d("getAllRequest", "getAllRequest - FIRST - LOADING")
+                }
                 is NetworkResources.Succeeded -> {
-                    anime = it.data.first()
                     binding.apply {
+                        val response = it.data.first()
+                        anime = viewModel.getDao().getAnimeById(response.id ?: "")
+                        if (anime == null) {
+                            anime = AnimeModel().fromAnimeDetailsResponse(response)
+                        } else {
+                            anime?.fromAnimeDetailsResponse(response)
+                        }
+
+                        anime?.let { animeModel ->
+                            viewModel.getDao().saveAnime(animeModel)
+                        }
+
+                        Log.d("getAllRequest", "getAllRequest - FIRST - SUCCESS")
                         yearTextView.text = anime?.year
                         genreTextView.text = anime?.categoryGenres
                         descriptionTextView.text = anime?.categoryDescription
                         titleTextView.text = anime?.name
                         toolbar.title = anime?.name
 
-                        val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.categoryImage}"
+                        val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.coverImage}"
                         Glide
                             .with(this.root.context)
                             .load(imageUrl)
@@ -81,7 +101,9 @@ class AnimeDetailsFragment : Fragment() {
                             .into(imageView)
                     }
                 }
-                is NetworkResources.Failure -> {}
+                is NetworkResources.Failure -> {
+                    Log.d("getAllRequest", "getAllRequest - FIRST - FAILURE")
+                }
             }
         }
     }
@@ -89,37 +111,52 @@ class AnimeDetailsFragment : Fragment() {
     private fun initLiveDataAnimeEp() {
         viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
-                is NetworkResources.Loading -> {}
+                is NetworkResources.Loading -> {
+                    Log.d("getAllRequest", "getAllRequest - SECOND - LOADING")
+                }
                 is NetworkResources.Succeeded -> {
-                    viewModel.animeEp = it.data
-                    it.data.forEach { anime ->
-                        val splitTitle = anime.title?.split(" ")
-                        val special =
-                            if (splitTitle?.contains("Especial") == true) "Especial - " else ""
+                    Log.d("getAllRequest", "getAllRequest - SECOND - SUCCESS")
+                    val anime = viewModel.getDao().getAnimeById(it.data.first().categoryId ?: "")
+                    val episodes = anime?.episodes
 
-                        val epNumber =
-                            anime.title?.split(" ")?.last()?.replaceFirst("^0*".toRegex(), "")
-                        anime.epNumber = if (epNumber?.isInt() == true) epNumber.toInt() else 0
-
-                        anime.epNumberName = "${special}Episódio: $epNumber"
+                    it.data.forEach { response ->
+                        val index =
+                            episodes?.indexOfFirst { episode -> response.videoId == episode.id }
+                                ?: -1
+                        if (index > 0) {
+                            episodes?.let {
+                                it[index].fromAnimeEpResponse(response)
+                            }
+                        } else {
+                            episodes?.add(EpisodeModel().fromAnimeEpResponse(response))
+                        }
                     }
 
-                    binding.recyclerView.adapter =
-                        AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }
-                            .reversed()) { item ->
+                    episodes?.let {
+                        viewModel.getDao().saveAllEpisode(it)
+                        binding.recyclerView.adapter =
+                            AnimeDetailsAdapter(it) { item ->
+                                navigateToVideo(item.animeId ?: "", item.id ?: "")
+                            }
 
-                            viewModel.getRouter().goToVideo(
-                                this,
-                                item.videoId ?: "",
-                                item.categoryId ?: "",
-                                item.title ?: "",
-                                anime?.categoryImage ?: ""
-                            )
+                        if (episodeId != null) {
+                            navigateToVideo(anime.id ?: "", episodeId ?: "")
                         }
+                    }
                 }
-                is NetworkResources.Failure -> {}
+                is NetworkResources.Failure -> {
+                    Log.d("getAllRequest", "getAllRequest - SECOND - FAILURE")
+                }
             }
         }
+    }
+
+    private fun navigateToVideo(animeId: String, episodeId: String) {
+        viewModel.getRouter().goToVideo(
+            this,
+            animeId,
+            episodeId
+        )
     }
 
     override fun onDestroy() {

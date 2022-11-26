@@ -3,26 +3,27 @@ package com.example.home.anime_details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dao.SharedPref
 import com.example.home.databinding.AdapterAnimeEpItemBinding
-import com.example.model.*
+import com.example.model.EpisodeModel
 
 class AnimeDetailsAdapter(
-    private val dataSet: List<AnimeEpResponse>,
-    private val itemClick: (AnimeEpResponse) -> Unit = {}
+    private val list: ArrayList<EpisodeModel>,
+    private val itemClick: (EpisodeModel) -> Unit = {}
 ) :
     RecyclerView.Adapter<AnimeDetailsAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: AdapterAnimeEpItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            dataSet: AnimeEpResponse,
-            itemClick: (AnimeEpResponse) -> Unit
+            dataSet: EpisodeModel,
+            itemClick: (EpisodeModel) -> Unit
         ) {
             binding.apply {
-                val splitTitle = dataSet.title?.split(" ")
+                val splitTitle = dataSet.fullName?.split(" ")
                 val special = if (splitTitle?.contains("Especial") == true) "Especial - " else ""
 
-                val epNumber = dataSet.title?.split(" ")?.last()
+                val epNumber = dataSet.fullName?.split(" ")?.last()
                 titleTextView.text = "${special}Episódio: $epNumber"
 
                 mainView.setOnClickListener {
@@ -42,10 +43,10 @@ class AnimeDetailsAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val dataSet = dataSet[position]
+        val dataSet = list[position]
         viewHolder.bind(dataSet, itemClick)
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = list.size
 
 }
