@@ -67,7 +67,8 @@ class WatchingEpAdapter(
 
     fun refreshList() {
         dataSet.clear()
-        dataSet.addAll(sharedPref.getAllWatchedEpisode())
+        val list = sharedPref.getAllWatchedEpisode()
+        dataSet.addAll(list)
         notifyDataSetChanged()
     }
 

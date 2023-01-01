@@ -36,11 +36,11 @@ class EpisodeModel(
         episodeModel.id?.let {
             this.id = it
         }
-        episodeModel.watchingTime?.let {
-            this.watchingTime = it
-        }
         episodeModel.animeId?.let {
             this.animeId = it
+        }
+        episodeModel.watchingTime?.let {
+            this.watchingTime = it
         }
         episodeModel.position?.let {
             this.position = it
@@ -51,11 +51,23 @@ class EpisodeModel(
         episodeModel.videoUrlHD?.let {
             this.videoUrlHD = it
         }
+        episodeModel.watched.let {
+            this.watched = it
+        }
         episodeModel.number?.let {
             this.number = it
         }
         episodeModel.numberName?.let {
             this.numberName = it
+        }
+        episodeModel.fullName?.let {
+            this.fullName = it
+        }
+        episodeModel.name?.let {
+            this.name = it
+        }
+        episodeModel.converImage?.let {
+            this.converImage = it
         }
         return this
     }

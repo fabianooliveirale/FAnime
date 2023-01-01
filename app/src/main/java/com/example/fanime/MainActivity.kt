@@ -1,11 +1,13 @@
 package com.example.fanime
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.fanime.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,16 +29,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         initBottomNavigation()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.bottomNavigationView.selectedItemId = currentItem
-    }
-
-    override fun onStop() {
-        super.onStop()
-        currentItem = binding.bottomNavigationView.selectedItemId
     }
 
     private fun initBottomNavigation() {

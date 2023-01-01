@@ -168,9 +168,7 @@ class PlayerActivity : AppCompatActivity(), PlayerInterface {
         binding.videoView.stopPlayback()
         binding.videoView.setVideoURI(uri)
         updateLayoutTitle()
-        updateIsWatch()
-        updateTime()
-        updateEpisodeCoverImage()
+
         save()
         resume()
     }
@@ -189,6 +187,9 @@ class PlayerActivity : AppCompatActivity(), PlayerInterface {
     override fun save() {
         if (episode?.getVideoUri() == null) return
         episode?.let {
+            updateIsWatch()
+            updateTime()
+            updateEpisodeCoverImage()
             viewModel.getSharedPref().saveEpisode(it)
         }
     }
