@@ -244,6 +244,6 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         saveWatchingVideo()
-        finish()
+        super.onBackPressed()
     }
 }

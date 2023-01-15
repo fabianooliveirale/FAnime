@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.home.HomeViewModel
 import com.example.home.databinding.FragmentWatchingVideosBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.home.HomeViewModel
 import com.example.home.databinding.FragmentAnimeDetailsBinding
 import com.example.model.AnimeDetailsResponse
 import com.example.network.NetworkResources

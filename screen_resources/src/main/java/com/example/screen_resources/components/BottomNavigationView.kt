@@ -40,12 +40,15 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
     var index: Int = 0
         set(value) {
             field = value
+            selectItemCallback(index)
             setSelectedItem()
         }
 
     private var selectedView: NavigationItem = binding.homeView
 
-    var selectItemCallback: (Int)-> Unit = {}
+    private var selectItemCallback: (Int)-> Unit = {}
+
+    var fragmentContainer = binding.fragmentContainer
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigationView)
@@ -59,7 +62,6 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
             ContextCompat.getColor(context, R.color.black)
         )
         typedArray.recycle()
-        index = HOME_VIEW_INDEX
         setItemClick()
     }
 
@@ -67,21 +69,21 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
         binding.apply {
             homeView.setOnClickListener {
                 index = HOME_VIEW_INDEX
-                selectItemCallback(HOME_VIEW_INDEX)
             }
             newView.setOnClickListener {
                 index = NEW_VIEW_INDEX
-                selectItemCallback(NEW_VIEW_INDEX)
             }
             categoryView.setOnClickListener {
                 index = CATEGORY_VIEW_INDEX
-                selectItemCallback(CATEGORY_VIEW_INDEX)
             }
             searchView.setOnClickListener {
                 index = SEARCH_VIEW_INDEX
-                selectItemCallback(SEARCH_VIEW_INDEX)
             }
         }
+    }
+
+    fun setSelectItemCallBack(callBack: (Int) -> Unit) {
+        selectItemCallback = callBack
     }
 
     private fun setSelectedItem() {

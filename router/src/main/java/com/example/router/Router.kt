@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 
 class Router(private val baseUri: String) {
     fun goToVideo(
-        intent: Fragment,
+        fragment: Fragment?,
         videoId: String,
         animeId: String,
         title: String,
@@ -20,7 +20,7 @@ class Router(private val baseUri: String) {
         val uriString =
             "${baseUri}/video?videoId=${videoId}&animeId=${animeId}&imageUrl=${imageUrl}&title=${title}&position=${position}"
         val i = Intent(ACTION_VIEW, uriString.toUri())
-        intent.startActivity(i)
+        fragment?.startActivity(i)
     }
 
     fun goToAnimesCategory(view: View, categoryName: String? = null) {
