@@ -10,11 +10,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
-import com.example.home.animes_category.AnimesCategoryAdapter
 import com.example.home.databinding.FragmentSearchAnimeBinding
-import com.example.home.new_videos.NewVideosViewModel
 import com.example.network.NetworkResources
-import com.example.screen_resources.onTextChanged
+import com.example.screen_resources.extensions.onTextChanged
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 

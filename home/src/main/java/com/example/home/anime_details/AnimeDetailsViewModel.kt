@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dao.SharedPref
 import com.example.home.api.HomeRepository
 import com.example.model.AnimeDetailsResponse
 import com.example.model.AnimeEpResponse
@@ -13,6 +14,7 @@ import com.example.router.Router
 import kotlinx.coroutines.launch
 
 class AnimeDetailsViewModel(
+    private val sharedPref: SharedPref,
     private val repository: HomeRepository,
     private val networkScope: NetworkScope,
     private val router: Router,
@@ -24,12 +26,12 @@ class AnimeDetailsViewModel(
     val animeDetailsLiveData: LiveData<NetworkResources<List<com.example.model.AnimeDetailsResponse>>> =
         _animeDetailsMutableLiveData
 
-    private val _animeEpResponsesMutableLiveData: MutableLiveData<NetworkResources<List<com.example.model.AnimeEpResponse>>> =
+    private val _animeEpResponsesMutableLiveData: MutableLiveData<NetworkResources<List<AnimeEpResponse>>> =
         MutableLiveData()
-    val animeEpResponseLiveData: LiveData<NetworkResources<List<com.example.model.AnimeEpResponse>>> =
+    val animeEpResponseLiveData: LiveData<NetworkResources<List<AnimeEpResponse>>> =
         _animeEpResponsesMutableLiveData
 
-    var animeEp: List<com.example.model.AnimeEpResponse>? = null
+    var animeEp: List<AnimeEpResponse>? = null
 
     fun getAnimeDetails(animeId: String) {
         viewModelScope.launch {
@@ -49,4 +51,5 @@ class AnimeDetailsViewModel(
 
     fun getRouter() = router
     fun getBaseImageUrl() = baseImageUrl
+    fun getSharedPref() = sharedPref
 }

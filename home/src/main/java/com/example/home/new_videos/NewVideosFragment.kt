@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.home.databinding.FragmentNewVideosBinding
+import com.example.home.watching_videos.WatchingViewModel
 import com.example.network.NetworkResources
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -41,12 +42,9 @@ class NewVideosFragment : Fragment() {
                             it.data,
                             viewModel.getBaseImageUrl()
                         ) { item ->
-                            viewModel.getRouter().goToVideo(
-                                this,
-                                item.videoId ?: "",
-                                item.categoryId ?: "",
-                                item.title ?: "",
-                                item.categoryImage ?: ""
+                            viewModel.getRouter().goToAnimeDetails(
+                                binding.root,
+                                item.categoryId ?: ""
                             )
                         }
                 }

@@ -1,5 +1,6 @@
 package com.example.fanime.di
 
+import com.example.home.HomeViewModel
 import com.example.home.anime_details.AnimeDetailsViewModel
 import com.example.home.animes_category.AnimesCategoryViewModel
 import com.example.home.api.HomeRepository
@@ -36,7 +37,7 @@ object HomeModule {
         }
 
         viewModel {
-            AnimeDetailsViewModel(get(), get(), get(), imageBaseUrl)
+            AnimeDetailsViewModel(get(), get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {
@@ -45,6 +46,10 @@ object HomeModule {
 
         viewModel {
             WatchingViewModel(get(), get(), imageBaseUrl)
+        }
+
+        viewModel {
+            HomeViewModel()
         }
     }
 }

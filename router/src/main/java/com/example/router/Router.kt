@@ -1,5 +1,6 @@
 package com.example.router
 
+import android.app.Activity
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.view.View
@@ -10,17 +11,21 @@ import androidx.navigation.findNavController
 
 class Router(private val baseUri: String) {
     fun goToVideo(
-        intent: Fragment,
+        activity: Activity?,
+        playerActivity: Activity?,
         videoId: String,
         animeId: String,
         title: String,
         imageUrl: String,
         position: Int = 0
     ) {
-        val uriString =
-            "${baseUri}/video?videoId=${videoId}&animeId=${animeId}&imageUrl=${imageUrl}&title=${title}&position=${position}"
-        val i = Intent(ACTION_VIEW, uriString.toUri())
-        intent.startActivity(i)
+        val intent = Intent(activity, playerActivity?.javaClass)
+        intent.putExtra("videoId", videoId)
+        intent.putExtra("animeId", animeId)
+        intent.putExtra("imageUrl", imageUrl)
+        intent.putExtra("title", title)
+        intent.putExtra("position", position)
+        activity?.startActivity(intent)
     }
 
     fun goToAnimesCategory(view: View, categoryName: String? = null) {

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        app:justifyContent="space_between">
+
+        <com.example.screen_resources.components.NavigationItem
+            android:id="@+id/homeView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_baseline_home"
+            android:text="Home"
+            android:tint="@color/white" />
+
+        <com.example.screen_resources.components.NavigationItem
+            android:id="@+id/newView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_new_video"
+            android:text="Lançamentos"
+            android:tint="@color/white" />
+
+        <com.example.screen_resources.components.NavigationItem
+            android:id="@+id/categoryView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_categories"
+            android:text="Categorias"
+            android:tint="@color/white" />
+
+        <com.example.screen_resources.components.NavigationItem
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_baseline_search"
+            android:text="Buscar"
+            android:tint="@color/white" />
+    </LinearLayout>
+</LinearLayout>

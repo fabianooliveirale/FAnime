@@ -6,7 +6,6 @@ import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.isGone
-import androidx.navigation.navArgs
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
 import com.example.video.databinding.ActivityPlayerBinding
@@ -18,7 +17,6 @@ import java.util.*
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private val args: PlayerActivityArgs by navArgs()
     private val viewModel: VideoViewModel by inject()
     private var mediaController: MediaController? = null
     private var videoId: String? = null
@@ -35,11 +33,11 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        videoId = args.videoId
-        animeId = args.animeId
-        title = args.title
-        imageUrl = args.imageUrl
-        currentPosition = args.position
+        videoId = intent.getStringExtra("videoId").toString()
+        animeId = intent.getStringExtra("animeId").toString()
+        title = intent.getStringExtra("title").toString()
+        imageUrl = intent.getStringExtra("imageUrl").toString()
+        currentPosition = intent.getIntExtra("currentPosition", 0)
         initLiveData()
         initLiveDataNext()
         initLiveDataPrevious()
@@ -244,6 +242,6 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         saveWatchingVideo()
-        finish()
+        super.onBackPressed()
     }
 }

@@ -2,5 +2,7 @@
     <string name="home_last_watched">Home</string>
     <string name="home_news">Lançamentos</string>
     <string name="home_categories">Categorias</string>
-    <string name="home_search">Pesquisar</string>->
+    <string name="home_search">Pesquisar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>->
 </resources>

@@ -2,7 +2,22 @@
 <resources>
 
     <declare-styleable name="Toolbar">
-        <attr name="sr_title" format="string" />
+        <attr name="android:text" />
     </declare-styleable>
+
+
+    <declare-styleable name="NavigationItem">
+        <attr name="android:text" />
+        <attr name="android:src" />
+        <attr name="android:textColor" />
+        <attr name="android:tint"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="BottomNavigationView">
+        <attr name="bottomViewPaddingHorizontal" format="dimension" />
+        <attr name="bottomBackgroundColor" format="color" />
+    </declare-styleable>
+
 
 </resources>
