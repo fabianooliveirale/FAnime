@@ -1,19 +1,25 @@
 package com.example.home.anime_details
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.example.home.HomeViewModel
+import com.example.home.R
 import com.example.home.databinding.FragmentAnimeDetailsBinding
 import com.example.model.AnimeDetailsResponse
+import com.example.model.WatchingEp
 import com.example.network.NetworkResources
+import com.example.screen_resources.extensions.loadFromGlide
 import com.example.screen_resources.isInt
+import com.example.video.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.*
 
 class AnimeDetailsFragment : Fragment() {
 
@@ -35,8 +41,32 @@ class AnimeDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
         getAnimeDetails()
+        setFavorite()
         initLiveDataAnimeDetails()
         initLiveDataAnimeEp()
+    }
+
+    private fun setFavorite() {
+        val isFavorite = viewModel.getSharedPref().animeIsFavorite(args.animeId ?: "")
+        val drawable =
+            if (isFavorite) com.example.screen_resources.R.drawable.ic_baseline_favorite else com.example.screen_resources.R.drawable.ic_baseline_favorite_border
+
+        binding.toolbar.favoriteView.setOnClickListener {
+            if (isFavorite) removeFavoriteAnime() else saveFavoriteAnime()
+        }
+
+        binding.toolbar.favoriteView.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                drawable
+            )
+        )
+        binding.toolbar.favoriteView.imageTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                requireContext(),
+                com.example.screen_resources.R.color.heart_color
+            )
+        )
     }
 
     private fun initToolbar() {
@@ -66,6 +96,7 @@ class AnimeDetailsFragment : Fragment() {
                 is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
                     anime = it.data.first()
+                    binding.toolbar.favoriteView.isGone = false
                     binding.apply {
                         yearTextView.text = anime?.year
                         genreTextView.text = anime?.categoryGenres
@@ -74,12 +105,7 @@ class AnimeDetailsFragment : Fragment() {
                         toolbar.title = anime?.name
 
                         val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.categoryImage}"
-                        Glide
-                            .with(this.root.context)
-                            .load(imageUrl)
-                            .centerCrop()
-                            .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                            .into(imageView)
+                        binding.imageView.loadFromGlide(imageUrl)
                     }
                 }
                 is NetworkResources.Failure -> {}
@@ -110,7 +136,8 @@ class AnimeDetailsFragment : Fragment() {
                             .reversed()) { item ->
 
                             viewModel.getRouter().goToVideo(
-                                this,
+                                activity,
+                                PlayerActivity(),
                                 item.videoId ?: "",
                                 item.categoryId ?: "",
                                 item.title ?: "",
@@ -121,6 +148,22 @@ class AnimeDetailsFragment : Fragment() {
                 is NetworkResources.Failure -> {}
             }
         }
+    }
+
+    private fun saveFavoriteAnime() {
+        val watched = WatchingEp(
+            animeId = anime?.id,
+            title = anime?.name,
+            image = anime?.categoryImage,
+            time = Date()
+        )
+        viewModel.getSharedPref().saveFavoriteAnime(watched)
+        setFavorite()
+    }
+
+    private fun removeFavoriteAnime() {
+        viewModel.getSharedPref().removeFavoriteAnime(anime?.id ?: "")
+        setFavorite()
     }
 
     override fun onDestroy() {

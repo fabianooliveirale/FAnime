@@ -2,18 +2,20 @@ package com.example.home.watching_videos
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.dao.SharedPref
-import com.example.home.databinding.AdapterAnimeEpItemBinding
-import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.home.databinding.AdapterAnimeItemVerticalBinding
 import com.example.model.WatchingEp
-import com.example.screen_resources.toMinutes
+import com.example.screen_resources.extensions.loadFromGlide
+import com.example.screen_resources.extensions.toMinutes
 
 class WatchingEpAdapter(
-    private val sharedPref: SharedPref,
     private val imageBaseUrl: String,
+    private val showPosition: Boolean = false,
     private val itemClick: (WatchingEp) -> Unit = { }
 ) :
     RecyclerView.Adapter<WatchingEpAdapter.ViewHolder>() {
@@ -23,7 +25,7 @@ class WatchingEpAdapter(
     class ViewHolder(private val binding: AdapterAnimeItemVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            position: Int,
+            showPosition: Boolean,
             dataSet: WatchingEp,
             imageBaseUrl: String,
             itemClick: (WatchingEp) -> Unit
@@ -39,17 +41,14 @@ class WatchingEpAdapter(
 
                 val epNumber = dataSet.title?.split(" ")?.last()
                 epTextView.text = "Episódio: $epNumber"
+                epTextView.isGone = !showPosition
 
                 val imageUrl = "${imageBaseUrl}${dataSet.image}"
 
                 timeTextView.text = dataSet.position?.toMinutes()
+                timeTextView.isGone = !showPosition
 
-                Glide
-                    .with(this.root.context)
-                    .load(imageUrl)
-                    .centerCrop()
-                    .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView)
+                binding.frontImageView.loadFromGlide(imageUrl)
 
                 binding.mainView.setOnClickListener {
                     itemClick(dataSet)
@@ -69,12 +68,13 @@ class WatchingEpAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val dataSet = dataSet[position]
-        viewHolder.bind(position, dataSet, imageBaseUrl, itemClick)
+        viewHolder.bind(showPosition, dataSet, imageBaseUrl, itemClick)
     }
 
-    fun refreshList() {
+
+    fun replaceList(watchingList: ArrayList<WatchingEp>) {
         dataSet.clear()
-        dataSet.addAll(sharedPref.getWatchingEp())
+        dataSet.addAll(watchingList)
         notifyDataSetChanged()
     }
 

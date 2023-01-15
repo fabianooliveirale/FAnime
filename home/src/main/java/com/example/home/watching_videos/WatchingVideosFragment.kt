@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.example.home.HomeViewModel
 import com.example.home.databinding.FragmentWatchingVideosBinding
+import com.example.video.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class WatchingVideosFragment : Fragment() {
@@ -14,7 +16,9 @@ class WatchingVideosFragment : Fragment() {
     private var _binding: FragmentWatchingVideosBinding? = null
     private val binding get() = _binding!!
     private val viewModel by sharedViewModel<WatchingViewModel>()
-    private var adapter: WatchingEpAdapter? = null
+    private var adapterEp: WatchingEpAdapter? = null
+    private var adapterAnime: WatchingEpAdapter? = null
+    private var adapterFavorite: WatchingEpAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,23 +30,58 @@ class WatchingVideosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getSharedPref()
-        adapter = WatchingEpAdapter(viewModel.getSharedPref(), viewModel.getImageUrl()) {
+        setFavorite()
+        setWatchingEpList()
+        setWatchingAnimeList()
+    }
+
+    private fun setFavorite() {
+        val list = viewModel.getSharedPref().getFavoriteEp()
+
+        adapterFavorite = WatchingEpAdapter(viewModel.getImageUrl()) {
+            viewModel.getRouter().goToAnimeDetails(
+                binding.root,
+                it.animeId ?: ""
+            )
+        }
+        adapterFavorite?.replaceList(ArrayList(list))
+        binding.recyclerFavorite.adapter = adapterFavorite
+
+
+        binding.favoriteContainer.isGone = list.isEmpty()
+    }
+
+    private fun setWatchingEpList() {
+        val list = viewModel.getSharedPref().getWatchingEp()
+        adapterEp = WatchingEpAdapter(viewModel.getImageUrl(), true) {
             viewModel.getRouter().goToVideo(
-                this,
+                activity,
+                PlayerActivity(),
                 it.epId ?: "",
                 it.animeId ?: "",
                 it.title ?: "",
                 it.image ?: "",
-                 it.position ?: 0
+                it.position ?: 0
             )
         }
-        binding.recyclerViewEp.adapter = adapter
+        adapterEp?.replaceList(list)
+        binding.recyclerViewEp.adapter = adapterEp
+
+        binding.continueWatchingEpContainer.isGone = list.isEmpty()
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter?.refreshList()
+    private fun setWatchingAnimeList() {
+        val list = viewModel.getSharedPref().getWatchingEp().distinctBy { it.animeId }
+        adapterAnime = WatchingEpAdapter(viewModel.getImageUrl()) {
+            viewModel.getRouter().goToAnimeDetails(
+                binding.root,
+                it.animeId ?: ""
+            )
+        }
+        adapterAnime?.replaceList(ArrayList(list))
+        binding.recyclerViewAnime.adapter = adapterAnime
+
+        binding.continueWatchingAnimeContainer.isGone = list.isEmpty()
     }
 
     override fun onDestroy() {

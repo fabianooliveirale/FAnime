@@ -4,8 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.model.NewVideosResponse
+import com.example.screen_resources.extensions.loadFromGlide
 
 class NewVideosAdapter(
     private val dataSet: List<NewVideosResponse>,
@@ -38,12 +41,7 @@ class NewVideosAdapter(
 
                 val imageUrl = "${imageBaseUrl}${dataSet.categoryImage}"
 
-                Glide
-                    .with(this.root.context)
-                    .load(imageUrl)
-                    .centerCrop()
-                    .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView)
+                binding.frontImageView.loadFromGlide(imageUrl)
 
                 binding.mainView.setOnClickListener {
                     itemClick(dataSet)

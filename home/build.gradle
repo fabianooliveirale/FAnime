@@ -57,4 +57,5 @@ dependencies {
     implementation project(path: ':screen_resources')
     implementation project(path: ':model')
     implementation project(path: ':dao')
+    implementation project(path: ':video')
 }

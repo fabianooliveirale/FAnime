@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.model.SearchResponse
+import com.example.screen_resources.extensions.loadFromGlide
 
 class SearchAnimeAdapter(
     private val imageBaseUrl: String,
@@ -31,12 +32,7 @@ class SearchAnimeAdapter(
 
                 val imageUrl = "${imageBaseUrl}${dataSet.categoryImage}"
 
-                Glide
-                    .with(this.root.context)
-                    .load(imageUrl)
-                    .centerCrop()
-                    .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView)
+                binding.frontImageView.loadFromGlide(imageUrl)
 
                 binding.mainView.setOnClickListener {
                     itemClick(dataSet.id ?: "")
