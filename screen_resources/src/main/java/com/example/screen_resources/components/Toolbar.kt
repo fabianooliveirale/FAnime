@@ -22,7 +22,7 @@ class Toolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : Linea
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.Toolbar)
-        title = typedArray.getString(R.styleable.Toolbar_sr_title)
+        title = typedArray.getString(R.styleable.Toolbar_android_text)
         typedArray.recycle()
     }
 

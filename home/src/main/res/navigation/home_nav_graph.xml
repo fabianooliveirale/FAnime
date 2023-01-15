@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/watchedVideosFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/animesCategoryFragment"
@@ -48,5 +48,10 @@
         android:name="com.example.home.search.SearchAnimeFragment"
         android:label="fragment_search_anime"
         tools:layout="@layout/fragment_search_anime" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 
 </navigation>
