@@ -16,6 +16,10 @@ import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
 
+    companion object {
+        const val TEN_SEC = 10000
+    }
+
     private lateinit var binding: ActivityPlayerBinding
     private val viewModel: VideoViewModel by inject()
     private var mediaController: MediaController? = null
@@ -53,6 +57,23 @@ class PlayerActivity : AppCompatActivity() {
         binding.backPressView.setOnClickListener {
             saveWatchingVideo()
             onBackPressed()
+        }
+
+        binding.forward10ImageView.setOnClickListener {
+            Log.d("teste_teste_teste", "$currentPosition = ${currentPosition + 10}" )
+            currentPosition += TEN_SEC
+            resumeVideoView()
+        }
+
+        binding.replay10ImageView.setOnClickListener {
+            Log.d("teste_teste_teste", "$currentPosition = ${currentPosition - 10}" )
+            currentPosition -= TEN_SEC
+            resumeVideoView()
+        }
+
+        binding.returnToStartView.setOnClickListener {
+            currentPosition = 0
+            resumeVideoView()
         }
     }
 
@@ -109,8 +130,10 @@ class PlayerActivity : AppCompatActivity() {
                 binding.nextImageView.isGone = true
                 binding.videoTitle.isGone = true
                 binding.shadowView.isGone = true
-                binding.playImageView.isGone = true
                 binding.backPressView.isGone = true
+                binding.returnToStartView.isGone = true
+                binding.forward10ImageView.isGone = true
+                binding.replay10ImageView.isGone = true
                 super.hide()
             }
 
@@ -119,8 +142,10 @@ class PlayerActivity : AppCompatActivity() {
                 binding.nextImageView.isGone = nextData == null
                 binding.videoTitle.isGone = false
                 binding.shadowView.isGone = false
-                binding.playImageView.isGone = true
                 binding.backPressView.isGone = false
+                binding.returnToStartView.isGone = false
+                binding.forward10ImageView.isGone = false
+                binding.replay10ImageView.isGone = false
                 super.show()
             }
         }

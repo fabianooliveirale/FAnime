@@ -24,7 +24,7 @@ class Router(private val baseUri: String) {
         intent.putExtra("animeId", animeId)
         intent.putExtra("imageUrl", imageUrl)
         intent.putExtra("title", title)
-        intent.putExtra("position", position)
+        intent.putExtra("currentPosition", position)
         activity?.startActivity(intent)
     }
 
