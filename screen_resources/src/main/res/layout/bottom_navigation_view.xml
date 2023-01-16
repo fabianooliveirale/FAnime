@@ -16,9 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/black"
-        android:orientation="horizontal"
-        app:justifyContent="space_between">
+        android:background="@color/heavy_dark_color"
+        android:orientation="horizontal">
 
         <com.example.screen_resources.components.NavigationItem
             android:id="@+id/homeView"

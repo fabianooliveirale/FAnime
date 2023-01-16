@@ -6,8 +6,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import com.example.screen_resources.R
 import com.example.screen_resources.databinding.BottomNavigationViewBinding
+import com.example.screen_resources.extensions.toDP
 
 class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     LinearLayout(context, attrs, defStyleAttr) {
@@ -31,7 +33,8 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
             binding.bottomView.setPadding(value.toInt(), paddingTop, value.toInt(), paddingBottom)
         }
 
-    var bottomBackgroundColor: Int = ContextCompat.getColor(context, R.color.black)
+    var bottomBackgroundColor: Int =
+        ContextCompat.getColor(context, R.color.heavy_dark_color_bottom_view)
         set(value) {
             field = value
             binding.bottomView.setBackgroundColor(value)
@@ -46,7 +49,7 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
 
     private var selectedView: NavigationItem = binding.homeView
 
-    private var selectItemCallback: (Int)-> Unit = {}
+    private var selectItemCallback: (Int) -> Unit = {}
 
     var fragmentContainer = binding.fragmentContainer
 
@@ -59,7 +62,7 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
             )
         bottomBackgroundColor = typedArray.getColor(
             R.styleable.BottomNavigationView_bottomBackgroundColor,
-            ContextCompat.getColor(context, R.color.black)
+            ContextCompat.getColor(context, R.color.heavy_dark_color_bottom_view)
         )
         typedArray.recycle()
         setItemClick()
@@ -104,11 +107,23 @@ class BottomNavigationView(context: Context, attrs: AttributeSet?, defStyleAttr:
         view.imageTintList =
             ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primary_color))
         view.textIsGone = false
+        view.imageView.updateLayoutParams {
+            context?.let {
+                height = (24).toDP(it).toInt()
+                width = (24).toDP(it).toInt()
+            }
+        }
     }
 
     private fun setUnSelectedNavigationItemColor(view: NavigationItem) {
         view.textColor = ContextCompat.getColor(context, R.color.white)
         view.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
         view.textIsGone = true
+        view.imageView.updateLayoutParams {
+            context?.let {
+                height = (20).toDP(it).toInt()
+                width = (20).toDP(it).toInt()
+            }
+        }
     }
 }

@@ -2,19 +2,14 @@ package com.example.screen_resources.components
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.content.res.getColorOrThrow
 import androidx.core.view.isGone
 import com.example.screen_resources.R
 import com.example.screen_resources.databinding.NavigationItemBinding
-import com.example.screen_resources.databinding.ToolbarBinding
 
 class NavigationItem(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     LinearLayout(context, attrs, defStyleAttr) {
@@ -55,6 +50,8 @@ class NavigationItem(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
             field = value
             binding.textView.isGone = value
         }
+
+    var imageView = binding.imageView
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.NavigationItem)
