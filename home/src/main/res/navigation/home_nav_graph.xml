@@ -53,5 +53,17 @@
         android:name="com.example.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/allWatchingFragment"
+        android:name="com.example.home.all_watching.AllWatchingFragment"
+        android:label="fragment_all_watching"
+        tools:layout="@layout/fragment_all_watching">
+        <argument
+            android:name="where"
+            android:defaultValue='""'
+            app:argType="string"
+            app:nullable="true" />
+        <deepLink app:uri="fanime://app/allWatching?where={where}" />
+    </fragment>
 
 </navigation>

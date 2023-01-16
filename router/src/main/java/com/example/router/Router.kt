@@ -28,6 +28,13 @@ class Router(private val baseUri: String) {
         activity?.startActivity(intent)
     }
 
+    fun goToAllWatching(view: View, where: String? = null) {
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("${baseUri}/allWatching?where=${where}".toUri())
+            .build()
+        view.findNavController().navigate(request)
+    }
+
     fun goToAnimesCategory(view: View, categoryName: String? = null) {
         val request = NavDeepLinkRequest.Builder
             .fromUri("${baseUri}/animesCategory?categoryName=${categoryName}".toUri())

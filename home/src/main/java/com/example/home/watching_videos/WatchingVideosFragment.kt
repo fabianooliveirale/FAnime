@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.example.home.HomeViewModel
+import com.example.home.all_watching.AllWatchingFragment
 import com.example.home.databinding.FragmentWatchingVideosBinding
 import com.example.screen_resources.BaseFragment
 import com.example.video.PlayerActivity
@@ -34,6 +35,23 @@ class WatchingVideosFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapters()
         initTopMenu()
+        initAllWatching()
+    }
+
+    private fun initAllWatching() {
+        binding.apply {
+            allAnimeContainer.setOnClickListener {
+                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_ANIME.name)
+            }
+
+            allEpContainer.setOnClickListener {
+                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_WATCHING.name)
+            }
+
+            allFavoriteContainer.setOnClickListener {
+                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_FAVORITE.name)
+            }
+        }
     }
 
     private fun initTopMenu() {
