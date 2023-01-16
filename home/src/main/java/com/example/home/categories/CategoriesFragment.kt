@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.home.databinding.FragmentCategoriesBinding
+import com.example.screen_resources.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class CategoriesFragment : Fragment() {
+class CategoriesFragment : BaseFragment() {
 
     private var _binding: FragmentCategoriesBinding? = null
     private val binding get() = _binding!!

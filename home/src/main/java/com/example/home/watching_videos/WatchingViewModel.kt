@@ -6,6 +6,7 @@ import com.example.router.Router
 import com.example.screen_resources.ShowLoading
 
 class WatchingViewModel(
+    private val loading: ShowLoading,
     private val sharedPref: SharedPref,
     private val router: Router,
     private val baseImageUrl: String
@@ -15,4 +16,5 @@ class WatchingViewModel(
     fun getSharedPref() = sharedPref
     fun getImageUrl() = baseImageUrl
     fun getRouter() = router
+    fun getShowLoading() = loading
 }

@@ -10,9 +10,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.home.databinding.FragmentAnimesCategoryBinding
 import com.example.home.databinding.FragmentCategoriesBinding
 import com.example.network.NetworkResources
+import com.example.screen_resources.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class AnimesCategoryFragment : Fragment() {
+class AnimesCategoryFragment : BaseFragment() {
 
     private var _binding: FragmentAnimesCategoryBinding? = null
     private val binding get() = _binding!!

@@ -14,13 +14,14 @@ import com.example.home.databinding.FragmentAnimeDetailsBinding
 import com.example.model.AnimeDetailsResponse
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
+import com.example.screen_resources.BaseFragment
 import com.example.screen_resources.extensions.loadFromGlide
 import com.example.screen_resources.isInt
 import com.example.video.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
-class AnimeDetailsFragment : Fragment() {
+class AnimeDetailsFragment : BaseFragment() {
 
     private var _binding: FragmentAnimeDetailsBinding? = null
     private val binding get() = _binding!!

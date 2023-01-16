@@ -12,11 +12,12 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.example.home.databinding.FragmentSearchAnimeBinding
 import com.example.network.NetworkResources
+import com.example.screen_resources.BaseFragment
 import com.example.screen_resources.extensions.onTextChanged
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class SearchAnimeFragment : Fragment() {
+class SearchAnimeFragment : BaseFragment() {
 
     private var _binding: FragmentSearchAnimeBinding? = null
     private val binding get() = _binding!!

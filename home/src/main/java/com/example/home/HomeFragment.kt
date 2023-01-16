@@ -11,11 +11,11 @@ import com.example.home.databinding.FragmentHomeBinding
 import com.example.home.new_videos.NewVideosFragment
 import com.example.home.search.SearchAnimeFragment
 import com.example.home.watching_videos.WatchingVideosFragment
-import com.example.home.watching_videos.WatchingViewModel
+import com.example.screen_resources.BaseFragment
 import com.example.screen_resources.components.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -43,7 +43,14 @@ class HomeFragment : Fragment() {
 
             setFragment(selectedFragment)
         }
+        viewModel.searchCallBack = {
+            selectSearchItem()
+        }
         binding.bottomView.index = viewModel.bottomViewIndex
+    }
+
+    private fun selectSearchItem() {
+        binding.bottomView.index = BottomNavigationView.SEARCH_VIEW_INDEX
     }
 
     private fun setFragment(fragment: Fragment) {

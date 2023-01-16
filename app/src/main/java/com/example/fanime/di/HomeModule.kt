@@ -25,7 +25,7 @@ object HomeModule {
         }
 
         viewModel {
-            CategoriesViewModel(get())
+            CategoriesViewModel(get(), get())
         }
 
         viewModel {
@@ -45,7 +45,7 @@ object HomeModule {
         }
 
         viewModel {
-            WatchingViewModel(get(), get(), imageBaseUrl)
+            WatchingViewModel(get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {

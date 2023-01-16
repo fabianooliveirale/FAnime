@@ -7,6 +7,7 @@ import com.example.fanime.MainViewModel
 import com.example.network.NetworkBuilder
 import com.example.network.NetworkScope
 import com.example.router.Router
+import com.example.screen_resources.BaseViewModel
 import com.example.screen_resources.Loop
 import com.example.screen_resources.ShowLoading
 import com.example.screen_resources.ViewAnimation
@@ -51,6 +52,10 @@ object GeneralModule {
 
         viewModel {
             MainViewModel(get())
+        }
+
+        viewModel {
+            BaseViewModel(get())
         }
     }
 }

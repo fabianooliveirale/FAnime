@@ -8,14 +8,16 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.example.home.HomeViewModel
 import com.example.home.databinding.FragmentWatchingVideosBinding
+import com.example.screen_resources.BaseFragment
 import com.example.video.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class WatchingVideosFragment : Fragment() {
+class WatchingVideosFragment : BaseFragment() {
 
     private var _binding: FragmentWatchingVideosBinding? = null
     private val binding get() = _binding!!
     private val viewModel by sharedViewModel<WatchingViewModel>()
+    private val homeViewModel by sharedViewModel<HomeViewModel>()
     private var adapterEp: WatchingEpAdapter? = null
     private var adapterAnime: WatchingEpAdapter? = null
     private var adapterFavorite: WatchingEpAdapter? = null
@@ -31,6 +33,15 @@ class WatchingVideosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapters()
+        initTopMenu()
+    }
+
+    private fun initTopMenu() {
+        binding.apply {
+            searchTopMenu.setOnClickListener {
+                homeViewModel.searchCallBack()
+            }
+        }
     }
 
     private fun initAdapters() {
@@ -99,5 +110,4 @@ class WatchingVideosFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }

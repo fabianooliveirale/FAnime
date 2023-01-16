@@ -84,6 +84,7 @@ dependencies {
     api "com.google.android.flexbox:flexbox:$flexbox"
     api "com.facebook.shimmer:shimmer:$shimmer"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide"
+    implementation project(path: ':network')
 
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
 }

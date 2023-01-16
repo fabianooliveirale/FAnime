@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import com.example.home.databinding.FragmentNewVideosBinding
 import com.example.home.watching_videos.WatchingViewModel
 import com.example.network.NetworkResources
+import com.example.screen_resources.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class NewVideosFragment : Fragment() {
+class NewVideosFragment : BaseFragment() {
 
     private var _binding: FragmentNewVideosBinding? = null
     private val binding get() = _binding!!

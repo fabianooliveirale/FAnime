@@ -7,5 +7,6 @@ import com.example.router.Router
 class HomeViewModel : ViewModel() {
 
     var bottomViewIndex = 0
+    var searchCallBack: () -> Unit = {}
 
 }
