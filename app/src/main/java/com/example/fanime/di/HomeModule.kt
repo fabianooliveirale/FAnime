@@ -29,19 +29,19 @@ object HomeModule {
         }
 
         viewModel {
-            AnimesCategoryViewModel(get(), get(), get(), imageBaseUrl)
+            AnimesCategoryViewModel(get(), get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {
-            NewVideosViewModel(get(), get(), get(), imageBaseUrl)
+            NewVideosViewModel(get(), get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {
-            AnimeDetailsViewModel(get(), get(), get(), get(), imageBaseUrl)
+            AnimeDetailsViewModel(get(), get(), get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {
-            SearchAnimeViewModel(get(), get(), get(), imageBaseUrl)
+            SearchAnimeViewModel(get(), get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {

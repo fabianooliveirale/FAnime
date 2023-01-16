@@ -30,29 +30,17 @@ class WatchingVideosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFavorite()
-        setWatchingEpList()
-        setWatchingAnimeList()
+        initAdapters()
     }
 
-    private fun setFavorite() {
-        val list = viewModel.getSharedPref().getFavoriteEp()
-
+    private fun initAdapters() {
         adapterFavorite = WatchingEpAdapter(viewModel.getImageUrl()) {
             viewModel.getRouter().goToAnimeDetails(
                 binding.root,
                 it.animeId ?: ""
             )
         }
-        adapterFavorite?.replaceList(ArrayList(list))
-        binding.recyclerFavorite.adapter = adapterFavorite
 
-
-        binding.favoriteContainer.isGone = list.isEmpty()
-    }
-
-    private fun setWatchingEpList() {
-        val list = viewModel.getSharedPref().getWatchingEp()
         adapterEp = WatchingEpAdapter(viewModel.getImageUrl(), true) {
             viewModel.getRouter().goToVideo(
                 activity,
@@ -64,20 +52,43 @@ class WatchingVideosFragment : Fragment() {
                 it.position ?: 0
             )
         }
-        adapterEp?.replaceList(list)
-        binding.recyclerViewEp.adapter = adapterEp
 
-        binding.continueWatchingEpContainer.isGone = list.isEmpty()
-    }
-
-    private fun setWatchingAnimeList() {
-        val list = viewModel.getSharedPref().getWatchingEp().distinctBy { it.animeId }
         adapterAnime = WatchingEpAdapter(viewModel.getImageUrl()) {
             viewModel.getRouter().goToAnimeDetails(
                 binding.root,
                 it.animeId ?: ""
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateFavorite()
+        updateWatchingEpList()
+        updateWatchingAnimeList()
+    }
+
+    private fun updateFavorite() {
+        val list = viewModel.getSharedPref().getFavoriteEp()
+
+        adapterFavorite?.replaceList(ArrayList(list))
+        binding.recyclerFavorite.adapter = adapterFavorite
+
+        binding.favoriteContainer.isGone = list.isEmpty()
+    }
+
+    private fun updateWatchingEpList() {
+        val list = viewModel.getSharedPref().getWatchingEp()
+
+        adapterEp?.replaceList(list)
+        binding.recyclerViewEp.adapter = adapterEp
+
+        binding.continueWatchingEpContainer.isGone = list.isEmpty()
+    }
+
+    private fun updateWatchingAnimeList() {
+        val list = viewModel.getSharedPref().getWatchingEp().distinctBy { it.animeId }
+
         adapterAnime?.replaceList(ArrayList(list))
         binding.recyclerViewAnime.adapter = adapterAnime
 

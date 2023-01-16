@@ -3,12 +3,16 @@ package com.example.fanime.di
 import android.content.Context
 import android.os.Handler
 import com.example.dao.SharedPref
+import com.example.fanime.MainViewModel
 import com.example.network.NetworkBuilder
 import com.example.network.NetworkScope
 import com.example.router.Router
 import com.example.screen_resources.Loop
+import com.example.screen_resources.ShowLoading
 import com.example.screen_resources.ViewAnimation
+import com.example.video.VideoViewModel
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -19,6 +23,10 @@ object GeneralModule {
 
         single {
             Gson()
+        }
+
+        single {
+            ShowLoading()
         }
 
         single {
@@ -39,6 +47,10 @@ object GeneralModule {
 
         single {
             SharedPref(context, get())
+        }
+
+        viewModel {
+            MainViewModel(get())
         }
     }
 }

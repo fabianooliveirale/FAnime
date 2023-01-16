@@ -9,21 +9,23 @@ import com.example.model.AnimesCategoryResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.router.Router
+import com.example.screen_resources.ShowLoading
 import kotlinx.coroutines.launch
 
 class AnimesCategoryViewModel(
+    private val loading: ShowLoading,
     private val repository: HomeRepository,
     private val networkScope: NetworkScope,
     private val router: Router,
     private val baseImageUrl: String
 ) : ViewModel() {
 
-    private val _animesCategoryMutableLiveData: MutableLiveData<NetworkResources<List<com.example.model.AnimesCategoryResponse>>> =
+    private val _animesCategoryMutableLiveData: MutableLiveData<NetworkResources<List<AnimesCategoryResponse>>> =
         MutableLiveData()
-    val animesCategoryLiveData: LiveData<NetworkResources<List<com.example.model.AnimesCategoryResponse>>> =
+    val animesCategoryLiveData: LiveData<NetworkResources<List<AnimesCategoryResponse>>> =
         _animesCategoryMutableLiveData
 
-    var animesCategoryData: List<com.example.model.AnimesCategoryResponse>? = null
+    var animesCategoryData: List<AnimesCategoryResponse>? = null
 
     fun getAnimesCategory(categoryName: String) {
         viewModelScope.launch {
@@ -35,4 +37,5 @@ class AnimesCategoryViewModel(
 
     fun getRouter() = router
     fun getBaseImageUrl() = baseImageUrl
+    fun getShowLoading() = loading
 }

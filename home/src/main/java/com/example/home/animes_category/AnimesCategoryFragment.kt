@@ -59,9 +59,10 @@ class AnimesCategoryFragment : Fragment() {
         viewModel.animesCategoryLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResources.Loading -> {
-                    val teste = "loading"
+                    viewModel.getShowLoading().showLoading()
                 }
                 is NetworkResources.Succeeded -> {
+                    viewModel.getShowLoading().hideLoading()
                     viewModel.animesCategoryData = it.data
                     binding.recyclerView.adapter =
                         AnimesCategoryAdapter(it.data, viewModel.getBaseImageUrl()) { animeId ->
@@ -69,7 +70,7 @@ class AnimesCategoryFragment : Fragment() {
                         }
                 }
                 is NetworkResources.Failure -> {
-                    val teste = "error"
+                    viewModel.getShowLoading().hideLoading()
                 }
             }
         }

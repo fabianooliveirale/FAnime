@@ -31,9 +31,6 @@ class NewVideosAdapter(
                 val name = splitTitle?.mapIndexed { index, s ->
                     if (index != count && index != ((count ?: 0) - 1)) s else ""
                 }?.joinToString(" ") ?: ""
-                val isPair = position % 2 == 0
-
-
                 titleTextView.text = name
 
                 val epNumber = dataSet.title?.split(" ")?.last()

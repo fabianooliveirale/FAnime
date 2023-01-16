@@ -34,8 +34,11 @@ class NewVideosFragment : Fragment() {
     private fun initLiveData() {
         viewModel.newVideosLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is NetworkResources.Loading -> {}
+                is NetworkResources.Loading -> {
+                    viewModel.getShowLoading().showLoading()
+                }
                 is NetworkResources.Succeeded -> {
+                    viewModel.getShowLoading().hideLoading()
                     viewModel.newVideosData = it.data
                     binding.recyclerView.adapter =
                         NewVideosAdapter(
@@ -49,6 +52,7 @@ class NewVideosFragment : Fragment() {
                         }
                 }
                 is NetworkResources.Failure -> {
+                    viewModel.getShowLoading().hideLoading()
                     val teste = "error"
                 }
             }

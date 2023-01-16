@@ -11,9 +11,11 @@ import com.example.model.AnimeEpResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.router.Router
+import com.example.screen_resources.ShowLoading
 import kotlinx.coroutines.launch
 
 class AnimeDetailsViewModel(
+    private val loading: ShowLoading,
     private val sharedPref: SharedPref,
     private val repository: HomeRepository,
     private val networkScope: NetworkScope,
@@ -52,4 +54,17 @@ class AnimeDetailsViewModel(
     fun getRouter() = router
     fun getBaseImageUrl() = baseImageUrl
     fun getSharedPref() = sharedPref
+    fun getShowLoading() = loading
+    fun getFakeList(): ArrayList<AnimeEpResponse> {
+        val list = ArrayList<AnimeEpResponse>()
+        for (x in 0..10) {
+            list.add(
+                AnimeEpResponse(
+                    epNumberName = "Carregando Episódios"
+                )
+            )
+        }
+
+        return list
+    }
 }

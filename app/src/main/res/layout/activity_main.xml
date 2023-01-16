@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,4 +14,19 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
-</LinearLayout>
+    <View
+        android:id="@+id/backgroundShadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@drawable/background_shadow_opacity"/>
+
+    <ImageView
+        android:id="@+id/loading"
+        android:layout_width="128dp"
+        android:layout_height="64dp"
+        android:src="@drawable/progress_loading"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

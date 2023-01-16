@@ -33,10 +33,13 @@ class WatchingEpAdapter(
             binding.apply {
                 val splitTitle = dataSet.title?.split(" ")
                 val count = splitTitle?.count()?.minus(1)
-                val name = splitTitle?.mapIndexed { index, s ->
+                var name = splitTitle?.mapIndexed { index, s ->
                     if (index != count && index != ((count ?: 0) - 1)) s else ""
                 }?.joinToString(" ") ?: ""
 
+                if(name.isBlank()) {
+                    name = dataSet.title ?: ""
+                }
                 titleTextView.text = name
 
                 val epNumber = dataSet.title?.split(" ")?.last()

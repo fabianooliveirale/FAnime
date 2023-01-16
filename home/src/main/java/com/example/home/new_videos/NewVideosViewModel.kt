@@ -9,9 +9,11 @@ import com.example.model.NewVideosResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.router.Router
+import com.example.screen_resources.ShowLoading
 import kotlinx.coroutines.launch
 
 class NewVideosViewModel(
+    private val loading: ShowLoading,
     private val repository: HomeRepository,
     private val networkScope: NetworkScope,
     private val router: Router,
@@ -33,4 +35,5 @@ class NewVideosViewModel(
 
     fun getRouter() = router
     fun getBaseImageUrl() = baseImageUrl
+    fun getShowLoading() = loading
 }

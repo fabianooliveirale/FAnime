@@ -30,8 +30,8 @@
 
     <ImageView
         android:id="@+id/favoriteView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center"
         android:layout_marginEnd="18dp"
         android:visibility="gone"

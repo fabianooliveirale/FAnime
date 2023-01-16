@@ -36,4 +36,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="heart_color">#A83F39</color>
+    <color name="loading_color_1">#63404040</color>
+    <color name="loading_color_2">#A1595959</color>
+    <color name="loading_color_3">#4B8F8F8F</color>
 </resources>

@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.example.home.R
 import com.example.home.databinding.FragmentAnimeDetailsBinding
 import com.example.model.AnimeDetailsResponse
 import com.example.model.WatchingEp
@@ -28,6 +27,7 @@ class AnimeDetailsFragment : Fragment() {
     private val viewModel by sharedViewModel<AnimeDetailsViewModel>()
     private val args: AnimeDetailsFragmentArgs by navArgs()
     private var anime: AnimeDetailsResponse? = null
+    private var adapter: AnimeDetailsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +44,22 @@ class AnimeDetailsFragment : Fragment() {
         setFavorite()
         initLiveDataAnimeDetails()
         initLiveDataAnimeEp()
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        adapter = AnimeDetailsAdapter { item ->
+            viewModel.getRouter().goToVideo(
+                activity,
+                PlayerActivity(),
+                item.videoId ?: "",
+                item.categoryId ?: "",
+                item.title ?: "",
+                anime?.categoryImage ?: ""
+            )
+        }
+
+        binding.recyclerView.adapter = adapter
     }
 
     private fun setFavorite() {
@@ -93,8 +109,11 @@ class AnimeDetailsFragment : Fragment() {
     private fun initLiveDataAnimeDetails() {
         viewModel.animeDetailsLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is NetworkResources.Loading -> {}
+                is NetworkResources.Loading -> {
+                    viewModel.getShowLoading().showLoading()
+                }
                 is NetworkResources.Succeeded -> {
+                    viewModel.getShowLoading().hideLoading()
                     anime = it.data.first()
                     binding.toolbar.favoriteView.isGone = false
                     binding.apply {
@@ -108,7 +127,9 @@ class AnimeDetailsFragment : Fragment() {
                         binding.imageView.loadFromGlide(imageUrl)
                     }
                 }
-                is NetworkResources.Failure -> {}
+                is NetworkResources.Failure -> {
+                    viewModel.getShowLoading().hideLoading()
+                }
             }
         }
     }
@@ -116,37 +137,57 @@ class AnimeDetailsFragment : Fragment() {
     private fun initLiveDataAnimeEp() {
         viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
-                is NetworkResources.Loading -> {}
+                is NetworkResources.Loading -> {
+                    val list = viewModel.getFakeList()
+                    adapter?.replaceList(list)
+                }
                 is NetworkResources.Succeeded -> {
+                    adapter?.hideShimmer()
                     viewModel.animeEp = it.data
                     it.data.forEach { anime ->
                         val splitTitle = anime.title?.split(" ")
                         val special =
                             if (splitTitle?.contains("Especial") == true) "Especial - " else ""
 
-                        val epNumber =
-                            anime.title?.split(" ")?.last()?.replaceFirst("^0*".toRegex(), "")
-                        anime.epNumber = if (epNumber?.isInt() == true) epNumber.toInt() else 0
 
-                        anime.epNumberName = "${special}Episódio: $epNumber"
+                        val epCount = anime.title?.split(" ")?.count() ?: -1
+                        if (epCount >= 0) {
+                            val epNumber = getLastItemNumber(
+                                anime.title?.split(" "),
+                                epCount - 1
+                            )?.replaceFirst("^0*".toRegex(), "")
+
+                            anime.epNumber = epNumber
+
+                            anime.epNumberName = "${special}Episódio: $epNumber"
+                        }
                     }
 
-                    binding.recyclerView.adapter =
-                        AnimeDetailsAdapter(it.data.sortedBy { it.epNumber }
-                            .reversed()) { item ->
+                    val list = try {
+                        it.data.sortedByDescending { it.epNumber?.toInt() }
+                    } catch (e: Exception) {
+                        it.data
+                    }
 
-                            viewModel.getRouter().goToVideo(
-                                activity,
-                                PlayerActivity(),
-                                item.videoId ?: "",
-                                item.categoryId ?: "",
-                                item.title ?: "",
-                                anime?.categoryImage ?: ""
-                            )
-                        }
+                    adapter?.replaceList(ArrayList(list))
                 }
-                is NetworkResources.Failure -> {}
+                is NetworkResources.Failure -> {
+                    adapter?.hideShimmer()
+                }
             }
+        }
+    }
+
+    private fun getLastItemNumber(split: List<String>?, count: Int): String? {
+        return try {
+            val isInt = split?.get(count)?.isInt() ?: false
+            if (isInt) {
+                return split?.get(count)
+            } else {
+                getLastItemNumber(split, count - 1)
+            }
+        } catch (e: Exception) {
+            return ""
         }
     }
 

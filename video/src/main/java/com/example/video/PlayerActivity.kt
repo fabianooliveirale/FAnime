@@ -46,6 +46,14 @@ class PlayerActivity : AppCompatActivity() {
         initMediaPlayerListener()
         initNextPrevious()
         refreshNextPreviou()
+        initButton()
+    }
+
+    private fun initButton() {
+        binding.backPressView.setOnClickListener {
+            saveWatchingVideo()
+            onBackPressed()
+        }
     }
 
     private fun refreshNextPreviou() {
@@ -102,6 +110,7 @@ class PlayerActivity : AppCompatActivity() {
                 binding.videoTitle.isGone = true
                 binding.shadowView.isGone = true
                 binding.playImageView.isGone = true
+                binding.backPressView.isGone = true
                 super.hide()
             }
 
@@ -111,6 +120,7 @@ class PlayerActivity : AppCompatActivity() {
                 binding.videoTitle.isGone = false
                 binding.shadowView.isGone = false
                 binding.playImageView.isGone = true
+                binding.backPressView.isGone = false
                 super.show()
             }
         }

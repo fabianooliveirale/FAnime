@@ -49,15 +49,16 @@ class SearchAnimeFragment : Fragment() {
         viewModel.animesCategoryLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResources.Loading -> {
-                    val teste = "loading"
+                    viewModel.getShowLoading().showLoading()
                 }
                 is NetworkResources.Succeeded -> {
+                    viewModel.getShowLoading().hideLoading()
                     if (binding.editText.text.isEmpty()) return@observe
                     viewModel.animesCategoryData = it.data
                     adapter?.replace(ArrayList(it.data))
                 }
                 is NetworkResources.Failure -> {
-                    val teste = "error"
+                    viewModel.getShowLoading().hideLoading()
                 }
             }
         }
