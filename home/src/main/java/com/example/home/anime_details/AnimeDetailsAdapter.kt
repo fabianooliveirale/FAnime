@@ -28,7 +28,7 @@ class AnimeDetailsAdapter(
                     itemClick(dataSet)
                 }
 
-                if(!showShimmer) shimmerViewContainer.hideShimmer()
+               // if(!showShimmer) shimmerViewContainer.hideShimmer()
             }
         }
     }

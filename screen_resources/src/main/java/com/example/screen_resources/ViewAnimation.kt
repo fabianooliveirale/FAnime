@@ -97,10 +97,10 @@ class ViewAnimation(
                 .interpolate(easeOut)
                 .onStart {
                     inAnimation = true
+                    view.isGone = false
                 }
                 .onEnd {
                     inAnimation = false
-                    view.isGone = true
                 }.playOn(view)
         }, delay)
     }
@@ -170,6 +170,24 @@ class ViewAnimation(
     ) {
         handler.postDelayed({
             YoYo.with(Techniques.FadeInDown)
+                .duration(duration)
+                .interpolate(easeOut)
+                .onStart {
+                    inAnimation = true
+                    view.isGone = false
+                }.onEnd {
+                    inAnimation = false
+                }.playOn(view)
+        }, delay)
+    }
+
+    fun fadeInUp(
+        view: View,
+        delay: Long = 0,
+        duration: Long = baseDurationAnime
+    ) {
+        handler.postDelayed({
+            YoYo.with(Techniques.FadeInUp)
                 .duration(duration)
                 .interpolate(easeOut)
                 .onStart {

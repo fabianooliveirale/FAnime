@@ -12,9 +12,11 @@ import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.router.Router
 import com.example.screen_resources.ShowLoading
+import com.example.screen_resources.ViewAnimation
 import kotlinx.coroutines.launch
 
 class AnimeDetailsViewModel(
+    private val animation: ViewAnimation,
     private val loading: ShowLoading,
     private val sharedPref: SharedPref,
     private val repository: HomeRepository,
@@ -23,9 +25,9 @@ class AnimeDetailsViewModel(
     private val baseImageUrl: String
 ) : ViewModel() {
 
-    private val _animeDetailsMutableLiveData: MutableLiveData<NetworkResources<List<com.example.model.AnimeDetailsResponse>>> =
+    private val _animeDetailsMutableLiveData: MutableLiveData<NetworkResources<List<AnimeDetailsResponse>>> =
         MutableLiveData()
-    val animeDetailsLiveData: LiveData<NetworkResources<List<com.example.model.AnimeDetailsResponse>>> =
+    val animeDetailsLiveData: LiveData<NetworkResources<List<AnimeDetailsResponse>>> =
         _animeDetailsMutableLiveData
 
     private val _animeEpResponsesMutableLiveData: MutableLiveData<NetworkResources<List<AnimeEpResponse>>> =
@@ -55,16 +57,5 @@ class AnimeDetailsViewModel(
     fun getBaseImageUrl() = baseImageUrl
     fun getSharedPref() = sharedPref
     fun getShowLoading() = loading
-    fun getFakeList(): ArrayList<AnimeEpResponse> {
-        val list = ArrayList<AnimeEpResponse>()
-        for (x in 0..10) {
-            list.add(
-                AnimeEpResponse(
-                    epNumberName = "Carregando Episódios"
-                )
-            )
-        }
-
-        return list
-    }
+    fun getAnimationView() = animation
 }

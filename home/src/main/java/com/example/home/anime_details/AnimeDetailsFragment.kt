@@ -123,6 +123,13 @@ class AnimeDetailsFragment : Fragment() {
                         titleTextView.text = anime?.name
                         toolbar.title = anime?.name
 
+                        viewModel.getAnimationView().slideInRight(binding.toolbar)
+                        viewModel.getAnimationView().fadeInDown(binding.titleTextView)
+                        viewModel.getAnimationView().fadeInRight(binding.yearTextView)
+                        viewModel.getAnimationView().fadeInRight(binding.genreTextView)
+                        viewModel.getAnimationView().slideInLeft(binding.imageView)
+                        viewModel.getAnimationView().slideInUp(binding.descriptionTextView)
+
                         val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.categoryImage}"
                         binding.imageView.loadFromGlide(imageUrl)
                     }
@@ -137,12 +144,9 @@ class AnimeDetailsFragment : Fragment() {
     private fun initLiveDataAnimeEp() {
         viewModel.animeEpResponseLiveData.observe(viewLifecycleOwner) { it ->
             when (it) {
-                is NetworkResources.Loading -> {
-                    val list = viewModel.getFakeList()
-                    adapter?.replaceList(list)
-                }
+                is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
-                    adapter?.hideShimmer()
+                    viewModel.getAnimationView().slideInUp(binding.recyclerView)
                     viewModel.animeEp = it.data
                     it.data.forEach { anime ->
                         val splitTitle = anime.title?.split(" ")
@@ -171,9 +175,7 @@ class AnimeDetailsFragment : Fragment() {
 
                     adapter?.replaceList(ArrayList(list))
                 }
-                is NetworkResources.Failure -> {
-                    adapter?.hideShimmer()
-                }
+                is NetworkResources.Failure -> {}
             }
         }
     }

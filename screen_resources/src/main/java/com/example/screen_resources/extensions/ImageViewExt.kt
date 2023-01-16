@@ -10,7 +10,7 @@ fun ImageView.loadFromGlide(imageUrl: String) {
         .with(this.context)
         .load(imageUrl)
         .centerCrop()
-        .error(com.example.screen_resources.R.drawable.ic_baseline_error)
+        .error(com.example.screen_resources.R.drawable.ic_f_anime)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .priority(Priority.HIGH)
         .placeholder(com.example.screen_resources.R.drawable.progress_loading)

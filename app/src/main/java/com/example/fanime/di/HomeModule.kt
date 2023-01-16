@@ -37,7 +37,7 @@ object HomeModule {
         }
 
         viewModel {
-            AnimeDetailsViewModel(get(), get(), get(), get(), get(), imageBaseUrl)
+            AnimeDetailsViewModel(get(), get(), get(), get(), get(), get(), imageBaseUrl)
         }
 
         viewModel {
