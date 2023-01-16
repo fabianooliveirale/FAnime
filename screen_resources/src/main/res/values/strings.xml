@@ -1,0 +1,5 @@
+<resources>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+</resources>
