@@ -8,6 +8,7 @@ import androidx.core.net.toUri
 import androidx.core.view.isGone
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
+import com.example.screen_resources.extensions.getLastItemNumber
 import com.example.video.databinding.ActivityPlayerBinding
 import com.example.video.model.VideoModelResponse
 import org.koin.android.ext.android.inject
@@ -60,13 +61,13 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.forward10ImageView.setOnClickListener {
-            Log.d("teste_teste_teste", "$currentPosition = ${currentPosition + 10}" )
+            Log.d("teste_teste_teste", "$currentPosition = ${currentPosition + 10}")
             currentPosition += TEN_SEC
             resumeVideoView()
         }
 
         binding.replay10ImageView.setOnClickListener {
-            Log.d("teste_teste_teste", "$currentPosition = ${currentPosition - 10}" )
+            Log.d("teste_teste_teste", "$currentPosition = ${currentPosition - 10}")
             currentPosition -= TEN_SEC
             resumeVideoView()
         }
@@ -189,8 +190,14 @@ class PlayerActivity : AppCompatActivity() {
                 is NetworkResources.Succeeded -> {
                     requesting = false
                     setVideoTitle(it.data.first())
-                    url = it.data.first().locationSd ?: it.data.first().location ?: ""
-                    startNewVideo(it.data.first().locationSd ?: it.data.first().location ?: "")
+
+                    url = if (it.data.first().locationSd != "") {
+                        it.data.first().locationSd
+                    } else {
+                        it.data.first().location
+                    }
+
+                    startNewVideo(url ?: "")
                 }
                 is NetworkResources.Failure -> {
                     requesting = false
@@ -200,8 +207,15 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setVideoTitle(dataSet: VideoModelResponse?) {
-        val epNumber = dataSet?.title?.split(" ")?.last()
-        binding.videoTitle.text = "Episódio: ${epNumber ?: ""}"
+        val epCount = dataSet?.title?.split(" ")?.count() ?: -1
+        val special =
+            if (dataSet?.title?.split(" ")?.contains("Especial") == true) "Especial - " else ""
+        if (epCount >= 0) {
+            val epNumber = dataSet?.title?.split(" ")?.getLastItemNumber(epCount - 1)
+                ?.replaceFirst("^0*".toRegex(), "")
+
+            binding.videoTitle.text = "${special}Episódio: $epNumber"
+        }
     }
 
     private fun initLiveDataNext() {
@@ -241,7 +255,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun startNewVideo(url: String) {
-        if(url == "") finish()
+        if (url == "") finish()
         binding.videoView.stopPlayback()
         binding.videoView.setVideoURI(url.toUri())
 
@@ -262,8 +276,8 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun saveWatchingVideo() {
-        if(url == null) return
-        if(url == "") return
+        if (url == null) return
+        if (url == "") return
         val watched = WatchingEp(
             epId = videoId,
             animeId = animeId,

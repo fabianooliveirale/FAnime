@@ -27,8 +27,6 @@ class AnimeDetailsAdapter(
                 mainView.setOnClickListener {
                     itemClick(dataSet)
                 }
-
-               // if(!showShimmer) shimmerViewContainer.hideShimmer()
             }
         }
     }

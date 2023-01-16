@@ -15,6 +15,7 @@ import com.example.model.AnimeDetailsResponse
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
 import com.example.screen_resources.BaseFragment
+import com.example.screen_resources.extensions.getLastItemNumber
 import com.example.screen_resources.extensions.loadFromGlide
 import com.example.screen_resources.isInt
 import com.example.video.PlayerActivity
@@ -157,10 +158,7 @@ class AnimeDetailsFragment : BaseFragment() {
 
                         val epCount = anime.title?.split(" ")?.count() ?: -1
                         if (epCount >= 0) {
-                            val epNumber = getLastItemNumber(
-                                anime.title?.split(" "),
-                                epCount - 1
-                            )?.replaceFirst("^0*".toRegex(), "")
+                            val epNumber = anime.title?.split(" ")?.getLastItemNumber( epCount - 1)?.replaceFirst("^0*".toRegex(), "")
 
                             anime.epNumber = epNumber
 
@@ -178,19 +176,6 @@ class AnimeDetailsFragment : BaseFragment() {
                 }
                 is NetworkResources.Failure -> {}
             }
-        }
-    }
-
-    private fun getLastItemNumber(split: List<String>?, count: Int): String? {
-        return try {
-            val isInt = split?.get(count)?.isInt() ?: false
-            if (isInt) {
-                return split?.get(count)
-            } else {
-                getLastItemNumber(split, count - 1)
-            }
-        } catch (e: Exception) {
-            return ""
         }
     }
 
