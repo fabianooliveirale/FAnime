@@ -90,6 +90,7 @@ class AllWatchingFragment : BaseFragment() {
     private fun initEditTextWatcher() {
         viewModel.setSearchCallBack {
             adapter?.replaceList(it)
+            binding.messageImageView.isGone = it.isNotEmpty()
         }
 
         binding.clearButton.setOnClickListener {

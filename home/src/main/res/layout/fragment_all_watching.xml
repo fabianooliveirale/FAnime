@@ -52,7 +52,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:clipToPadding="false"
         android:orientation="vertical"
@@ -62,4 +62,12 @@
         tools:context=".new_videos.NewVideosFragment"
         tools:itemCount="10"
         tools:listitem="@layout/adapter_anime_item_vertical_great" />
+    <com.example.screen_resources.components.MessageImageView
+        android:id="@+id/messageImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/anya"
+        android:text="Nenhum anime encontrado"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
 </LinearLayout>
