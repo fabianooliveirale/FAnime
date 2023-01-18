@@ -298,6 +298,8 @@ class PlayerActivity : AppCompatActivity() {
             image = imageUrl,
             time = Date()
         )
+
+        if(watched.title == null) return
         viewModel.getSharedPref().saveWatchingEp(watched)
     }
 
