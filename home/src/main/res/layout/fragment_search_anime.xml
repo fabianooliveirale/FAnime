@@ -22,6 +22,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
+            android:hint="Busca"
+            android:textColorHint="@color/dark_color"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:paddingVertical="16dp"
             android:paddingRight="4dp"
             android:textCursorDrawable="@drawable/cursor_color" />
@@ -40,7 +45,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:clipToPadding="false"
         android:orientation="vertical"
@@ -48,6 +53,14 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
         tools:context=".new_videos.NewVideosFragment"
-        tools:itemCount="10"
+        tools:itemCount="0"
         tools:listitem="@layout/adapter_anime_item" />
+
+    <com.example.screen_resources.components.MessageImageView
+        android:id="@+id/messageImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Procure um anime"
+        android:src="@drawable/toy_anya"
+        android:layout_gravity="center"/>
 </LinearLayout>

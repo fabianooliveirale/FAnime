@@ -91,7 +91,12 @@ class PlayerActivity : AppCompatActivity() {
             setVideoTitle(previousData)
             videoId = previousData?.videoId
             title = previousData?.title
-            startNewVideo(previousData?.locationSd ?: previousData?.location ?: "")
+            val url = if (nextData?.locationSd?.isNotEmpty() == true) {
+                nextData?.locationSd
+            } else {
+                nextData?.location
+            }
+            startNewVideo(url ?: "")
             refreshNextPreviou()
             saveWatchingVideo()
         }
@@ -102,7 +107,14 @@ class PlayerActivity : AppCompatActivity() {
             setVideoTitle(nextData)
             videoId = nextData?.videoId
             title = previousData?.title
-            startNewVideo(nextData?.locationSd ?: nextData?.location ?: "")
+
+            val url = if (nextData?.locationSd?.isNotEmpty() == true) {
+                nextData?.locationSd
+            } else {
+                nextData?.location
+            }
+
+            startNewVideo(url ?: "")
             refreshNextPreviou()
             saveWatchingVideo()
         }

@@ -59,6 +59,10 @@ class WatchingVideosFragment : BaseFragment() {
             searchTopMenu.setOnClickListener {
                 homeViewModel.searchCallBack()
             }
+
+            favoriteTopMenu.setOnClickListener {
+                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_FAVORITE.name)
+            }
         }
     }
 

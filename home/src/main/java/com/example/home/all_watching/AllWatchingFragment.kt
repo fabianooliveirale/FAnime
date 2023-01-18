@@ -44,9 +44,9 @@ class AllWatchingFragment : BaseFragment() {
 
     private fun initToolbar() {
         val title = when (args.where) {
-            WhereName.FROM_WATCHING.name -> "Ver todos Episódios"
-            WhereName.FROM_FAVORITE.name -> "Ver todos Favoritos"
-            else -> "Ver todos Animes"
+            WhereName.FROM_WATCHING.name -> "Episódios"
+            WhereName.FROM_FAVORITE.name -> "Favoritos"
+            else -> "Animes"
         }
 
         binding.toolbar.title = title

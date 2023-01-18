@@ -21,12 +21,12 @@
         android:visibility="gone"
         android:background="@drawable/background_shadow_opacity"/>
 
-    <ImageView
+    <ProgressBar
         android:id="@+id/loading"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
-        android:src="@drawable/progress_loading"
-        android:visibility="gone"
-        android:layout_gravity="center"/>
+        style="?android:attr/progress"
+        android:indeterminateTint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </FrameLayout>

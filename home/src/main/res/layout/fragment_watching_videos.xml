@@ -24,7 +24,24 @@
                 android:layout_marginStart="8dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="15dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
                 android:src="@drawable/ic_baseline_search"
+                android:text="Home"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/favoriteTopMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:layout_marginStart="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="15dp"
+                android:layout_marginLeft="4dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:src="@drawable/ic_baseline_favorite"
                 android:text="Home"
                 app:tint="@color/white" />
 
@@ -41,7 +58,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/allEpContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,20 +69,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:text="Continuar Assitindo - Epísódios"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView4"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="end"
-                    android:text="ver mais"
-                    android:textSize="18sp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/background_rounded"
+                    android:text="Mais"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -86,7 +113,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/allFavoriteContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,23 +121,34 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:text="Favoritos"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView3"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="end"
-                    android:text="ver mais"
-                    android:textSize="18sp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/background_rounded"
+                    android:text="Mais"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerFavorite"
@@ -130,7 +168,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/allAnimeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -141,20 +179,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:text="Continuar Assitindo - Animes"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView5"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="end"
-                    android:text="ver mais"
-                    android:textSize="18sp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_marginEnd="16dp"
+                    android:text="Mais"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/background_rounded"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewAnime"

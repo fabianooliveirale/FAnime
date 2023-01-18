@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
+import com.example.home.R
 import com.example.home.databinding.FragmentSearchAnimeBinding
 import com.example.network.NetworkResources
 import com.example.screen_resources.BaseFragment
@@ -43,6 +46,7 @@ class SearchAnimeFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.clearButton.setOnClickListener {
             binding.editText.text.clear()
+            setViewEmptyState()
         }
     }
 
@@ -57,11 +61,35 @@ class SearchAnimeFragment : BaseFragment() {
                     if (binding.editText.text.isEmpty()) return@observe
                     viewModel.animesCategoryData = it.data
                     adapter?.replace(ArrayList(it.data))
+
+                    if(ArrayList(it.data).isNotEmpty()) {
+                        binding.messageImageView.isGone = true
+                    } else {
+                        binding.messageImageView.isGone = false
+                        setViewErrorState()
+                    }
                 }
                 is NetworkResources.Failure -> {
+                    binding.messageImageView.isGone = false
+                    setViewErrorState()
                     viewModel.getShowLoading().hideLoading()
                 }
             }
+        }
+    }
+
+
+    private fun setViewEmptyState() {
+        binding.apply {
+            messageImageView.text = "Procure um anime"
+            messageImageView.image = ContextCompat.getDrawable(requireContext(), com.example.screen_resources.R.drawable.toy_anya)
+        }
+    }
+
+    private fun setViewErrorState() {
+        binding.apply {
+            messageImageView.text = "Nenhum anime encontrado"
+            messageImageView.image = ContextCompat.getDrawable(requireContext(), com.example.screen_resources.R.drawable.anya)
         }
     }
 
@@ -70,6 +98,7 @@ class SearchAnimeFragment : BaseFragment() {
         binding.editText.onTextChanged {
             binding.clearButton.isGone = it.isEmpty()
             if (it == "") {
+                setViewEmptyState()
                 adapter?.clear()
             }
         }

@@ -17,6 +17,7 @@ import com.example.network.NetworkResources
 import com.example.screen_resources.BaseFragment
 import com.example.screen_resources.extensions.getLastItemNumber
 import com.example.screen_resources.extensions.loadFromGlide
+import com.example.screen_resources.fromHtml
 import com.example.screen_resources.isInt
 import com.example.video.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -121,7 +122,7 @@ class AnimeDetailsFragment : BaseFragment() {
                     binding.apply {
                         yearTextView.text = anime?.year
                         genreTextView.text = anime?.categoryGenres
-                        descriptionTextView.text = anime?.categoryDescription
+                        descriptionTextView.text = anime?.categoryDescription?.fromHtml()
                         titleTextView.text = anime?.name
                         toolbar.title = anime?.name
 
@@ -162,7 +163,11 @@ class AnimeDetailsFragment : BaseFragment() {
 
                             anime.epNumber = epNumber
 
-                            anime.epNumberName = "${special}Episódio: $epNumber"
+                            anime.epNumberName = if(epNumber?.isNotEmpty() == true && splitTitle?.contains("Especial") == false) {
+                                "Episódio: $epNumber"
+                            } else {
+                                anime.title
+                            }
                         }
                     }
 
