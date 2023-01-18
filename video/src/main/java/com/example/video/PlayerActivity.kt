@@ -86,6 +86,7 @@ class PlayerActivity : AppCompatActivity() {
     private fun initNextPrevious() {
         binding.previousImageView.setOnClickListener {
             if (requesting) return@setOnClickListener
+            viewVisibility(true)
             stopVideo()
             currentPosition = 0
             setVideoTitle(previousData)
@@ -96,12 +97,15 @@ class PlayerActivity : AppCompatActivity() {
             } else {
                 nextData?.location
             }
+
             startNewVideo(url ?: "")
+            binding.backPressView.isGone = false
             refreshNextPreviou()
             saveWatchingVideo()
         }
         binding.nextImageView.setOnClickListener {
             if (requesting) return@setOnClickListener
+            viewVisibility(true)
             stopVideo()
             currentPosition = 0
             setVideoTitle(nextData)
@@ -115,6 +119,7 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             startNewVideo(url ?: "")
+            binding.backPressView.isGone = false
             refreshNextPreviou()
             saveWatchingVideo()
         }
@@ -136,29 +141,28 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun viewVisibility(isVisible: Boolean) {
+        binding.videoTitle.isGone = isVisible
+        binding.shadowView.isGone = isVisible
+        binding.backPressView.isGone = isVisible
+        binding.returnToStartView.isGone = isVisible
+        binding.forward10ImageView.isGone = isVisible
+        binding.replay10ImageView.isGone = isVisible
+    }
+
     private fun initMediaController() {
         mediaController = object : MediaController(this) {
             override fun hide() {
+                viewVisibility(true)
                 binding.previousImageView.isGone = true
                 binding.nextImageView.isGone = true
-                binding.videoTitle.isGone = true
-                binding.shadowView.isGone = true
-                binding.backPressView.isGone = true
-                binding.returnToStartView.isGone = true
-                binding.forward10ImageView.isGone = true
-                binding.replay10ImageView.isGone = true
                 super.hide()
             }
 
             override fun show() {
+                viewVisibility(false)
                 binding.previousImageView.isGone = previousData == null
                 binding.nextImageView.isGone = nextData == null
-                binding.videoTitle.isGone = false
-                binding.shadowView.isGone = false
-                binding.backPressView.isGone = false
-                binding.returnToStartView.isGone = false
-                binding.forward10ImageView.isGone = false
-                binding.replay10ImageView.isGone = false
                 super.show()
             }
         }

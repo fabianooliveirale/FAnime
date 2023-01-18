@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.home.databinding.AdapterAnimeItemBinding
 import com.example.model.AnimesCategoryResponse
+import com.example.screen_resources.extensions.loadFromGlide
 
 class AnimesCategoryAdapter(
-    private val dataSet: List<com.example.model.AnimesCategoryResponse>,
+    private val dataSet: List<AnimesCategoryResponse>,
     private val imageBaseUrl: String,
     private val itemClick: (String) -> Unit = {}
 ) :
@@ -18,7 +19,7 @@ class AnimesCategoryAdapter(
     class ViewHolder(private val binding: AdapterAnimeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            dataSet: com.example.model.AnimesCategoryResponse,
+            dataSet: AnimesCategoryResponse,
             imageBaseUrl: String,
             itemClick: (String) -> Unit
         ) {
@@ -29,12 +30,7 @@ class AnimesCategoryAdapter(
 
                 val imageUrl = "${imageBaseUrl}${dataSet.categoryImage}"
 
-                Glide
-                    .with(this.root.context)
-                    .load(imageUrl)
-                    .centerCrop()
-                    .placeholder(com.example.screen_resources.R.drawable.progress_loading)
-                    .into(binding.frontImageView)
+                binding.frontImageView.loadFromGlide(imageUrl)
 
                 mainView.setOnClickListener {
                     itemClick(dataSet.id ?: "")

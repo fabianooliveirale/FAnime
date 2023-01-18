@@ -153,9 +153,6 @@ class AnimeDetailsFragment : BaseFragment() {
                     viewModel.animeEp = it.data
                     it.data.forEach { anime ->
                         val splitTitle = anime.title?.split(" ")
-                        val special =
-                            if (splitTitle?.contains("Especial") == true) "Especial - " else ""
-
 
                         val epCount = anime.title?.split(" ")?.count() ?: -1
                         if (epCount >= 0) {
