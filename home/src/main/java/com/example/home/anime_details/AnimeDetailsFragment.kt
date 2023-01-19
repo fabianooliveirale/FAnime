@@ -8,17 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.home.databinding.FragmentAnimeDetailsBinding
 import com.example.model.AnimeDetailsResponse
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
 import com.example.screen_resources.BaseFragment
-import com.example.screen_resources.extensions.getLastItemNumber
 import com.example.screen_resources.extensions.loadFromGlide
+import com.example.screen_resources.extensions.onTextChanged
 import com.example.screen_resources.fromHtml
-import com.example.screen_resources.isInt
 import com.example.video.PlayerActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
@@ -31,6 +29,7 @@ class AnimeDetailsFragment : BaseFragment() {
     private val args: AnimeDetailsFragmentArgs by navArgs()
     private var anime: AnimeDetailsResponse? = null
     private var adapter: AnimeDetailsAdapter? = null
+    private var isNewEp: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +47,20 @@ class AnimeDetailsFragment : BaseFragment() {
         initLiveDataAnimeDetails()
         initLiveDataAnimeEp()
         initAdapter()
+        initOrderByView()
+        initEditTextWatcher()
+    }
+
+    private fun initOrderByView() {
+        binding.orderByView.setOnClickListener {
+            isNewEp = !isNewEp
+
+            val textOrder = if(isNewEp) "Novos" else "Antigos"
+
+            binding.orderByView.text = "Order por: $textOrder"
+
+            adapter?.reversed()
+        }
     }
 
     private fun initAdapter() {
@@ -63,6 +76,28 @@ class AnimeDetailsFragment : BaseFragment() {
         }
 
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun initEditTextWatcher() {
+        viewModel.setSearchCallBack {
+            adapter?.replaceList(it)
+            binding.messageImageView.isGone = it.isNotEmpty()
+            if(!isNewEp) {
+                adapter?.reversed()
+            }
+        }
+
+        binding.clearButton.setOnClickListener {
+            binding.editText.text.clear()
+        }
+
+        binding.editText.onTextChanged(viewModel.textSearchChange)
+        binding.editText.onTextChanged {
+            binding.clearButton.isGone = it.isEmpty()
+            if (it == "") {
+                adapter?.clear()
+            }
+        }
     }
 
     private fun setFavorite() {
@@ -130,6 +165,8 @@ class AnimeDetailsFragment : BaseFragment() {
                         viewModel.getAnimationView().fadeInDown(binding.titleTextView)
                         viewModel.getAnimationView().fadeInRight(binding.yearTextView)
                         viewModel.getAnimationView().fadeInRight(binding.genreTextView)
+                        viewModel.getAnimationView().fadeInRight(binding.editTextContainer)
+                        viewModel.getAnimationView().fadeInLeft(binding.orderByView)
                         viewModel.getAnimationView().slideInLeft(binding.imageView)
                         viewModel.getAnimationView().slideInUp(binding.descriptionTextView)
 
@@ -150,7 +187,7 @@ class AnimeDetailsFragment : BaseFragment() {
                 is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
                     viewModel.getAnimationView().slideInUp(binding.recyclerView)
-                    viewModel.animeEp = it.data
+                    viewModel.listEp = it.data
 
                     adapter?.replaceList(ArrayList(it.data))
                 }

@@ -13,6 +13,10 @@ import com.example.network.NetworkScope
 import com.example.router.Router
 import com.example.screen_resources.ShowLoading
 import com.example.screen_resources.ViewAnimation
+import com.example.screen_resources.extensions.debounce
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class AnimeDetailsViewModel(
@@ -23,19 +27,24 @@ class AnimeDetailsViewModel(
     private val networkScope: NetworkScope,
     private val router: Router,
     private val baseImageUrl: String
-) : ViewModel() {
+) : ViewModel() , CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Main + Job()
 
     private val _animeDetailsMutableLiveData: MutableLiveData<NetworkResources<List<AnimeDetailsResponse>>> =
         MutableLiveData()
     val animeDetailsLiveData: LiveData<NetworkResources<List<AnimeDetailsResponse>>> =
         _animeDetailsMutableLiveData
 
+
+    private var _searchCallList: (ArrayList<AnimeEpResponse>) -> Unit = {}
+
     private val _animeEpResponsesMutableLiveData: MutableLiveData<NetworkResources<List<AnimeEpResponse>>> =
         MutableLiveData()
     val animeEpResponseLiveData: LiveData<NetworkResources<List<AnimeEpResponse>>> =
         _animeEpResponsesMutableLiveData
 
-    var animeEp: List<AnimeEpResponse>? = null
+    var listEp: List<AnimeEpResponse> = ArrayList()
 
     fun getAnimeDetails(animeId: String) {
         viewModelScope.launch {
@@ -51,6 +60,22 @@ class AnimeDetailsViewModel(
                 repository.getAnimeEp(animeId)
             }
         }
+    }
+
+    val textSearchChange: (String?) -> Unit = debounce(
+        350L,
+        this
+    ) { searchString ->
+        if(searchString == "" || (searchString?.count() ?: 0) <= 2) {
+            _searchCallList(ArrayList(listEp))
+            return@debounce
+        }
+        val searchedList = listEp.filter { it.title?.uppercase()?.contains(searchString?.uppercase() ?: "") ?: false }
+        _searchCallList(ArrayList(searchedList))
+    }
+
+    fun setSearchCallBack(callBack: (ArrayList<AnimeEpResponse>) -> Unit) {
+        _searchCallList = callBack
     }
 
     fun getRouter() = router

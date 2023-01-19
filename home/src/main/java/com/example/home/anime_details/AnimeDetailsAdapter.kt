@@ -11,7 +11,7 @@ class AnimeDetailsAdapter(
     private val itemClick: (AnimeEpResponse) -> Unit = {}
 ) : RecyclerView.Adapter<AnimeDetailsAdapter.ViewHolder>() {
 
-    private val dataSet: ArrayList<AnimeEpResponse> = ArrayList()
+    private var dataSet: ArrayList<AnimeEpResponse> = ArrayList()
 
     class ViewHolder(private val binding: AdapterAnimeEpItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -49,6 +49,17 @@ class AnimeDetailsAdapter(
     fun replaceList(watchingList: ArrayList<AnimeEpResponse>) {
         dataSet.clear()
         dataSet.addAll(watchingList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun reversed() {
+        dataSet = ArrayList(dataSet.reversed())
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        dataSet.clear()
         notifyDataSetChanged()
     }
 }

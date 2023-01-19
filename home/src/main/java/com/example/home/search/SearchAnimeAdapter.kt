@@ -21,7 +21,6 @@ class SearchAnimeAdapter(
     class ViewHolder(private val binding: AdapterAnimeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            position: Int,
             dataSet: SearchResponse,
             imageBaseUrl: String,
             itemClick: (String) -> Unit
@@ -52,7 +51,7 @@ class SearchAnimeAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val dataSet = dataSet[position]
-        viewHolder.bind(position, dataSet, imageBaseUrl, itemClick)
+        viewHolder.bind(dataSet, imageBaseUrl, itemClick)
     }
 
     override fun getItemCount() = dataSet.size

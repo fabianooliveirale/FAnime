@@ -30,7 +30,7 @@ class AllWatchingViewModel(
             _searchCallList(list)
             return@debounce
         }
-        val searchedList = list.filter { it.title?.uppercase()?.startsWith(searchString?.uppercase() ?: "") ?: false }
+        val searchedList = list.filter { it.title?.uppercase()?.contains(searchString?.uppercase() ?: "") ?: false }
         _searchCallList(ArrayList(searchedList))
     }
 
