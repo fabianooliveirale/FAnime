@@ -165,8 +165,8 @@ class AnimeDetailsFragment : BaseFragment() {
                         viewModel.getAnimationView().fadeInDown(binding.titleTextView)
                         viewModel.getAnimationView().fadeInRight(binding.yearTextView)
                         viewModel.getAnimationView().fadeInRight(binding.genreTextView)
-                        viewModel.getAnimationView().fadeInRight(binding.editTextContainer)
-                        viewModel.getAnimationView().fadeInLeft(binding.orderByView)
+                        viewModel.getAnimationView().slideInRight(binding.editTextContainer)
+                        viewModel.getAnimationView().slideInLeft(binding.orderByView)
                         viewModel.getAnimationView().slideInLeft(binding.imageView)
                         viewModel.getAnimationView().slideInUp(binding.descriptionTextView)
 
