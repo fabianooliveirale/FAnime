@@ -1,5 +1,6 @@
 package com.example.video.api
 
+import com.example.model.AnimeDetailsResponse
 import com.example.video.model.VideoModelResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -8,6 +9,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface VideoService {
+    @Headers("Content-Type: application/json")
+    @GET("play-api.php")
+    suspend fun getAnimeDetails(@Query("info") animeId: String) : Response<List<AnimeDetailsResponse>>
+
+
     @Headers("Content-Type: application/json")
     @GET("play-api.php")
     suspend fun getLastReleases(@Query("episodios") episodesId: String): Response<List<VideoModelResponse>>

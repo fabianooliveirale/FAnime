@@ -18,7 +18,7 @@ class SharedPref(private val context: Context, private val gson: Gson) {
             val item = list.find { it.animeId == animeEp.animeId && it.epId == animeEp.epId }
             val index = if (item != null) list.indexOf(item) else -1
             if (index < 0) list.add(animeEp) else list[index] = animeEp
-            val takeList = list.take(10).sortedByDescending { it.time }
+            val takeList = list.take(20).sortedByDescending { it.time }
             with(getSharedPref().edit()) {
                 putString(SharedPrefEnum.WATCHED_EP.name, modelToJson(takeList))
                 commit()

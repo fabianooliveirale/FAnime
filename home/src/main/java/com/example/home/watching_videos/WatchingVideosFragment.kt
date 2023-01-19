@@ -41,15 +41,18 @@ class WatchingVideosFragment : BaseFragment() {
     private fun initAllWatching() {
         binding.apply {
             allAnimeContainer.setOnClickListener {
-                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_ANIME.name)
+                viewModel.getRouter()
+                    .goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_ANIME.name)
             }
 
             allEpContainer.setOnClickListener {
-                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_WATCHING.name)
+                viewModel.getRouter()
+                    .goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_WATCHING.name)
             }
 
             allFavoriteContainer.setOnClickListener {
-                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_FAVORITE.name)
+                viewModel.getRouter()
+                    .goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_FAVORITE.name)
             }
         }
     }
@@ -61,37 +64,41 @@ class WatchingVideosFragment : BaseFragment() {
             }
 
             favoriteTopMenu.setOnClickListener {
-                viewModel.getRouter().goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_FAVORITE.name)
+                viewModel.getRouter()
+                    .goToAllWatching(binding.root, AllWatchingFragment.WhereName.FROM_FAVORITE.name)
             }
         }
     }
 
     private fun initAdapters() {
-        adapterFavorite = WatchingEpAdapter(viewModel.getImageUrl()) {
-            viewModel.getRouter().goToAnimeDetails(
-                binding.root,
-                it.animeId ?: ""
-            )
-        }
+        adapterFavorite =
+            WatchingEpAdapter(WatchingEpAdapter.Type.ANIME_NAME, viewModel.getImageUrl()) {
+                viewModel.getRouter().goToAnimeDetails(
+                    binding.root,
+                    it.animeId ?: ""
+                )
+            }
 
-        adapterEp = WatchingEpAdapter(viewModel.getImageUrl(), true) {
-            viewModel.getRouter().goToVideo(
-                activity,
-                PlayerActivity(),
-                it.epId ?: "",
-                it.animeId ?: "",
-                it.title ?: "",
-                it.image ?: "",
-                it.position ?: 0
-            )
-        }
+        adapterEp =
+            WatchingEpAdapter(WatchingEpAdapter.Type.EP_NAME, viewModel.getImageUrl(), true) {
+                viewModel.getRouter().goToVideo(
+                    activity,
+                    PlayerActivity(),
+                    it.epId ?: "",
+                    it.animeId ?: "",
+                    it.title ?: "",
+                    it.image ?: "",
+                    it.position ?: 0
+                )
+            }
 
-        adapterAnime = WatchingEpAdapter(viewModel.getImageUrl()) {
-            viewModel.getRouter().goToAnimeDetails(
-                binding.root,
-                it.animeId ?: ""
-            )
-        }
+        adapterAnime =
+            WatchingEpAdapter(WatchingEpAdapter.Type.ANIME_NAME, viewModel.getImageUrl()) {
+                viewModel.getRouter().goToAnimeDetails(
+                    binding.root,
+                    it.animeId ?: ""
+                )
+            }
     }
 
     override fun onResume() {

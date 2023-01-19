@@ -151,30 +151,8 @@ class AnimeDetailsFragment : BaseFragment() {
                 is NetworkResources.Succeeded -> {
                     viewModel.getAnimationView().slideInUp(binding.recyclerView)
                     viewModel.animeEp = it.data
-                    it.data.forEach { anime ->
-                        val splitTitle = anime.title?.split(" ")
 
-                        val epCount = anime.title?.split(" ")?.count() ?: -1
-                        if (epCount >= 0) {
-                            val epNumber = anime.title?.split(" ")?.getLastItemNumber( epCount - 1)?.replaceFirst("^0*".toRegex(), "")
-
-                            anime.epNumber = epNumber
-
-                            anime.epNumberName = if(epNumber?.isNotEmpty() == true && splitTitle?.contains("Especial") == false) {
-                                "Episódio: $epNumber"
-                            } else {
-                                anime.title
-                            }
-                        }
-                    }
-
-                    val list = try {
-                        it.data.sortedByDescending { it.epNumber?.toInt() }
-                    } catch (e: Exception) {
-                        it.data
-                    }
-
-                    adapter?.replaceList(ArrayList(list))
+                    adapter?.replaceList(ArrayList(it.data))
                 }
                 is NetworkResources.Failure -> {}
             }
@@ -185,6 +163,7 @@ class AnimeDetailsFragment : BaseFragment() {
         val watched = WatchingEp(
             animeId = anime?.id,
             title = anime?.name,
+            animeName = anime?.name,
             image = anime?.categoryImage,
             time = Date()
         )

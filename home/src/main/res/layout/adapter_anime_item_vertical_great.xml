@@ -41,37 +41,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="3dp"
-            android:layout_weight="1"
             android:ellipsize="end"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:maxLines="2"
+            android:maxLines="4"
             android:textSize="11sp"
             tools:text="One Piece"
             tools:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/epTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="4.5dp"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:textAlignment="center"
-            android:textSize="11sp"
-            tools:text="Episódio: 1042" />
+
     </LinearLayout>
 </LinearLayout>

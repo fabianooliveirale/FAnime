@@ -56,6 +56,13 @@ class AllWatchingFragment : BaseFragment() {
     }
 
     private fun initAdapter() {
+
+        val type = when (args.where) {
+            WhereName.FROM_WATCHING.name -> AllWatchingAdapter.Type.EP_NAME
+            WhereName.FROM_FAVORITE.name -> AllWatchingAdapter.Type.ANIME_NAME
+            else -> AllWatchingAdapter.Type.ANIME_NAME
+        }
+
         val location = args.where
          viewModel.list = when (location) {
             WhereName.FROM_WATCHING.name -> viewModel.getSharedPref().getWatchingEp()
@@ -63,7 +70,7 @@ class AllWatchingFragment : BaseFragment() {
             else -> ArrayList(viewModel.getSharedPref().getWatchingEp().distinctBy { it.animeId })
         }
 
-        adapter = AllWatchingAdapter(viewModel.getImageUrl(), location ==  WhereName.FROM_WATCHING.name) {
+        adapter = AllWatchingAdapter(type, viewModel.getImageUrl(), location ==  WhereName.FROM_WATCHING.name) {
             if(location == WhereName.FROM_WATCHING.name) {
                 viewModel.getRouter().goToVideo(
                     activity,

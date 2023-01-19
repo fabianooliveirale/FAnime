@@ -12,17 +12,15 @@ class AnimeDetailsAdapter(
 ) : RecyclerView.Adapter<AnimeDetailsAdapter.ViewHolder>() {
 
     private val dataSet: ArrayList<AnimeEpResponse> = ArrayList()
-    private var showShimmer = true
 
     class ViewHolder(private val binding: AdapterAnimeEpItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             dataSet: AnimeEpResponse,
-            itemClick: (AnimeEpResponse) -> Unit,
-            showShimmer: Boolean = true
+            itemClick: (AnimeEpResponse) -> Unit
         ) {
             binding.apply {
-                titleTextView.text = dataSet.epNumberName
+                titleTextView.text = dataSet.title
 
                 mainView.setOnClickListener {
                     itemClick(dataSet)
@@ -42,7 +40,7 @@ class AnimeDetailsAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val dataSet = dataSet[position]
-        viewHolder.bind(dataSet, itemClick, showShimmer)
+        viewHolder.bind(dataSet, itemClick)
     }
 
     override fun getItemCount() = dataSet.size
@@ -51,13 +49,6 @@ class AnimeDetailsAdapter(
     fun replaceList(watchingList: ArrayList<AnimeEpResponse>) {
         dataSet.clear()
         dataSet.addAll(watchingList)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun hideShimmer() {
-        dataSet.clear()
-        showShimmer = false
         notifyDataSetChanged()
     }
 }

@@ -14,6 +14,7 @@ import com.example.screen_resources.extensions.loadFromGlide
 import com.example.screen_resources.extensions.toMinutes
 
 class WatchingEpAdapter(
+    private val type: Type,
     private val imageBaseUrl: String,
     private val showPosition: Boolean = false,
     private val itemClick: (WatchingEp) -> Unit = { }
@@ -22,29 +23,25 @@ class WatchingEpAdapter(
 
     private val dataSet: ArrayList<WatchingEp> = ArrayList()
 
+    enum class Type {
+        EP_NAME, ANIME_NAME
+    }
+
     class ViewHolder(private val binding: AdapterAnimeItemVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
+            type: Type,
             showPosition: Boolean,
             dataSet: WatchingEp,
             imageBaseUrl: String,
             itemClick: (WatchingEp) -> Unit
         ) {
             binding.apply {
-                val splitTitle = dataSet.title?.split(" ")
-                val count = splitTitle?.count()?.minus(1)
-                var name = splitTitle?.mapIndexed { index, s ->
-                    if (index != count && index != ((count ?: 0) - 1)) s else ""
-                }?.joinToString(" ") ?: ""
-
-                if(name.isBlank()) {
-                    name = dataSet.title ?: ""
+                titleTextView.text = if(type == Type.EP_NAME) {
+                    dataSet.title
+                } else {
+                    dataSet.animeName
                 }
-                titleTextView.text = name
-
-                val epNumber = dataSet.title?.split(" ")?.last()
-                epTextView.text = "Episódio: $epNumber"
-                epTextView.isGone = !showPosition
 
                 val imageUrl = "${imageBaseUrl}${dataSet.image}"
 
@@ -71,7 +68,7 @@ class WatchingEpAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val dataSet = dataSet[position]
-        viewHolder.bind(showPosition, dataSet, imageBaseUrl, itemClick)
+        viewHolder.bind(type, showPosition, dataSet, imageBaseUrl, itemClick)
     }
 
 

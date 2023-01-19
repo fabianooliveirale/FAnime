@@ -6,9 +6,13 @@ import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.isGone
+import com.example.model.AnimeDetailsResponse
+import com.example.model.AnimeEpResponse
 import com.example.model.WatchingEp
 import com.example.network.NetworkResources
 import com.example.screen_resources.extensions.getLastItemNumber
+import com.example.screen_resources.extensions.loadFromGlide
+import com.example.screen_resources.fromHtml
 import com.example.video.databinding.ActivityPlayerBinding
 import com.example.video.model.VideoModelResponse
 import org.koin.android.ext.android.inject
@@ -21,6 +25,7 @@ class PlayerActivity : AppCompatActivity() {
         const val TEN_SEC = 10000
     }
 
+    private var isLoading: Boolean = false
     private lateinit var binding: ActivityPlayerBinding
     private val viewModel: VideoViewModel by inject()
     private var mediaController: MediaController? = null
@@ -33,6 +38,7 @@ class PlayerActivity : AppCompatActivity() {
     private var requesting = false
     private var currentPosition = 0
     private var url: String? = null
+    private var anime: AnimeDetailsResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +52,14 @@ class PlayerActivity : AppCompatActivity() {
         initLiveData()
         initLiveDataNext()
         initLiveDataPrevious()
+        initLiveDataAnimeDetails()
         getVideoRequest()
         initMediaController()
         initMediaPlayerListener()
         initNextPrevious()
         refreshNextPreviou()
         initButton()
+        viewModel.getAnimeDetails(animeId ?: "")
     }
 
     private fun initButton() {
@@ -87,15 +95,17 @@ class PlayerActivity : AppCompatActivity() {
         binding.previousImageView.setOnClickListener {
             if (requesting) return@setOnClickListener
             viewVisibility(true)
+            mediaController?.hide()
             stopVideo()
             currentPosition = 0
             setVideoTitle(previousData)
             videoId = previousData?.videoId
             title = previousData?.title
-            val url = if (nextData?.locationSd?.isNotEmpty() == true) {
-                nextData?.locationSd
+
+            val url = if (previousData?.locationSd?.isNotEmpty() == true) {
+                previousData?.locationSd
             } else {
-                nextData?.location
+                previousData?.location
             }
 
             startNewVideo(url ?: "")
@@ -106,18 +116,18 @@ class PlayerActivity : AppCompatActivity() {
         binding.nextImageView.setOnClickListener {
             if (requesting) return@setOnClickListener
             viewVisibility(true)
+            mediaController?.hide()
             stopVideo()
             currentPosition = 0
             setVideoTitle(nextData)
             videoId = nextData?.videoId
-            title = previousData?.title
+            title = nextData?.title
 
             val url = if (nextData?.locationSd?.isNotEmpty() == true) {
                 nextData?.locationSd
             } else {
                 nextData?.location
             }
-
             startNewVideo(url ?: "")
             binding.backPressView.isGone = false
             refreshNextPreviou()
@@ -135,6 +145,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun initMediaPlayerListener() {
         binding.videoView.setOnInfoListener { _, _, _ ->
+            isLoading = false
             binding.loading.isGone = true
             startLoopPosition()
             true
@@ -144,7 +155,11 @@ class PlayerActivity : AppCompatActivity() {
     private fun viewVisibility(isVisible: Boolean) {
         binding.videoTitle.isGone = isVisible
         binding.shadowView.isGone = isVisible
-        binding.backPressView.isGone = isVisible
+        if (isLoading) {
+            binding.backPressView.isGone = false
+        } else {
+            binding.backPressView.isGone = isVisible
+        }
         binding.returnToStartView.isGone = isVisible
         binding.forward10ImageView.isGone = isVisible
         binding.replay10ImageView.isGone = isVisible
@@ -174,12 +189,14 @@ class PlayerActivity : AppCompatActivity() {
         super.onResume()
         saveWatchingVideo()
         binding.loading.isGone = false
+        isLoading = true
     }
 
     private fun stopVideo() {
         saveWatchingVideo()
         binding.videoView.pause()
         binding.loading.isGone = false
+        isLoading = true
         viewModel.getLoop().stop()
     }
 
@@ -223,15 +240,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setVideoTitle(dataSet: VideoModelResponse?) {
-        val epCount = dataSet?.title?.split(" ")?.count() ?: -1
-        val special =
-            if (dataSet?.title?.split(" ")?.contains("Especial") == true) "Especial - " else ""
-        if (epCount >= 0) {
-            val epNumber = dataSet?.title?.split(" ")?.getLastItemNumber(epCount - 1)
-                ?.replaceFirst("^0*".toRegex(), "")
-
-            binding.videoTitle.text = "${special}Episódio: $epNumber"
-        }
+        binding.videoTitle.text = dataSet?.title
     }
 
     private fun initLiveDataNext() {
@@ -247,6 +256,20 @@ class PlayerActivity : AppCompatActivity() {
                 is NetworkResources.Failure -> {
                     requesting = false
                     nextData = null
+                }
+            }
+        }
+    }
+
+    private fun initLiveDataAnimeDetails() {
+        viewModel.animeDetailsLiveData.observe(this) {
+            when (it) {
+                is NetworkResources.Loading -> {
+                }
+                is NetworkResources.Succeeded -> {
+                    anime = it.data.first()
+                }
+                is NetworkResources.Failure -> {
                 }
             }
         }
@@ -295,6 +318,7 @@ class PlayerActivity : AppCompatActivity() {
         if (url == null) return
         if (url == "") return
         val watched = WatchingEp(
+            animeName = anime?.name,
             epId = videoId,
             animeId = animeId,
             title = title,
@@ -303,7 +327,7 @@ class PlayerActivity : AppCompatActivity() {
             time = Date()
         )
 
-        if(watched.title == null) return
+        if (watched.title == null || watched.animeName == null) return
         viewModel.getSharedPref().saveWatchingEp(watched)
     }
 

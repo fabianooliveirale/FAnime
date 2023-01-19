@@ -2,6 +2,7 @@ package com.example.home.new_videos
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -26,15 +27,15 @@ class NewVideosAdapter(
             itemClick: (NewVideosResponse) -> Unit
         ) {
             binding.apply {
-                val splitTitle = dataSet.title?.split(" ")
-                val count = splitTitle?.count()?.minus(1)
-                val name = splitTitle?.mapIndexed { index, s ->
-                    if (index != count && index != ((count ?: 0) - 1)) s else ""
-                }?.joinToString(" ") ?: ""
-                titleTextView.text = name
+//                val splitTitle = dataSet.title?.split(" ")
+//                val count = splitTitle?.count()?.minus(1)
+//                val name = splitTitle?.mapIndexed { index, s ->
+//                    if (index != count && index != ((count ?: 0) - 1)) s else ""
+//                }?.joinToString(" ") ?: ""
+                titleTextView.text = dataSet.title
 
                 val epNumber = dataSet.title?.split(" ")?.last()
-                epTextView.text = "Episódio: $epNumber"
+                epTextView.isGone = true
 
                 val imageUrl = "${imageBaseUrl}${dataSet.categoryImage}"
 

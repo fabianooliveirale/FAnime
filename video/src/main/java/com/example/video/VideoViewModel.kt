@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dao.SharedPref
+import com.example.model.AnimeDetailsResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
 import com.example.screen_resources.Loop
@@ -23,6 +24,11 @@ class VideoViewModel(
 ) : ViewModel(), CoroutineScope {
 
     override val coroutineContext = Dispatchers.IO + Job()
+
+    private val _animeDetailsMutableLiveData: MutableLiveData<NetworkResources<List<AnimeDetailsResponse>>> =
+        MutableLiveData()
+    val animeDetailsLiveData: LiveData<NetworkResources<List<AnimeDetailsResponse>>> =
+        _animeDetailsMutableLiveData
 
     private val _videoModelMutableLiveData: MutableLiveData<NetworkResources<List<VideoModelResponse>>> =
         MutableLiveData()
@@ -43,6 +49,14 @@ class VideoViewModel(
         viewModelScope.launch {
             networkScope.launch(_videoModelMutableLiveData) {
                 repository.getLastReleases(videoId)
+            }
+        }
+    }
+
+    fun getAnimeDetails(animeId: String) {
+        viewModelScope.launch {
+            networkScope.launch(_animeDetailsMutableLiveData) {
+                repository.getAnimeDetails(animeId)
             }
         }
     }

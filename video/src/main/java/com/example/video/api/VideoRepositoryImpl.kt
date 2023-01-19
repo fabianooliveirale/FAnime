@@ -8,6 +8,13 @@ class VideoRepositoryImpl(
     private val service: VideoService
 ) : VideoRepository {
 
+    override suspend fun getAnimeDetails(animeId: String): List<com.example.model.AnimeDetailsResponse> {
+        return networkBuilder.doRequest {
+            service.getAnimeDetails(animeId)
+        }
+    }
+
+
     override suspend fun getLastReleases(episodesId: String): List<VideoModelResponse> {
        return networkBuilder.doRequest {
             service.getLastReleases(episodesId)

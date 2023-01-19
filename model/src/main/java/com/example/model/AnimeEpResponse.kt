@@ -8,9 +8,7 @@ data class AnimeEpResponse(
     @SerializedName("category_id")
     var categoryId: String? = null,
     @SerializedName("title")
-    var title: String? = null,
-    var epNumber: String? = null,
-    var epNumberName: String? = null
+    var title: String? = null
 )
 
 
