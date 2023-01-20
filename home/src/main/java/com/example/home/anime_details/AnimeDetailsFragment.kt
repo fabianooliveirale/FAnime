@@ -57,7 +57,7 @@ class AnimeDetailsFragment : BaseFragment() {
 
             val textOrder = if(isNewEp) "Novos" else "Antigos"
 
-            binding.orderByView.text = "Order por: $textOrder"
+            binding.orderByView.text = "Ordenar por: $textOrder"
 
             adapter?.reversed()
         }

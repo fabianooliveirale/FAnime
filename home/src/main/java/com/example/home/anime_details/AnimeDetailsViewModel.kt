@@ -66,10 +66,6 @@ class AnimeDetailsViewModel(
         350L,
         this
     ) { searchString ->
-        if(searchString == "" || (searchString?.count() ?: 0) <= 2) {
-            _searchCallList(ArrayList(listEp))
-            return@debounce
-        }
         val searchedList = listEp.filter { it.title?.uppercase()?.contains(searchString?.uppercase() ?: "") ?: false }
         _searchCallList(ArrayList(searchedList))
     }

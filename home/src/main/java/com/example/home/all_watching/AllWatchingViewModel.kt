@@ -26,10 +26,6 @@ class AllWatchingViewModel(
         350L,
         this
     ) { searchString ->
-        if(searchString == "" || (searchString?.count() ?: 0) <= 2) {
-            _searchCallList(list)
-            return@debounce
-        }
         val searchedList = list.filter { it.title?.uppercase()?.contains(searchString?.uppercase() ?: "") ?: false }
         _searchCallList(ArrayList(searchedList))
     }
