@@ -181,7 +181,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:orientation="vertical"
                     android:paddingVertical="12dp"
-                    tools:visibility="gone"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:context=".new_videos.NewVideosFragment"
                     tools:itemCount="10"

@@ -18,7 +18,7 @@ class SharedPref(private val context: Context, private val gson: Gson) {
             val item = list.find { it.animeId == animeEp.animeId && it.epId == animeEp.epId }
             val index = if (item != null) list.indexOf(item) else -1
             if (index < 0) list.add(animeEp) else list[index] = animeEp
-            val takeList = list.take(20).sortedByDescending { it.time }
+            val takeList = list.sortedByDescending { it.time }
             with(getSharedPref().edit()) {
                 putString(SharedPrefEnum.WATCHED_EP.name, modelToJson(takeList))
                 commit()
@@ -81,7 +81,17 @@ class SharedPref(private val context: Context, private val gson: Gson) {
     fun getWatchingEp(): ArrayList<WatchingEp> {
         return try {
             val valueResult = getSharedPref().getString(SharedPrefEnum.WATCHED_EP.name, "") ?: ""
-            jsonToArrayList(valueResult)
+            ArrayList(jsonToArrayList<WatchingEp>(valueResult).take(20))
+        } catch (e: Exception) {
+            Log.d("SharedPref", "getWatchingEp - Get ERRO")
+            arrayListOf()
+        }
+    }
+
+    fun getWatchingEpByAnime(animeId: String): ArrayList<WatchingEp> {
+        return try {
+            val valueResult = getSharedPref().getString(SharedPrefEnum.WATCHED_EP.name, "") ?: ""
+            ArrayList(jsonToArrayList<WatchingEp>(valueResult).filter { it.animeId == animeId })
         } catch (e: Exception) {
             Log.d("SharedPref", "getWatchingEp - Get ERRO")
             arrayListOf()

@@ -44,7 +44,7 @@ class AnimeDetailsViewModel(
     val animeEpResponseLiveData: LiveData<NetworkResources<List<AnimeEpResponse>>> =
         _animeEpResponsesMutableLiveData
 
-    var listEp: List<AnimeEpResponse> = ArrayList()
+    var listEp: ArrayList<AnimeEpResponse> = ArrayList()
 
     fun getAnimeDetails(animeId: String) {
         viewModelScope.launch {

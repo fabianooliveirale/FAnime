@@ -103,36 +103,40 @@ class WatchingVideosFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        updateFavorite()
-        updateWatchingEpList()
-        updateWatchingAnimeList()
+        val firstListIsEmpty = updateFavorite()
+        val secondListIsEmpty = updateWatchingEpList()
+        val thirdListIsEmpty = updateWatchingAnimeList()
+        binding.errorImage.isGone = !(firstListIsEmpty && secondListIsEmpty && thirdListIsEmpty)
     }
 
-    private fun updateFavorite() {
+    private fun updateFavorite(): Boolean {
         val list = viewModel.getSharedPref().getFavoriteEp()
 
         adapterFavorite?.replaceList(ArrayList(list))
         binding.recyclerFavorite.adapter = adapterFavorite
 
         binding.favoriteContainer.isGone = list.isEmpty()
+        return list.isEmpty()
     }
 
-    private fun updateWatchingEpList() {
+    private fun updateWatchingEpList(): Boolean {
         val list = viewModel.getSharedPref().getWatchingEp()
 
         adapterEp?.replaceList(list)
         binding.recyclerViewEp.adapter = adapterEp
 
         binding.continueWatchingEpContainer.isGone = list.isEmpty()
+        return list.isEmpty()
     }
 
-    private fun updateWatchingAnimeList() {
+    private fun updateWatchingAnimeList(): Boolean {
         val list = viewModel.getSharedPref().getWatchingEp().distinctBy { it.animeId }
 
         adapterAnime?.replaceList(ArrayList(list))
         binding.recyclerViewAnime.adapter = adapterAnime
 
         binding.continueWatchingAnimeContainer.isGone = list.isEmpty()
+        return list.isEmpty()
     }
 
     override fun onDestroy() {

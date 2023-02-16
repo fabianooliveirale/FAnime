@@ -51,11 +51,16 @@ class AnimeDetailsFragment : BaseFragment() {
         initEditTextWatcher()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateList()
+    }
+
     private fun initOrderByView() {
         binding.orderByView.setOnClickListener {
             isNewEp = !isNewEp
 
-            val textOrder = if(isNewEp) "Novos" else "Antigos"
+            val textOrder = if (isNewEp) "Novos" else "Antigos"
 
             binding.orderByView.text = "Ordenar por: $textOrder"
 
@@ -82,7 +87,7 @@ class AnimeDetailsFragment : BaseFragment() {
         viewModel.setSearchCallBack {
             adapter?.replaceList(it)
             binding.messageImageView.isGone = it.isNotEmpty()
-            if(!isNewEp) {
+            if (!isNewEp) {
                 adapter?.reversed()
             }
         }
@@ -186,14 +191,33 @@ class AnimeDetailsFragment : BaseFragment() {
             when (it) {
                 is NetworkResources.Loading -> {}
                 is NetworkResources.Succeeded -> {
+                    viewModel.listEp = ArrayList(it.data)
                     viewModel.getAnimationView().slideInUp(binding.recyclerView)
-                    viewModel.listEp = it.data
-
-                    adapter?.replaceList(ArrayList(it.data))
+                    binding.recyclerView.isGone = false
+                    updateList()
                 }
                 is NetworkResources.Failure -> {}
             }
         }
+    }
+
+    private fun updateList() {
+        val allWatchingEp =
+            viewModel.getSharedPref().getWatchingEpByAnime(args.animeId ?: "")
+        allWatchingEp.forEach { watchingEp ->
+            val item =
+                viewModel.listEp.firstOrNull { it.videoId == watchingEp.epId }
+                    ?: return@forEach
+
+            val index = viewModel.listEp.indexOf(item)
+
+            if(index >= 0 ) {
+                item.isWatchingEp = true
+                viewModel.listEp[index] = item
+            }
+        }
+
+        adapter?.replaceList(ArrayList(viewModel.listEp))
     }
 
     private fun saveFavoriteAnime() {

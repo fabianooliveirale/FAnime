@@ -3,6 +3,8 @@ package com.example.home.anime_details
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.example.home.databinding.AdapterAnimeEpItemBinding
 import com.example.model.*
@@ -22,6 +24,19 @@ class AnimeDetailsAdapter(
             binding.apply {
                 titleTextView.text = dataSet.title
 
+                mainView.background = if (dataSet.isWatchingEp) {
+                    ContextCompat.getDrawable(
+                        mainView.context,
+                        com.example.screen_resources.R.drawable.background_rounded_watching
+                    )
+                } else {
+                    ContextCompat.getDrawable(
+                        mainView.context,
+                        com.example.screen_resources.R.drawable.background_rounded
+                    )
+                }
+
+                binding.iconView.isGone = !dataSet.isWatchingEp
                 mainView.setOnClickListener {
                     itemClick(dataSet)
                 }

@@ -52,6 +52,15 @@
             android:layout_height="1dp"
             android:background="@color/dark_color" />
 
+        <com.example.screen_resources.components.MessageImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/errorImage"
+            android:src="@drawable/anya"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="A tua lista está vázia!"/>
+
         <LinearLayout
             android:id="@+id/continueWatchingEpContainer"
             android:layout_width="match_parent"
