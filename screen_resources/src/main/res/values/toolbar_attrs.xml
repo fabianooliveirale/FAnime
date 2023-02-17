@@ -21,6 +21,13 @@
         <attr name="android:tint"/>
     </declare-styleable>
 
+    <declare-styleable name="RefreshImageView">
+        <attr name="android:text" />
+        <attr name="android:src" />
+        <attr name="android:textColor" />
+        <attr name="android:tint"/>
+    </declare-styleable>
+
     <declare-styleable name="BottomNavigationView">
         <attr name="bottomViewPaddingHorizontal" format="dimension" />
         <attr name="bottomBackgroundColor" format="color" />

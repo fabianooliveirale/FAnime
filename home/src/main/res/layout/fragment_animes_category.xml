@@ -13,6 +13,14 @@
         android:layout_height="wrap_content"
         android:text="Categorias" />
 
+    <com.example.screen_resources.components.RefreshImageView
+        android:id="@+id/refreshView"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

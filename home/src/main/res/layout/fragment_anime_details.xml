@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".anime_details.AnimeDetailsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -34,6 +34,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -45,6 +46,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/animeDetailContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -118,21 +120,22 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/orderContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/orderByView"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
                     android:layout_marginLeft="10dp"
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:background="@drawable/background_rounded"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:padding="8dp"
-                    android:text="Ordenar por: Novos" />
+                    android:text="Ordenar por: Novos"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -140,11 +143,11 @@
                 android:id="@+id/editTextContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginHorizontal="11dp"
                 android:background="@drawable/background_rounded"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp">
+                android:paddingHorizontal="8dp"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/editText"
@@ -152,13 +155,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:hint="Busca"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:hint="Busca"
-                    android:textColorHint="@color/dark_color"
                     android:maxLines="1"
                     android:paddingVertical="16dp"
                     android:paddingRight="4dp"
+                    android:textColorHint="@color/dark_color"
                     android:textCursorDrawable="@drawable/cursor_color" />
 
                 <ImageView
@@ -174,27 +177,35 @@
                     app:tint="@color/white" />
             </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="8dp"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:context=".new_videos.NewVideosFragment"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/adapter_anime_ep_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="8dp"
+                android:orientation="vertical"
+                android:paddingVertical="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context=".new_videos.NewVideosFragment"
+                tools:itemCount="10"
+                tools:listitem="@layout/adapter_anime_ep_item"
+                tools:visibility="gone" />
 
             <com.example.screen_resources.components.MessageImageView
                 android:id="@+id/messageImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:src="@drawable/anya"
                 android:text="Nenhum anime encontrado"
+                android:visibility="gone" />
+
+            <com.example.screen_resources.components.RefreshImageView
+                android:id="@+id/refreshView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:visibility="gone"
-                android:layout_gravity="center"/>
+                android:layout_marginTop="36dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.home.databinding.FragmentAnimesCategoryBinding
@@ -33,6 +34,9 @@ class AnimesCategoryFragment : BaseFragment() {
         getAnimesCategory()
         initLiveData()
         initToolbar()
+        binding.refreshView.setOnClickListener {
+            getAnimesCategory()
+        }
     }
 
     private fun initToolbar() {
@@ -69,9 +73,11 @@ class AnimesCategoryFragment : BaseFragment() {
                         AnimesCategoryAdapter(it.data, viewModel.getBaseImageUrl()) { animeId ->
                             viewModel.getRouter().goToAnimeDetails(binding.root, animeId)
                         }
+                    binding.refreshView.isGone = true
                 }
                 is NetworkResources.Failure -> {
                     viewModel.getShowLoading().hideLoading()
+                    binding.refreshView.isGone = false
                 }
             }
         }

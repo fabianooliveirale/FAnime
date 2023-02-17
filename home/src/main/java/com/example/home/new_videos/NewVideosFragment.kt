@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import com.example.home.databinding.FragmentNewVideosBinding
 import com.example.home.watching_videos.WatchingViewModel
 import com.example.network.NetworkResources
@@ -28,8 +29,15 @@ class NewVideosFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initLiveData()
+        initButton()
         if (viewModel.newVideosData == null)
             viewModel.getNewVideos()
+    }
+
+    private fun initButton() {
+        binding.refreshView.setOnClickListener {
+            viewModel.getNewVideos()
+        }
     }
 
     private fun initLiveData() {
@@ -51,10 +59,11 @@ class NewVideosFragment : BaseFragment() {
                                 item.categoryId ?: ""
                             )
                         }
+                    binding.refreshView.isGone = true
                 }
                 is NetworkResources.Failure -> {
                     viewModel.getShowLoading().hideLoading()
-                    val teste = "error"
+                    binding.refreshView.isGone = false
                 }
             }
         }

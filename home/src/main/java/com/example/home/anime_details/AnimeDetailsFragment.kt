@@ -49,6 +49,9 @@ class AnimeDetailsFragment : BaseFragment() {
         initAdapter()
         initOrderByView()
         initEditTextWatcher()
+        binding.refreshView.setOnClickListener {
+            getAnimeDetails()
+        }
     }
 
     override fun onResume() {
@@ -177,10 +180,12 @@ class AnimeDetailsFragment : BaseFragment() {
 
                         val imageUrl = "${viewModel.getBaseImageUrl()}${anime?.categoryImage}"
                         binding.imageView.loadFromGlide(imageUrl)
+                        showView()
                     }
                 }
                 is NetworkResources.Failure -> {
                     viewModel.getShowLoading().hideLoading()
+                    hideView()
                 }
             }
         }
@@ -195,9 +200,33 @@ class AnimeDetailsFragment : BaseFragment() {
                     viewModel.getAnimationView().slideInUp(binding.recyclerView)
                     binding.recyclerView.isGone = false
                     updateList()
+                    binding.refreshView.isGone = true
+                    showView()
                 }
-                is NetworkResources.Failure -> {}
+                is NetworkResources.Failure -> {
+                    hideView()
+                }
             }
+        }
+    }
+
+    fun showView() {
+        binding.apply {
+            animeDetailContainer.isGone = false
+            orderContainer.isGone = false
+            editTextContainer.isGone = false
+            recyclerView.isGone = false
+            refreshView.isGone = true
+        }
+    }
+
+    fun hideView() {
+        binding.apply {
+            animeDetailContainer.isGone = true
+            orderContainer.isGone = true
+            editTextContainer.isGone = true
+            recyclerView.isGone = true
+            refreshView.isGone = false
         }
     }
 
@@ -211,7 +240,7 @@ class AnimeDetailsFragment : BaseFragment() {
 
             val index = viewModel.listEp.indexOf(item)
 
-            if(index >= 0 ) {
+            if (index >= 0) {
                 item.isWatchingEp = true
                 viewModel.listEp[index] = item
             }

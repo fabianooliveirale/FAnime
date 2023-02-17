@@ -84,6 +84,11 @@ class PlayerActivity : AppCompatActivity() {
             currentPosition = 0
             resumeVideoView()
         }
+
+        binding.refreshView.setOnClickListener {
+            getVideoRequest()
+            refreshNextPreviou()
+        }
     }
 
     private fun refreshNextPreviou() {
@@ -218,6 +223,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.videoModelLiveData.observe(this) {
             when (it) {
                 is NetworkResources.Loading -> {
+                    binding.loading.isGone = false
                     requesting = true
                 }
                 is NetworkResources.Succeeded -> {
@@ -230,10 +236,13 @@ class PlayerActivity : AppCompatActivity() {
                         it.data.first().location
                     }
 
+                    binding.refreshView.isGone = true
                     startNewVideo(url ?: "")
                 }
                 is NetworkResources.Failure -> {
                     requesting = false
+                    binding.loading.isGone = true
+                    binding.refreshView.isGone = false
                 }
             }
         }
