@@ -18,6 +18,7 @@ import com.example.screen_resources.extensions.loadFromGlide
 import com.example.screen_resources.extensions.onTextChanged
 import com.example.screen_resources.fromHtml
 import com.example.video.PlayerActivity
+import com.example.video.PlayerMediaActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 

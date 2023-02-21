@@ -1,0 +1,55 @@
+plugins {
+  id 'com.android.library'
+  id 'kotlin-android'
+}
+
+
+dependencies {
+  implementation 'androidx.appcompat:appcompat:1.6.1'
+  implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+
+  // ExoPlayer
+  api "androidx.media3:media3-exoplayer:1.0.0-rc01"
+  api "androidx.media3:media3-exoplayer-dash:1.0.0-rc01"
+  api "androidx.media3:media3-exoplayer-hls:1.0.0-rc01"
+  api "androidx.media3:media3-exoplayer-smoothstreaming:1.0.0-rc01"
+
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation "org.robolectric:robolectric:4.9.2"
+  implementation project(path: ':screen_resources')
+  // Playlist support
+  implementation 'com.devbrackets.android:playlistcore:2.1.0'
+}
+
+android {
+  compileSdkVersion 33
+
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 33
+
+    vectorDrawables.useSupportLibrary = true
+
+    buildConfigField "String", "EXO_MEDIA_VERSION_NAME", '"4.3.0"'
+  }
+
+  sourceSets {
+    main.java.srcDirs += "src/main/kotlin"
+    test.java.srcDirs += "src/test/kotlin"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+    }
+  }
+
+  lint {
+    abortOnError false
+  }
+}

@@ -11,6 +11,7 @@ import com.example.home.databinding.FragmentAllWatchingBinding
 import com.example.screen_resources.BaseFragment
 import com.example.screen_resources.extensions.onTextChanged
 import com.example.video.PlayerActivity
+import com.example.video.PlayerMediaActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -74,7 +75,7 @@ class AllWatchingFragment : BaseFragment() {
             if(location == WhereName.FROM_WATCHING.name) {
                 viewModel.getRouter().goToVideo(
                     activity,
-                    PlayerActivity(),
+                    PlayerMediaActivity(),
                     it.epId ?: "",
                     it.animeId ?: "",
                     it.title ?: "",

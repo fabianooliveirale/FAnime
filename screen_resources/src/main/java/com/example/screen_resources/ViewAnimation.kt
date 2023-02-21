@@ -277,7 +277,7 @@ class ViewAnimation(
                 .interpolate(easeOut)
                 .onStart {
                     inAnimation = true
-                    view.isGone = false
+                    view.visibility = View.VISIBLE
                 }.onEnd {
                     inAnimation = false
                 }.playOn(view)
@@ -298,7 +298,7 @@ class ViewAnimation(
                 }
                 .onEnd {
                     inAnimation = false
-                    view.isGone = true
+                    view.visibility = View.INVISIBLE
                 }.playOn(view)
         }, delay)
     }

@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.fanime'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.fanime"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0.5"
 
@@ -53,4 +53,6 @@ dependencies {
     implementation project(path: ':router')
     implementation project(path: ':screen_resources')
     implementation project(path: ':dao')
+    implementation 'com.devbrackets.android:playlistcore:2.1.0'
+    implementation project(path: ':video-media')
 }

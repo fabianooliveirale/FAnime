@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <application>
         <activity
+            android:name=".PlayerMediaActivity"
+            android:configChanges="screenLayout|screenSize|orientation"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/Theme.Fanime.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PlayerActivity"
+            android:configChanges="screenLayout|screenSize|orientation"
             android:exported="false"
             android:label="@string/title_activity_player"
-            android:theme="@style/Theme.Fanime.NoActionBar"
-            android:configChanges="screenLayout|screenSize|orientation"
-            android:screenOrientation="sensorLandscape">
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/Theme.Fanime.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
     </application>
+
 </manifest>

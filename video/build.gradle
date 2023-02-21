@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'com.example.video'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -41,24 +41,28 @@ android {
 ext {
     exoplayer = '2.18.1'
     okhttp3 = '4.10.0'
-
 }
 
 dependencies {
     implementation project(path: ':network')
     implementation project(path: ':router')
     implementation project(path: ':screen_resources')
+    // Playlist support
+    implementation 'com.devbrackets.android:playlistcore:2.1.0'
 //    implementation "com.google.android.exoplayer:exoplayer:$exoplayer"
 //    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer"
 //    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer"
 //    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
 //    implementation "com.google.android.exoplayer:extension-okhttp:$exoplayer"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.10.0"
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    // Playlist support
+    implementation 'com.devbrackets.android:playlistcore:2.1.0'
     implementation project(path: ':model')
     implementation project(path: ':dao')
+    implementation project(path: ':video-media')
 }

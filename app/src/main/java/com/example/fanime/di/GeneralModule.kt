@@ -11,7 +11,6 @@ import com.example.screen_resources.BaseViewModel
 import com.example.screen_resources.Loop
 import com.example.screen_resources.ShowLoading
 import com.example.screen_resources.ViewAnimation
-import com.example.video.VideoViewModel
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf

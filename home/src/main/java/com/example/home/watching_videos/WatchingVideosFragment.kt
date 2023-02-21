@@ -11,6 +11,7 @@ import com.example.home.all_watching.AllWatchingFragment
 import com.example.home.databinding.FragmentWatchingVideosBinding
 import com.example.screen_resources.BaseFragment
 import com.example.video.PlayerActivity
+import com.example.video.PlayerMediaActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class WatchingVideosFragment : BaseFragment() {
@@ -83,7 +84,7 @@ class WatchingVideosFragment : BaseFragment() {
             WatchingEpAdapter(WatchingEpAdapter.Type.EP_NAME, viewModel.getImageUrl(), true) {
                 viewModel.getRouter().goToVideo(
                     activity,
-                    PlayerActivity(),
+                    PlayerMediaActivity(),
                     it.epId ?: "",
                     it.animeId ?: "",
                     it.title ?: "",

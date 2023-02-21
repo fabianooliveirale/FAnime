@@ -9,5 +9,6 @@ data class WatchingEp(
     var animeName: String? = null,
     var position: Int? = null,
     var image: String? = null,
-    var time: Date? = null
+    var time: Date? = null,
+    var url: String? = null
 )

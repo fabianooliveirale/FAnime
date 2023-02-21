@@ -8,7 +8,9 @@ import com.example.dao.SharedPref
 import com.example.model.AnimeDetailsResponse
 import com.example.network.NetworkResources
 import com.example.network.NetworkScope
+import com.example.router.Router
 import com.example.screen_resources.Loop
+import com.example.screen_resources.ViewAnimation
 import com.example.video.api.VideoRepository
 import com.example.video.model.VideoModelResponse
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +23,8 @@ class VideoViewModel(
     private val networkScope: NetworkScope,
     private val loop: Loop,
     private val sharedPref: SharedPref,
+    private val router: Router,
+    private val animation: ViewAnimation
 ) : ViewModel(), CoroutineScope {
 
     override val coroutineContext = Dispatchers.IO + Job()
@@ -78,4 +82,6 @@ class VideoViewModel(
     }
     fun getLoop() = loop
     fun getSharedPref() = sharedPref
+    fun getRouter() = router
+    fun getAnimationView() = animation
 }
